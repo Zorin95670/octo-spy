@@ -239,6 +239,7 @@
 				<directory>src/main/resources</directory>
 				<includes>
 					<include>application.properties</include>
+					<include>application-context.xml</include>
 				</includes>
 			</resource>
 		</resources>

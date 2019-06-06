@@ -4,17 +4,16 @@
 
 <web-app>
 	<display-name>octo-spy</display-name>
+	
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/classes/application-context.xml</param-value>
+	</context-param>
 
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 
-	<context-param>
-		<param-name>contextConfigLocation</param-name>
-		<param-value>
-			/WEB-INF/classes/application-context.xml
-		</param-value>
-	</context-param>
 
 	<servlet>
 		<servlet-name>octo-spy-serlvet</servlet-name>

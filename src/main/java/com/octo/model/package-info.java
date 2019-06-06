@@ -4,4 +4,4 @@
  * @author vmoittie
  *
  */
-package com.octo.models;
+package com.octo.model;

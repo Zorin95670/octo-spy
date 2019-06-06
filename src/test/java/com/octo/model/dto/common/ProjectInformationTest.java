@@ -1,9 +1,11 @@
-package com.octo.models;
+package com.octo.model.dto.common;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
+
+import com.octo.model.dto.common.ProjectInformation;
 
 public class ProjectInformationTest {
 

@@ -1,4 +1,4 @@
-package com.octo.models;
+package com.octo.model.dto.common;
 
 /**
  * All project's information.

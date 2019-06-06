@@ -1,4 +1,4 @@
-package com.octo.api;
+package com.octo.controller;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -17,7 +17,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.octo.models.ProjectInformation;
+import com.octo.controller.InfoController;
+import com.octo.model.dto.common.ProjectInformation;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(locations = { "classpath:application-context.xml" })

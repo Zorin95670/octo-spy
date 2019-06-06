@@ -1,4 +1,4 @@
-package com.octo.api;
+package com.octo.controller;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -8,7 +8,7 @@ import javax.ws.rs.core.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import com.octo.models.ProjectInformation;
+import com.octo.model.dto.common.ProjectInformation;
 import com.octo.utils.Configuration;
 
 import io.swagger.v3.oas.annotations.media.Content;

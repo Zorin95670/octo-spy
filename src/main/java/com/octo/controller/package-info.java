@@ -4,4 +4,4 @@
  * @author vmoittie
  *
  */
-package com.octo.api;
+package com.octo.controller;

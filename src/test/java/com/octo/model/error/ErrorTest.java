@@ -1,4 +1,4 @@
-package com.octo.models.error;
+package com.octo.model.error;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -14,6 +14,7 @@ public class ErrorTest {
         assertNull(error.getMessage());
         assertNull(error.getField());
         assertNull(error.getValue());
+        assertNull(error.getCause());
 
         error.setMessage("message");
         assertEquals("message", error.getMessage());
@@ -23,5 +24,9 @@ public class ErrorTest {
 
         error.setValue("value");
         assertEquals("value", error.getValue());
+
+        Exception exception = new Exception("test");
+        error.setCause(exception);
+        assertEquals(exception.getMessage(), error.getCause());
     }
 }

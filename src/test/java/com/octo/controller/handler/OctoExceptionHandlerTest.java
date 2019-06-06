@@ -1,4 +1,4 @@
-package com.octo.api.handler;
+package com.octo.controller.handler;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -8,14 +8,15 @@ import javax.ws.rs.core.Response.Status;
 
 import org.junit.Test;
 
-import com.octo.models.exception.ControllerException;
+import com.octo.controller.handler.OctoExceptionHandler;
+import com.octo.model.exception.OctoException;
 
-public class ExceptionHandlerTest {
+public class OctoExceptionHandlerTest {
 
     @Test
     public void toResponseTest() {
-        final ExceptionHandler handler = new ExceptionHandler();
-        ControllerException exception = new ControllerException(Status.BAD_REQUEST) {
+        final OctoExceptionHandler handler = new OctoExceptionHandler();
+        OctoException exception = new OctoException(Status.BAD_REQUEST) {
             private static final long serialVersionUID = 1L;
         };
 

@@ -4,4 +4,4 @@
  * @author vmoittie
  *
  */
-package com.octo.models.exception;
+package com.octo.model.exception;

@@ -1,4 +1,4 @@
-package com.octo.models.error;
+package com.octo.model.error;
 
 import java.io.Serializable;
 
@@ -26,6 +26,37 @@ public class Error implements Serializable {
      * Field's value.
      */
     private String value;
+
+    /**
+     * Cause of the error.
+     */
+    private String cause;
+
+    /**
+     * Default constructor.
+     */
+    public Error() {
+        this(null, null, null, null);
+    }
+
+    /**
+     * Constructor who init all member.
+     *
+     * @param message
+     *            Mesage.
+     * @param field
+     *            Field.
+     * @param value
+     *            Value.
+     * @param cause
+     *            Cause.
+     */
+    public Error(final String message, final String field, final String value, final Throwable cause) {
+        this.setMessage(message);
+        this.setField(field);
+        this.setValue(value);
+        this.setCause(cause);
+    }
 
     /**
      * Get error's message.
@@ -82,5 +113,39 @@ public class Error implements Serializable {
      */
     public void setValue(final String value) {
         this.value = value;
+    }
+
+    /**
+     * Get the cause of the error.
+     *
+     * @return Message.
+     */
+    public String getCause() {
+        return this.cause;
+    }
+
+    /**
+     * Set the cause of the error.
+     *
+     * @param cause
+     *            Message.
+     */
+    public void setCause(final String cause) {
+        this.cause = cause;
+    }
+
+    /**
+     * Set the cause of the error.
+     *
+     * @param cause
+     *            Message.
+     */
+    public void setCause(final Throwable cause) {
+        String messageCause = null;
+        if (cause != null) {
+            messageCause = cause.getMessage();
+        }
+
+        this.setCause(messageCause);
     }
 }

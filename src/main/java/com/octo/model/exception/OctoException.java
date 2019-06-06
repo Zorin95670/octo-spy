@@ -1,4 +1,4 @@
-package com.octo.models.exception;
+package com.octo.model.exception;
 
 import javax.ws.rs.core.Response.Status;
 
@@ -8,7 +8,7 @@ import javax.ws.rs.core.Response.Status;
  * @author vmoittie
  *
  */
-public abstract class ControllerException extends Exception {
+public abstract class OctoException extends Exception {
 
     /**
      * Serial version UID.
@@ -29,7 +29,7 @@ public abstract class ControllerException extends Exception {
      * @param status
      *            HTTP status.
      */
-    public ControllerException(final Status status) {
+    public OctoException(final Status status) {
         super();
         this.status = status;
         this.error = new Error();

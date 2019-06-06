@@ -11,23 +11,22 @@
 
 	<properties>
 		<jakarta.ws.rs.version>2.1.5</jakarta.ws.rs.version>
-		<spring.version>5.1.6.RELEASE</spring.version>
+		<spring.version>5.1.7.RELEASE</spring.version>
 		<jersey.version>2.28</jersey.version>
+		<jackson.version>2.9.9</jackson.version>
+		<hibernate.version>5.4.3.Final</hibernate.version>
+		<postgresql.version>42.2.5</postgresql.version>
 		<swagger.version>2.0.8</swagger.version>
 		<swagger-ui.version>3.17.0</swagger-ui.version>
-		<replacer.version>1.5.3</replacer.version>
-		<hibernate.version>5.4.1.Final</hibernate.version>
-		<postgresql.version>42.2.5</postgresql.version>
-		<jackson.version>2.9.8</jackson.version>
 		<jacoco-version>0.8.3</jacoco-version>
 		<junit.version>4.12</junit.version>
-		<mockito.version>1.10.19</mockito.version>
-		<maven-war-plugin.version>3.2.2</maven-war-plugin.version>
-		<dockerfile-maven-plugin.version>1.4.10</dockerfile-maven-plugin.version>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven-dependency-plugin.version>3.1.1</maven-dependency-plugin.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<replacer.version>1.5.3</replacer.version>
+		<maven-war-plugin.version>3.2.2</maven-war-plugin.version>
+		<maven.resources.plugin>3.0.1</maven.resources.plugin>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
 
 	<dependencies>
@@ -54,7 +53,21 @@
 			<artifactId>spring-beans</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
 
 		<!-- Jersey -->
 		<dependency>
@@ -82,6 +95,43 @@
 			<groupId>org.glassfish.jersey.media</groupId>
 			<artifactId>jersey-media-json-jackson</artifactId>
 			<version>${jersey.version}</version>
+		</dependency>
+
+		<!-- jackson -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+
+
+		<!-- Hibernate -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+
+		<!-- PostgreSQL -->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>${postgresql.version}</version>
 		</dependency>
 
 		<!-- swagger -->
@@ -167,7 +217,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
-				<version>3.0.1</version>
+				<version>${maven.resources.plugin}</version>
 			</plugin>
 			<plugin>
 				<!-- Download Swagger UI webjar. -->
@@ -193,54 +243,50 @@
 				</executions>
 			</plugin>
 			<plugin>
-                <!-- Add Swagger UI resources to the war file. -->
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>${maven-war-plugin.version}</version>
-                <configuration>
-                    <webResources combine.children="append">
-                        <resource>
-                            <directory>${project.build.directory}/swagger-ui/META-INF/resources/webjars/swagger-ui/${swagger-ui.version}</directory>
-                            <includes>
-                                <include>**/*.*</include>
-                            </includes>
-                            <targetPath>docs</targetPath>
-                        </resource>
-                    </webResources>
-                </configuration>
-            </plugin>
-            <plugin>
-                <!-- Replace the OpenAPI specification example URL with the local one. -->
-                <groupId>com.google.code.maven-replacer-plugin</groupId>
-                <artifactId>replacer</artifactId>
-                <version>${replacer.version}</version>
-                <executions>
-                    <execution>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>replace</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <file>${project.build.directory}/swagger-ui/META-INF/resources/webjars/swagger-ui/${swagger-ui.version}/index.html</file>
-                    <replacements>
-                        <replacement>
-                            <token>http://petstore.swagger.io/v2/swagger.json</token>
-                            <value>/octo-spy/openapi/openapi.json</value>
-                        </replacement>
-                    </replacements>
-                </configuration>
-            </plugin>
+				<!-- Add Swagger UI resources to the war file. -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>${maven-war-plugin.version}</version>
+				<configuration>
+					<webResources combine.children="append">
+						<resource>
+							<directory>${project.build.directory}/swagger-ui/META-INF/resources/webjars/swagger-ui/${swagger-ui.version}</directory>
+							<includes>
+								<include>**/*.*</include>
+							</includes>
+							<targetPath>docs</targetPath>
+						</resource>
+					</webResources>
+				</configuration>
+			</plugin>
+			<plugin>
+				<!-- Replace the OpenAPI specification example URL with the local one. -->
+				<groupId>com.google.code.maven-replacer-plugin</groupId>
+				<artifactId>replacer</artifactId>
+				<version>${replacer.version}</version>
+				<executions>
+					<execution>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<file>${project.build.directory}/swagger-ui/META-INF/resources/webjars/swagger-ui/${swagger-ui.version}/index.html</file>
+					<replacements>
+						<replacement>
+							<token>http://petstore.swagger.io/v2/swagger.json</token>
+							<value>/octo-spy/openapi/openapi.json</value>
+						</replacement>
+					</replacements>
+				</configuration>
+			</plugin>
 		</plugins>
 		<resources>
 			<resource>
 				<filtering>true</filtering>
 				<directory>src/main/resources</directory>
-				<includes>
-					<include>application.properties</include>
-					<include>application-context.xml</include>
-				</includes>
 			</resource>
 		</resources>
 	</build>

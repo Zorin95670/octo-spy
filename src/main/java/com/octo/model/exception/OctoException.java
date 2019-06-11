@@ -2,13 +2,16 @@ package com.octo.model.exception;
 
 import javax.ws.rs.core.Response.Status;
 
+import com.octo.model.error.ErrorType;
+import com.octo.model.error.Error;
+
 /**
  * Default application exception.
  *
  * @author vmoittie
  *
  */
-public abstract class OctoException extends Exception {
+public class OctoException extends Exception {
 
     /**
      * Serial version UID.
@@ -26,13 +29,17 @@ public abstract class OctoException extends Exception {
     /**
      * Create exception with specific status.
      *
-     * @param status
-     *            HTTP status.
+     * @param error
+     *            Error type.
+     * @param field
+     *            Field's name.
+     * @param value
+     *            Value.
      */
-    public OctoException(final Status status) {
+    public OctoException(final ErrorType error, final String field, final String value) {
         super();
-        this.status = status;
-        this.error = new Error();
+        this.status = error.getStatus();
+        this.error = new Error(error.getMessage(), field, value, null);
     }
 
     /**

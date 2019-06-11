@@ -1,21 +1,19 @@
 package com.octo.model.exception;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
-import com.octo.model.exception.OctoException;
+import com.octo.model.error.ErrorType;
 
 public class OctoExceptionTest {
 
     @Test
     public void test() {
-        final OctoException exception = new OctoException(null) {
-            private static final long serialVersionUID = 1L;
-        };
+        final OctoException exception = new OctoException(ErrorType.BAD_VALUE, null, null);
 
-        assertNull(exception.getStatus());
+        assertEquals(ErrorType.BAD_VALUE.getStatus(), exception.getStatus());
         assertNotNull(exception.getError());
     }
 }

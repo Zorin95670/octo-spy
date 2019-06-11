@@ -1,5 +1,6 @@
 package com.octo.dao;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
@@ -26,5 +27,19 @@ public class EnvironmentDAOTest {
 
         assertNotNull(environments);
         assertFalse(environments.isEmpty());
+    }
+
+    @Test
+    public void testSave() {
+        Exception exception = null;
+
+        try {
+            this.environmentDAO.save(null);
+        } catch (Exception e) {
+            exception = e;
+        }
+
+        assertNotNull(exception);
+        assertEquals(UnsupportedOperationException.class, exception.getClass());
     }
 }

@@ -1,7 +1,6 @@
 package com.octo.controller;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Response;
@@ -17,7 +16,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.octo.controller.InfoController;
 import com.octo.model.dto.common.ProjectInformation;
 
 @RunWith(SpringRunner.class)
@@ -34,18 +32,6 @@ public class InfoControllerTest extends JerseyTest {
         rc.property("contextConfigLocation", "classpath:application-context.xml");
 
         return rc;
-    }
-
-    @Test
-    public void getVersionTest() {
-
-        final ProjectInformation version = this.controller.getVersion();
-
-        assertNotNull(version);
-        assertEquals("octo-spy-test", version.getProject());
-        assertEquals("test", version.getVersion());
-        assertEquals("test-env", version.getEnvironment());
-        assertEquals("InternalTest", version.getClient());
     }
 
     @Test

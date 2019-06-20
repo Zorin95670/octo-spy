@@ -10,23 +10,26 @@
 	<url>http://maven.apache.org</url>
 
 	<properties>
-		<jakarta.ws.rs.version>2.1.5</jakarta.ws.rs.version>
-		<spring.version>5.1.7.RELEASE</spring.version>
-		<jersey.version>2.28</jersey.version>
-		<jackson.version>2.9.9</jackson.version>
 		<hibernate.version>5.4.3.Final</hibernate.version>
-		<postgresql.version>42.2.5</postgresql.version>
-		<swagger.version>2.0.8</swagger.version>
-		<swagger-ui.version>3.17.0</swagger-ui.version>
+		<jackson.version>2.9.9</jackson.version>
 		<jacoco-version>0.8.3</jacoco-version>
+		<jakarta.ws.rs.version>2.1.5</jakarta.ws.rs.version>
+		<java.persistence>2.2</java.persistence>
+		<jboss.transaction>1.1.1.Final</jboss.transaction>
+		<jersey.version>2.28</jersey.version>
 		<junit.version>4.12</junit.version>
 		<maven-dependency-plugin.version>3.1.1</maven-dependency-plugin.version>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<replacer.version>1.5.3</replacer.version>
 		<maven-war-plugin.version>3.2.2</maven-war-plugin.version>
-		<maven.resources.plugin>3.0.1</maven.resources.plugin>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.resources.plugin>3.0.1</maven.resources.plugin>
+		<mockito.version>2.28.2</mockito.version>
+		<postgresql.version>42.2.5</postgresql.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<replacer.version>1.5.3</replacer.version>
+		<spring.version>5.1.7.RELEASE</spring.version>
+		<swagger.version>2.0.8</swagger.version>
+		<swagger-ui.version>3.17.0</swagger-ui.version>
 	</properties>
 
 	<dependencies>
@@ -76,6 +79,11 @@
 			<version>${jersey.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.glassfish.jersey.core</groupId>
+			<artifactId>jersey-common</artifactId>
+			<version>${jersey.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.glassfish.jersey.containers</groupId>
 			<artifactId>jersey-container-servlet</artifactId>
 			<version>${jersey.version}</version>
@@ -114,7 +122,6 @@
 			<version>${jackson.version}</version>
 		</dependency>
 
-
 		<!-- Hibernate -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -126,12 +133,24 @@
 			<artifactId>hibernate-entitymanager</artifactId>
 			<version>${hibernate.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.jboss.spec.javax.transaction</groupId>
+			<artifactId>jboss-transaction-api_1.2_spec</artifactId>
+			<version>${jboss.transaction}</version>
+		</dependency>
 
 		<!-- PostgreSQL -->
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<version>${postgresql.version}</version>
+		</dependency>
+
+		<!-- Persistence -->
+		<dependency>
+			<groupId>javax.persistence</groupId>
+			<artifactId>javax.persistence-api</artifactId>
+			<version>${java.persistence}</version>
 		</dependency>
 
 		<!-- swagger -->
@@ -156,6 +175,12 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>${mockito.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

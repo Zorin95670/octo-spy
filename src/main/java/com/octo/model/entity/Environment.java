@@ -1,15 +1,13 @@
 package com.octo.model.entity;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.octo.utils.Constants;
 
 /**
@@ -26,7 +24,9 @@ public class Environment {
      * Primary key.
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "environments_seq", sequenceName = "environments_env_id_seq", allocationSize = 1,
+            initialValue = Constants.START_VALUE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "environments_seq")
     @Column(name = "env_id", updatable = false, nullable = false)
     private Long id;
 
@@ -35,20 +35,6 @@ public class Environment {
      */
     @Column(name = "name", nullable = false, length = Constants.DEFAULT_SIZE_OF_STRING)
     private String name;
-
-    /**
-     * Creation date of this model.
-     */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Column(name = "insert_date")
-    private Date insertDate;
-
-    /**
-     * Last update date of this model.
-     */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Column(name = "update_date")
-    private Date updateDate;
 
     /**
      * Get primary key value.
@@ -87,29 +73,4 @@ public class Environment {
     public void setName(final String name) {
         this.name = name;
     }
-
-    /**
-     * Get creation date of this model.
-     *
-     * @return Date of creation.
-     */
-    public Date getInsertDate() {
-        if (insertDate == null) {
-            return null;
-        }
-        return new Date(this.insertDate.getTime());
-    }
-
-    /**
-     * Get last update date of this model.
-     *
-     * @return Update date.
-     */
-    public Date getUpdateDate() {
-        if (this.updateDate == null) {
-            return null;
-        }
-        return new Date(this.updateDate.getTime());
-    }
-
 }

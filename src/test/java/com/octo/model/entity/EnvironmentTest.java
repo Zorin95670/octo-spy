@@ -15,8 +15,6 @@ public class EnvironmentTest {
 
         assertNull(environment.getId());
         assertNull(environment.getName());
-        assertNull(environment.getInsertDate());
-        assertNull(environment.getUpdateDate());
 
         environment.setId(1L);
         environment.setName("name");

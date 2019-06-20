@@ -6,11 +6,11 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Repository;
 
 import com.octo.model.entity.Environment;
+import com.octo.model.exception.OctoException;
 
 /**
  * Environment DAO.
@@ -19,7 +19,6 @@ import com.octo.model.entity.Environment;
  *
  */
 @Repository("environmentDAO")
-@Transactional
 public class EnvironmentDAO extends CommonDAO<Environment> {
 
     /**
@@ -27,6 +26,11 @@ public class EnvironmentDAO extends CommonDAO<Environment> {
      */
     public EnvironmentDAO() {
         super(Environment.class);
+    }
+
+    @Override
+    public final Environment save(final Environment entity) throws OctoException {
+        throw new UnsupportedOperationException();
     }
 
     /**

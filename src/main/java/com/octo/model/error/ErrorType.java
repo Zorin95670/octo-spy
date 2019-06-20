@@ -10,6 +10,18 @@ import javax.ws.rs.core.Response.Status;
  */
 public enum ErrorType {
     /**
+     * Error to call when a field value is bad.
+     */
+    BAD_VALUE("Field value is bad.", Status.BAD_REQUEST),
+    /**
+     * Error to call when a field value is empty.
+     */
+    EMPTY_VALUE("Field value is empty.", Status.BAD_REQUEST),
+    /**
+     * Error to call when entity is not found in database.
+     */
+    ENTITY_NOT_FOUND("Entity not found.", Status.NOT_FOUND),
+    /**
      * Error to call when a uncatch error is throw.
      */
     INTERNAL_ERROR("Internal error occurs, please contact your administrator.", Status.INTERNAL_SERVER_ERROR);

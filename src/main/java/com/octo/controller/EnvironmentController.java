@@ -10,8 +10,8 @@ import javax.ws.rs.core.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import com.octo.dao.IDAO;
-import com.octo.model.entity.Environment;
+import com.octo.model.dto.environment.EnvironmentDTO;
+import com.octo.service.EnvironmentService;
 
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -31,10 +31,10 @@ import io.swagger.v3.oas.annotations.servers.Server;
 public class EnvironmentController {
 
     /**
-     * Environment dao.
+     * Environment service.
      */
     @Autowired
-    private IDAO<Environment> environmentDAO;
+    private EnvironmentService service;
 
     /**
      * Endpoint to return all environments.
@@ -43,9 +43,9 @@ public class EnvironmentController {
      */
     @GET
     @ApiResponse(responseCode = "200",
-            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Environment.class)),
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = EnvironmentDTO.class)),
             description = "Environment's list.")
-    public final List<Environment> getAll() {
-        return environmentDAO.findAll();
+    public final List<EnvironmentDTO> getAll() {
+        return service.findAll();
     }
 }

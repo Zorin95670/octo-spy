@@ -50,4 +50,6 @@
 	<bean
 		class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
 
+  <bean class="com.octo.dao.DefaultDAO" />
+
 </beans>

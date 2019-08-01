@@ -2,6 +2,7 @@ package com.octo.service;
 
 import javax.transaction.Transactional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -63,7 +64,7 @@ public class ProjectService {
      *             On all database error.
      */
     public ProjectDTO save(final NewProjectDTO dto) throws OctoException {
-        if (dto.getName() == null) {
+        if (dto == null || StringUtils.isBlank(dto.getName())) {
             throw new OctoException(ErrorType.EMPTY_VALUE, "name", null);
         }
 

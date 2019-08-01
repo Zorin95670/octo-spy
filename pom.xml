@@ -11,20 +11,23 @@
 
 	<properties>
 		<hibernate.version>5.4.3.Final</hibernate.version>
+		<hibernate.entity.version>5.4.4.Final</hibernate.entity.version>
 		<jackson.version>2.9.9</jackson.version>
+		<jackson.databind.version>2.9.9.2</jackson.databind.version>
 		<jacoco-version>0.8.3</jacoco-version>
-		<jakarta.ws.rs.version>2.1.5</jakarta.ws.rs.version>
+		<jakarta.ws.rs.version>2.1.6</jakarta.ws.rs.version>
 		<java.persistence>2.2</java.persistence>
 		<jboss.transaction>1.1.1.Final</jboss.transaction>
-		<jersey.version>2.28</jersey.version>
+		<jersey.version>2.29</jersey.version>
 		<junit.version>4.12</junit.version>
+		<logback.version>1.2.3</logback.version>
 		<maven-dependency-plugin.version>3.1.1</maven-dependency-plugin.version>
 		<maven-war-plugin.version>3.2.2</maven-war-plugin.version>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven.resources.plugin>3.0.1</maven.resources.plugin>
-		<mockito.version>2.28.2</mockito.version>
-		<postgresql.version>42.2.5</postgresql.version>
+		<mockito.version>3.0.0</mockito.version>
+		<postgresql.version>42.2.6</postgresql.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<replacer.version>1.5.3</replacer.version>
 		<spring.version>5.1.7.RELEASE</spring.version>
@@ -119,7 +122,7 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
-			<version>${jackson.version}</version>
+			<version>${jackson.databind.version}</version>
 		</dependency>
 
 		<!-- Hibernate -->
@@ -131,7 +134,7 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
-			<version>${hibernate.version}</version>
+			<version>${hibernate.entity.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jboss.spec.javax.transaction</groupId>
@@ -168,6 +171,13 @@
 			<groupId>io.swagger.core.v3</groupId>
 			<artifactId>swagger-annotations</artifactId>
 			<version>${swagger.version}</version>
+		</dependency>
+
+		<!-- Logger -->
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${logback.version}</version>
 		</dependency>
 
 		<!-- TEST -->

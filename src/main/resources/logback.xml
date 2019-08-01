@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
+		<file>/var/log/tomcat8/octo-spy.log</file>
+		<append>true</append>
+		<encoder>
+			<pattern>%date{ISO8601} [%thread] %-5level [%mdc] %logger{35} - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<logger name="com.harmony" level="info" additivity="false">
+		<appender-ref ref="FILE" />
+	</logger>
+
+	<root level="info">
+		<appender-ref ref="FILE" />
+	</root>
+</configuration>

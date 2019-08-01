@@ -6,7 +6,7 @@ package com.octo.model.dto.common;
  * @author vmoittie
  *
  */
-public class ProjectInformation {
+public class ProjectInformation extends DefaultDTO {
 
     /**
      * Project's name.

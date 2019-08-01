@@ -3,6 +3,7 @@ package com.octo.model.dto.deployment;
 import java.sql.Timestamp;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.octo.model.dto.common.DefaultDTO;
 import com.octo.model.entity.Environment;
 import com.octo.model.entity.Project;
 
@@ -12,7 +13,7 @@ import com.octo.model.entity.Project;
  * @author vmoittie
  *
  */
-public class DeploymentDTO {
+public class DeploymentDTO extends DefaultDTO {
     /**
      * Primary key.
      */

@@ -1,12 +1,14 @@
 package com.octo.model.dto.deployment;
 
+import com.octo.model.dto.common.DefaultDTO;
+
 /**
  * DTO to call on create deployment.
  *
  * @author vmoittie
  *
  */
-public class NewDeploymentDTO {
+public class NewDeploymentDTO extends DefaultDTO {
 
     /**
      * Deployment's environment.

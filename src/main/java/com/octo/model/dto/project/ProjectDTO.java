@@ -3,6 +3,7 @@ package com.octo.model.dto.project;
 import java.sql.Timestamp;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.octo.model.dto.common.DefaultDTO;
 
 /**
  * Project DTO.
@@ -10,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  * @author vmoittie
  *
  */
-public class ProjectDTO {
+public class ProjectDTO extends DefaultDTO {
     /**
      * Primary key.
      */

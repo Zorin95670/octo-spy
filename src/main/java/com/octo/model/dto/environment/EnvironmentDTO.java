@@ -1,5 +1,7 @@
 package com.octo.model.dto.environment;
 
+import com.octo.model.dto.common.DefaultDTO;
+
 import io.swagger.v3.oas.annotations.Parameter;
 
 /**
@@ -8,7 +10,7 @@ import io.swagger.v3.oas.annotations.Parameter;
  * @author vmoittie
  *
  */
-public class EnvironmentDTO {
+public class EnvironmentDTO extends DefaultDTO {
 
     /**
      * Primary key.

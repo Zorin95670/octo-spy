@@ -7,6 +7,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -30,6 +32,9 @@ import io.swagger.v3.oas.annotations.servers.Server;
 @Server(url = "/octo-spy/api")
 public class EnvironmentController {
 
+    /** Logger. **/
+    private static final Logger LOGGER = LoggerFactory.getLogger(EnvironmentController.class);
+
     /**
      * Environment service.
      */
@@ -46,6 +51,7 @@ public class EnvironmentController {
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = EnvironmentDTO.class)),
             description = "Environment's list.")
     public final List<EnvironmentDTO> getAll() {
+        LOGGER.info("Receive GET request to get  all environment");
         return service.findAll();
     }
 }

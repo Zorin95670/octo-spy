@@ -1,0 +1,15 @@
+Source: octo-spy
+Section: misc
+Priority: optional
+Maintainer: Vincent Moittie <vincent.moittie@arkena.com>
+Build-Depends: debhelper (>= 10)
+Standards-Version: 3.9.6
+
+Package: octo-spy
+Architecture: all
+Depends: ${misc:Depends},
+         adduser,
+         tomcat8
+Description: REST API for Octo project
+  This is a project to centralize all project version.
+  Octo-spy is the API of this project.

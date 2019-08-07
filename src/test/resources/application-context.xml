@@ -28,9 +28,9 @@
 		<property name="driverClassName"
 			value="org.postgresql.Driver"></property>
 		<property name="url"
-			value="jdbc:postgresql://${database.host}:${database.port}/${database.name}" />
-		<property name="username" value="${database.username}" />
-		<property name="password" value="${database.password}" />
+			value="jdbc:postgresql://${octo-spy.database.host:localhost}:${octo-spy.database.port:5432}/${octo-spy.database.name:octo_db}" />
+		<property name="username" value="${octo-spy.database.username:octo}" />
+		<property name="password" value="${octo-spy.database.password:password}" />
 	</bean>
 	<bean id="transactionManager"
 		class="org.springframework.orm.jpa.JpaTransactionManager">

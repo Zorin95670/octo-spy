@@ -22,6 +22,7 @@ def prepareDB() {
             sed -i -E "/_locks/!s/ octo;/ \${DBUSER}/g" ./octo-db/scripts/*
 
             sed -i "s/octo_db/\${DBNAME}/g ; s/localhost/4tests.ci.c4m.qa.arkena.com/g; s/username=.*/username=\${DBUSER}/g; s/password=.*/password=password/g" ./src/test/resources/application.properties
+            sed -i "s/octo_db/\${DBNAME}/g ; s/localhost/4tests.ci.c4m.qa.arkena.com/g; s/:octo}/:\${DBUSER}}/g;" ./src/test/resources/application-context.xml
 
             psql -h 4tests.ci.c4m.qa.arkena.com -U postgres \$(find ./octo-db/scripts/ -name "*.sql"  ! -name "*clean*.sql" -print | sort -n | sed  's/\\.\\//-f /')
         """)

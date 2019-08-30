@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
 
 import org.junit.Test;
@@ -67,17 +66,10 @@ public class CommonDAOTest {
         assertNotNull(data);
         assertNotNull(data.getId());
         assertEquals("QA", data.getName());
+        data = defaultDAO.load((builder, root) -> {
+            return builder.equal(root.get("name"), "bad");
+        });
 
-        Exception exception = null;
-
-        try {
-            data = defaultDAO.load((builder, root) -> {
-                return builder.equal(root.get("name"), "bad");
-            });
-        } catch (Exception e) {
-            exception = e;
-        }
-        assertNotNull(exception);
-        assertEquals(NoResultException.class, exception.getClass());
+        assertNull(data);
     }
 }

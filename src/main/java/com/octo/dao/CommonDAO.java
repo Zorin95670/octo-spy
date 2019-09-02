@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.function.BiFunction;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -78,7 +79,11 @@ public abstract class CommonDAO<T> implements IDAO<T> {
         Root<T> root = query.from(getType());
         query.select(root).where(predicate.apply(builder, root));
 
-        return this.getEntityManager().createQuery(query).getSingleResult();
+        try {
+            return this.getEntityManager().createQuery(query).getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**

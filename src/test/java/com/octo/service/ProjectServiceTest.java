@@ -81,6 +81,20 @@ public class ProjectServiceTest {
     public void testSave() throws OctoException {
         // Test null name
         OctoException exception = null;
+
+        try {
+            service.save(null);
+        } catch (OctoException e) {
+            exception = e;
+        }
+
+        assertNotNull(exception);
+        assertNotNull(exception.getError());
+        assertEquals(ErrorType.EMPTY_VALUE.getMessage(), exception.getError().getMessage());
+        assertEquals("name", exception.getError().getField());
+        assertNull(exception.getError().getValue());
+
+        exception = null;
         NewProjectDTO input = new NewProjectDTO();
 
         try {

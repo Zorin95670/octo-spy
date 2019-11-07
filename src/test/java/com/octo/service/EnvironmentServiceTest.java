@@ -20,7 +20,7 @@ import com.octo.model.entity.Environment;
 public class EnvironmentServiceTest {
 
     @Mock
-    IDAO<Environment> dao;
+    IDAO<Environment, EnvironmentDTO> dao;
 
     @InjectMocks
     EnvironmentService service;

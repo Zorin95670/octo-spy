@@ -5,8 +5,6 @@ import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
-import com.octo.model.entity.Environment;
-
 public class EnvironmentTest {
 
     @Test

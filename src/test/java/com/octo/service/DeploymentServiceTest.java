@@ -1,6 +1,7 @@
 package com.octo.service;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
@@ -14,6 +15,8 @@ import org.mockito.MockitoAnnotations;
 import com.octo.dao.IDAO;
 import com.octo.model.dto.deployment.DeploymentDTO;
 import com.octo.model.dto.deployment.NewDeploymentDTO;
+import com.octo.model.dto.environment.EnvironmentDTO;
+import com.octo.model.dto.project.ProjectDTO;
 import com.octo.model.entity.Deployment;
 import com.octo.model.entity.Environment;
 import com.octo.model.entity.Project;
@@ -23,13 +26,13 @@ import com.octo.model.exception.OctoException;
 public class DeploymentServiceTest {
 
     @Mock
-    IDAO<Environment> environmentDAO;
+    IDAO<Environment, EnvironmentDTO> environmentDAO;
 
     @Mock
-    IDAO<Deployment> deploymentDAO;
+    IDAO<Deployment, DeploymentDTO> deploymentDAO;
 
     @Mock
-    IDAO<Project> projectDAO;
+    IDAO<Project, ProjectDTO> projectDAO;
 
     @InjectMocks
     DeploymentService service;
@@ -213,6 +216,81 @@ public class DeploymentServiceTest {
         assertNull(exception);
         assertNotNull(dto);
 
+        // Test all good and disable previous deployment
+        exception = null;
+        input.setClient("client");
+        input.setEnvironment("QA");
+        input.setVersion("version");
+        input.setProject("project");
+        input.setAlive(true);
+
+        Mockito.when(this.environmentDAO.load(Mockito.any())).thenReturn(new Environment());
+        Mockito.when(this.deploymentDAO.save(Mockito.any())).thenReturn(new Deployment());
+        Mockito.when(this.deploymentDAO.load(Mockito.any())).thenReturn(null);
+        Mockito.when(this.projectDAO.load(Mockito.any())).thenReturn(new Project());
+        dto = null;
+
+        try {
+            dto = service.save(input);
+        } catch (OctoException e) {
+            exception = e;
+        }
+
+        assertNull(exception);
+        assertNotNull(dto);
+    }
+
+    @Test
+    public void testDisablePreviousDeployment() throws OctoException {
+        Project project = new Project();
+        project.setId(1L);
+
+        Environment environment = new Environment();
+        environment.setId(1L);
+
+        Deployment deployment = new Deployment();
+        deployment.setProject(project);
+        deployment.setEnvironment(environment);
+
+        // Test no entity to disable
+        OctoException exception = null;
+        try {
+            Mockito.when(this.deploymentDAO.load(Mockito.any())).thenReturn(null);
+            this.service.disablePreviousDeployment(deployment);
+        } catch (OctoException e) {
+            exception = e;
+        }
+
+        // Test entity to disable
+        Deployment entityToUpdate = new Deployment();
+        entityToUpdate.setAlive(true);
+        assertNull(exception);
+        exception = null;
+        try {
+            Mockito.when(this.deploymentDAO.load(Mockito.any())).thenReturn(entityToUpdate);
+            Mockito.when(this.deploymentDAO.save(Mockito.any())).thenReturn(null);
+            this.service.disablePreviousDeployment(deployment);
+        } catch (OctoException e) {
+            exception = e;
+        }
+
+        assertNull(exception);
+        assertFalse(entityToUpdate.isAlive());
+    }
+
+    @Test
+    public void testDelete() throws OctoException {
+        Mockito.when(this.deploymentDAO.loadById(Mockito.any())).thenReturn(new Deployment());
+        Mockito.doNothing().when(this.deploymentDAO).delete(Mockito.any());
+
+        OctoException exception = null;
+        try {
+            this.service.delete(1L);
+        } catch (OctoException e) {
+            exception = e;
+        }
+
+        assertNull(exception);
     }
 
 }

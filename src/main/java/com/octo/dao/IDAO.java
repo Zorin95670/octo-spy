@@ -7,17 +7,19 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import com.octo.model.exception.OctoException;
+import com.octo.model.dto.common.DefaultDTO;
 
 /**
  * Default methods to access database.
  *
  * @param <T>
  *            Entity.
+ * @param <Y>
+ *            EntityDTO.
  *
  * @author vmoittie
  */
-public interface IDAO<T> {
+public interface IDAO<T, Y extends DefaultDTO> {
 
     /**
      * Get entity type.
@@ -32,10 +34,8 @@ public interface IDAO<T> {
      * @param entity
      *            Entity to save
      * @return Entity with generated id.
-     * @throws OctoException
-     *             On database error.
      */
-    T save(T entity) throws OctoException;
+    T save(T entity);
 
     /**
      * Load entity by id.
@@ -43,10 +43,8 @@ public interface IDAO<T> {
      * @param id
      *            Id of entity
      * @return Entity loaded
-     * @throws OctoException
-     *             On database error.
      */
-    T loadById(Long id) throws OctoException;
+    T loadById(Long id);
 
     /**
      * Load entity.
@@ -54,10 +52,19 @@ public interface IDAO<T> {
      * @param predicate
      *            Predicate to filter entity.
      * @return Entity.
-     * @throws OctoException
-     *             On database error.
      */
-    T load(BiFunction<CriteriaBuilder, Root<T>, Predicate> predicate) throws OctoException;
+    T load(BiFunction<CriteriaBuilder, Root<T>, Predicate> predicate);
+
+    /**
+     * Get all entity.
+     *
+     * @param entity
+     *            Entity to search.
+     * @param predicateBuilder
+     *            Lambda to construct list of predicate.
+     * @return All entity.
+     */
+    List<T> find(Y entity, BiFunction<CriteriaBuilder, Root<T>, Predicate[]> predicateBuilder);
 
     /**
      * Get all entity.
@@ -65,4 +72,12 @@ public interface IDAO<T> {
      * @return All entity.
      */
     List<T> findAll();
+
+    /**
+     * Delete entity in database.
+     *
+     * @param entity
+     *            Entity to delete.
+     */
+    void delete(T entity);
 }

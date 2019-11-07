@@ -69,4 +69,13 @@ public class ProjectControllerTest extends JerseyTest {
         assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
         assertNotNull(response.getEntity());
     }
+
+    @Test
+    public void testDeleteProject() throws OctoException {
+        Mockito.doNothing().when(this.service).delete(1L);
+        final Response response = this.controller.deleteProject(1L);
+
+        assertNotNull(response);
+        assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
+    }
 }

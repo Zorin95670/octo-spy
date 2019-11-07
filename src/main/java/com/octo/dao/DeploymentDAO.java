@@ -2,6 +2,7 @@ package com.octo.dao;
 
 import org.springframework.stereotype.Repository;
 
+import com.octo.model.dto.common.DefaultDTO;
 import com.octo.model.entity.Deployment;
 
 /**
@@ -11,7 +12,7 @@ import com.octo.model.entity.Deployment;
  *
  */
 @Repository("deploymentDAO")
-public class DeploymentDAO extends CommonDAO<Deployment> {
+public class DeploymentDAO extends CommonDAO<Deployment, DefaultDTO> {
 
     /**
      * Default constructor.

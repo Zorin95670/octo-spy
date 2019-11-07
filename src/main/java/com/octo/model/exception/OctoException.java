@@ -11,7 +11,7 @@ import com.octo.model.error.Error;
  * @author vmoittie
  *
  */
-public class OctoException extends Exception {
+public class OctoException extends RuntimeException {
 
     /**
      * Serial version UID.
@@ -29,6 +29,24 @@ public class OctoException extends Exception {
     /**
      * Create exception with specific status.
      *
+     * @param exception
+     *            The cause.
+     * @param error
+     *            Error type.
+     * @param field
+     *            Field's name.
+     * @param value
+     *            Value.
+     */
+    public OctoException(final Exception exception, final ErrorType error, final String field, final String value) {
+        super(error.getMessage(), exception);
+        this.status = error.getStatus();
+        this.error = new Error(error.getMessage(), field, value, null);
+    }
+
+    /**
+     * Create exception with specific status.
+     *
      * @param error
      *            Error type.
      * @param field
@@ -37,9 +55,7 @@ public class OctoException extends Exception {
      *            Value.
      */
     public OctoException(final ErrorType error, final String field, final String value) {
-        super();
-        this.status = error.getStatus();
-        this.error = new Error(error.getMessage(), field, value, null);
+        this(null, error, field, value);
     }
 
     /**

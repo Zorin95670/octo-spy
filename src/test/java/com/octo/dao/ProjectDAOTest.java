@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.octo.model.dto.common.DefaultDTO;
 import com.octo.model.entity.Project;
 
 @RunWith(SpringRunner.class)
@@ -15,7 +16,7 @@ import com.octo.model.entity.Project;
 public class ProjectDAOTest {
 
     @Autowired
-    private IDAO<Project> projectDAO;
+    private IDAO<Project, DefaultDTO> projectDAO;
 
     @Test
     public void test() {

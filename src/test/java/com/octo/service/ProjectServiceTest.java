@@ -21,7 +21,7 @@ import com.octo.model.exception.OctoException;
 public class ProjectServiceTest {
 
     @Mock
-    IDAO<Project> projectDAO;
+    IDAO<Project, ProjectDTO> projectDAO;
 
     @InjectMocks
     ProjectService service;
@@ -125,5 +125,20 @@ public class ProjectServiceTest {
         assertNull(exception);
         assertNotNull(dto);
 
+    }
+
+    @Test
+    public void testDelete() throws OctoException {
+        Mockito.when(this.projectDAO.loadById(Mockito.any())).thenReturn(new Project());
+        Mockito.doNothing().when(this.projectDAO).delete(Mockito.any());
+
+        OctoException exception = null;
+        try {
+            this.service.delete(1L);
+        } catch (OctoException e) {
+            exception = e;
+        }
+
+        assertNull(exception);
     }
 }

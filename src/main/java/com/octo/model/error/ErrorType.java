@@ -14,6 +14,22 @@ public enum ErrorType {
      */
     BAD_VALUE("Field value is bad.", Status.BAD_REQUEST),
     /**
+     * Error to call when number is bad.
+     */
+    BAD_NUMBER("Bad number.", Status.BAD_REQUEST),
+    /**
+     * Error to call when field value contains a bad filter value.
+     */
+    BAD_DATE_FILTER_VALUE("Field value is not a good filter date.", Status.BAD_REQUEST),
+    /**
+     * Error to call when operator of date filter is bad.
+     */
+    BAD_FILTER_OPERATOR("Field contains a bad operator.", Status.BAD_REQUEST),
+    /**
+     * Error to call when value of filter is bad.
+     */
+    BAD_FILTER_VALUE("Field value is not correct.", Status.BAD_REQUEST),
+    /**
      * Error to call when a field value is empty.
      */
     EMPTY_VALUE("Field value is empty.", Status.BAD_REQUEST),

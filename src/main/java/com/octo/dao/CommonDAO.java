@@ -6,23 +6,26 @@ import java.util.function.BiFunction;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import com.octo.model.exception.OctoException;
+import com.octo.model.dto.common.DefaultDTO;
 
 /**
  * Default database operation.
  *
  * @param <T>
  *            Entity
+ * @param <Y>
+ *            EntityDTO
  *
  * @author vmoittie
  *
  */
-public abstract class CommonDAO<T> implements IDAO<T> {
+public abstract class CommonDAO<T, Y extends DefaultDTO> implements IDAO<T, Y> {
 
     /**
      * Entity manager.
@@ -62,18 +65,18 @@ public abstract class CommonDAO<T> implements IDAO<T> {
      * Save entity in database.
      */
     @Override
-    public T save(final T entity) throws OctoException {
+    public T save(final T entity) {
         this.getEntityManager().persist(entity);
         return entity;
     }
 
     @Override
-    public final T loadById(final Long id) throws OctoException {
+    public final T loadById(final Long id) {
         return this.getEntityManager().find(this.getType(), id);
     }
 
     @Override
-    public final T load(final BiFunction<CriteriaBuilder, Root<T>, Predicate> predicate) throws OctoException {
+    public final T load(final BiFunction<CriteriaBuilder, Root<T>, Predicate> predicate) {
         CriteriaBuilder builder = this.getEntityManager().getCriteriaBuilder();
         CriteriaQuery<T> query = builder.createQuery(getType());
         Root<T> root = query.from(getType());

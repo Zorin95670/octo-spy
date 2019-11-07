@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.octo.dao.IDAO;
+import com.octo.model.dto.common.DefaultDTO;
 import com.octo.model.dto.environment.EnvironmentDTO;
 import com.octo.model.entity.Environment;
 import com.octo.utils.mapper.environment.EnvironmentDTOMapper;
@@ -27,7 +28,7 @@ public class EnvironmentService {
      * Environment's DAO.
      */
     @Autowired
-    private IDAO<Environment> environmentDAO;
+    private IDAO<Environment, DefaultDTO> environmentDAO;
 
     /**
      * Get all environment.

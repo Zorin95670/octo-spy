@@ -7,17 +7,19 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import com.octo.model.exception.OctoException;
+import com.octo.model.dto.common.DefaultDTO;
 
 /**
  * Default methods to access database.
  *
  * @param <T>
  *            Entity.
+ * @param <Y>
+ *            EntityDTO.
  *
  * @author vmoittie
  */
-public interface IDAO<T> {
+public interface IDAO<T, Y extends DefaultDTO> {
 
     /**
      * Get entity type.
@@ -32,10 +34,8 @@ public interface IDAO<T> {
      * @param entity
      *            Entity to save
      * @return Entity with generated id.
-     * @throws OctoException
-     *             On database error.
      */
-    T save(T entity) throws OctoException;
+    T save(T entity);
 
     /**
      * Load entity by id.
@@ -43,10 +43,8 @@ public interface IDAO<T> {
      * @param id
      *            Id of entity
      * @return Entity loaded
-     * @throws OctoException
-     *             On database error.
      */
-    T loadById(Long id) throws OctoException;
+    T loadById(Long id);
 
     /**
      * Load entity.

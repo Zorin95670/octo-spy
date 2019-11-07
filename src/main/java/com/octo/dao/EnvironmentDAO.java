@@ -9,8 +9,8 @@ import javax.persistence.criteria.Root;
 
 import org.springframework.stereotype.Repository;
 
+import com.octo.model.dto.common.DefaultDTO;
 import com.octo.model.entity.Environment;
-import com.octo.model.exception.OctoException;
 
 /**
  * Environment DAO.
@@ -19,7 +19,7 @@ import com.octo.model.exception.OctoException;
  *
  */
 @Repository("environmentDAO")
-public class EnvironmentDAO extends CommonDAO<Environment> {
+public class EnvironmentDAO extends CommonDAO<Environment, DefaultDTO> {
 
     /**
      * Constructor for Environment's DAO.
@@ -29,7 +29,7 @@ public class EnvironmentDAO extends CommonDAO<Environment> {
     }
 
     @Override
-    public final Environment save(final Environment entity) throws OctoException {
+    public final Environment save(final Environment entity) {
         throw new UnsupportedOperationException();
     }
 

@@ -71,4 +71,13 @@ public class DeploymentControllerTest extends JerseyTest {
         assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
         assertNotNull(response.getEntity());
     }
+
+    @Test
+    public void testDeleteDeployment() throws OctoException {
+        Mockito.doNothing().when(this.service).delete(1L);
+        final Response response = this.controller.deleteDeployment(1L);
+
+        assertNotNull(response);
+        assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
+    }
 }

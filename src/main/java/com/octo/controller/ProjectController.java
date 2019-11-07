@@ -1,6 +1,7 @@
 package com.octo.controller;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -16,9 +17,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import com.octo.model.dto.project.NewProjectDTO;
-import com.octo.model.exception.OctoException;
 import com.octo.service.ProjectService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.servers.Server;
 
 /**
@@ -53,7 +57,7 @@ public class ProjectController {
      */
     @GET
     @Path("/{id}")
-    public final Response getProject(@PathParam("id") final Long id) throws OctoException {
+    public final Response getProject(@PathParam("id") final Long id) {
         LOGGER.info("Receive GET request to get project with id {}", id);
         return Response.ok(this.service.loadById(id)).build();
     }
@@ -69,8 +73,28 @@ public class ProjectController {
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public final Response createProject(final NewProjectDTO dto) throws OctoException {
+    public final Response createProject(final NewProjectDTO dto) {
         LOGGER.info("Receive POST request to create project with dto {}", dto);
         return Response.ok(this.service.save(dto)).status(Status.CREATED).build();
+    }
+
+    /**
+     * Delete project in database.
+     *
+     * @param id
+     *            Id of project to search.
+     * @return No content.
+     */
+    @DELETE
+    @Operation(summary = "Delete project in database.",
+            responses = { @ApiResponse(responseCode = "204"), @ApiResponse(responseCode = "404",
+                    content = @Content(mediaType = "application/json", schema = @Schema(allOf = { Error.class })),
+                    description = "Error on unknown project id.") })
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/{id}")
+    public Response deleteProject(@PathParam("id") final Long id) {
+        LOGGER.info("Receive DELETE request to delete project with id {}", id);
+        this.service.delete(id);
+        return Response.noContent().build();
     }
 }

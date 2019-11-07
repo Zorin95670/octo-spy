@@ -52,10 +52,19 @@ public interface IDAO<T, Y extends DefaultDTO> {
      * @param predicate
      *            Predicate to filter entity.
      * @return Entity.
-     * @throws OctoException
-     *             On database error.
      */
-    T load(BiFunction<CriteriaBuilder, Root<T>, Predicate> predicate) throws OctoException;
+    T load(BiFunction<CriteriaBuilder, Root<T>, Predicate> predicate);
+
+    /**
+     * Get all entity.
+     *
+     * @param entity
+     *            Entity to search.
+     * @param predicateBuilder
+     *            Lambda to construct list of predicate.
+     * @return All entity.
+     */
+    List<T> find(Y entity, BiFunction<CriteriaBuilder, Root<T>, Predicate[]> predicateBuilder);
 
     /**
      * Get all entity.
@@ -63,4 +72,12 @@ public interface IDAO<T, Y extends DefaultDTO> {
      * @return All entity.
      */
     List<T> findAll();
+
+    /**
+     * Delete entity in database.
+     *
+     * @param entity
+     *            Entity to delete.
+     */
+    void delete(T entity);
 }

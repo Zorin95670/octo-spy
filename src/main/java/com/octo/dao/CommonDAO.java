@@ -89,11 +89,33 @@ public abstract class CommonDAO<T, Y extends DefaultDTO> implements IDAO<T, Y> {
         }
     }
 
+    @Override
+    public final List<T> find(final Y entity,
+            final BiFunction<CriteriaBuilder, Root<T>, Predicate[]> predicateBuilder) {
+        final CriteriaBuilder builder = this.getEntityManager().getCriteriaBuilder();
+        final CriteriaQuery<T> criteria = builder.createQuery(this.getType());
+        final Root<T> root = criteria.from(this.getType());
+        criteria.select(root);
+
+        if (predicateBuilder != null) {
+            criteria.where(predicateBuilder.apply(builder, root));
+        }
+
+        final TypedQuery<T> query = this.getEntityManager().createQuery(criteria);
+
+        return query.getResultList();
+    }
+
     /**
      * This methods throw an UnsupportedOperationException.
      */
     @Override
     public List<T> findAll() {
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public final void delete(final T entity) {
+        this.getEntityManager().remove(entity);
     }
 }

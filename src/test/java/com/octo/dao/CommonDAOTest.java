@@ -1,9 +1,13 @@
 package com.octo.dao;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import java.util.List;
+
+import javax.persistence.criteria.Predicate;
 import javax.transaction.Transactional;
 
 import org.junit.Test;
@@ -12,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.octo.dao.filter.common.EqualsFilter;
+import com.octo.model.dto.environment.EnvironmentDTO;
 import com.octo.model.entity.Environment;
 import com.octo.model.exception.OctoException;
 
@@ -21,7 +27,7 @@ import com.octo.model.exception.OctoException;
 public class CommonDAOTest {
 
     @Autowired
-    IDAO<Environment> defaultDAO;
+    IDAO<Environment, EnvironmentDTO> defaultDAO;
 
     @Test
     public void testGetType() {
@@ -71,5 +77,35 @@ public class CommonDAOTest {
         });
 
         assertNull(data);
+    }
+
+    @Test
+    public void testDetele() {
+        Environment entity = new Environment();
+        entity.setName("Test delete");
+
+        entity = defaultDAO.save(entity);
+        assertNotNull(entity);
+        assertNotNull(entity.getId());
+        assertEquals("Test delete", entity.getName());
+
+        defaultDAO.delete(entity);
+
+        assertNull(defaultDAO.loadById(entity.getId()));
+    }
+
+    @Test
+    public void testFind() {
+        List<Environment> environments = this.defaultDAO.find(null, null);
+
+        assertNotNull(environments);
+        assertNotEquals(0, environments.size());
+
+        environments = this.defaultDAO.find(new EnvironmentDTO(), (builder, root) -> {
+            return new Predicate[] { new EqualsFilter<Environment>("id", -1L).apply(builder, root) };
+        });
+
+        assertNotNull(environments);
+        assertEquals(0, environments.size());
     }
 }

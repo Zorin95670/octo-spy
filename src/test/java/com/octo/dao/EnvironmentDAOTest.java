@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.octo.model.dto.common.DefaultDTO;
 import com.octo.model.entity.Environment;
 
 @RunWith(SpringRunner.class)
@@ -19,7 +20,7 @@ import com.octo.model.entity.Environment;
 public class EnvironmentDAOTest {
 
     @Autowired
-    private IDAO<Environment> environmentDAO;
+    private IDAO<Environment, DefaultDTO> environmentDAO;
 
     @Test
     public void testFindAll() {

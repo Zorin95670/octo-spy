@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.octo.dao.IDAO;
 import com.octo.dao.filter.common.EqualsFilter;
+import com.octo.dao.filter.deployment.PreviousDeploymentFilter;
+import com.octo.model.dto.common.DefaultDTO;
 import com.octo.model.dto.deployment.DeploymentDTO;
 import com.octo.model.dto.deployment.NewDeploymentDTO;
 import com.octo.model.entity.Deployment;
@@ -31,19 +33,19 @@ public class DeploymentService {
      * Deployment's DAO.
      */
     @Autowired
-    private IDAO<Deployment> deploymentDAO;
+    private IDAO<Deployment, DefaultDTO> deploymentDAO;
 
     /**
      * Environment's DAO.
      */
     @Autowired
-    private IDAO<Environment> environmentDAO;
+    private IDAO<Environment, DefaultDTO> environmentDAO;
 
     /**
      * Project's DAO.
      */
     @Autowired
-    private IDAO<Project> projectDAO;
+    private IDAO<Project, DefaultDTO> projectDAO;
 
     /**
      * Load Deployment by id.
@@ -54,7 +56,7 @@ public class DeploymentService {
      * @throws OctoException
      *             On all database error.
      */
-    public DeploymentDTO loadById(final Long id) throws OctoException {
+    public DeploymentDTO loadById(final Long id) {
         if (id == null) {
             throw new OctoException(ErrorType.EMPTY_VALUE, "id", null);
         }
@@ -77,7 +79,7 @@ public class DeploymentService {
      * @throws OctoException
      *             On all database error.
      */
-    public DeploymentDTO save(final NewDeploymentDTO dto) throws OctoException {
+    public DeploymentDTO save(final NewDeploymentDTO dto) {
         if (dto.getEnvironment() == null) {
             throw new OctoException(ErrorType.EMPTY_VALUE, "environment", null);
         }
@@ -108,9 +110,42 @@ public class DeploymentService {
         Deployment entity = new DeploymentEntityMapper().apply(dto);
         entity.setEnvironment(environment);
         entity.setProject(project);
+        entity.setAlive(dto.isAlive());
+
+        if (entity.isAlive()) {
+            this.disablePreviousDeployment(entity);
+        }
 
         entity = this.deploymentDAO.save(entity);
 
         return new DeploymentDTOMapper().apply(entity);
+    }
+
+    /**
+     * Disable previous deployment.
+     *
+     * @param entity
+     *            Entity to search previous deployment.
+     */
+    public void disablePreviousDeployment(final Deployment entity) {
+        Deployment entityToUpdate = this.deploymentDAO.load(new PreviousDeploymentFilter(entity));
+
+        if (entityToUpdate == null) {
+            return; // No entity to update.
+        }
+
+        entityToUpdate.setAlive(false);
+        this.deploymentDAO.save(entityToUpdate);
+    }
+
+    /**
+     * Delete an deployment.
+     *
+     * @param id
+     *            Id of deployment to update.
+     */
+    public void delete(final Long id) {
+        final Deployment entity = this.deploymentDAO.loadById(id);
+        this.deploymentDAO.delete(entity);
     }
 }

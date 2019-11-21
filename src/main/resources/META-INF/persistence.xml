@@ -6,6 +6,7 @@
 	<persistence-unit name="JPA-OCTO">
 		<class>com.octo.model.entity.Environment</class>
 		<class>com.octo.model.entity.Deployment</class>
+		<class>com.octo.model.entity.DeploymentView</class>
 		<class>com.octo.model.entity.Project</class>
 		<properties>
 			<property name="hibernate.dialect"

@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 
 import com.octo.model.dto.deployment.NewDeploymentDTO;
 import com.octo.service.DeploymentService;
+import com.octo.service.DeploymentViewService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -45,6 +46,24 @@ public class DeploymentController {
      */
     @Autowired
     private DeploymentService service;
+
+    /**
+     * Deployment service.
+     */
+    @Autowired
+    private DeploymentViewService viewService;
+
+    /**
+     * Endpoint to return a last deployments.
+     *
+     * @return Deployments.
+     */
+    @GET
+    @Path("/last")
+    public final Response getLastDeployments() {
+        LOGGER.info("Receive GET request to get last deployment");
+        return Response.ok(this.viewService.find()).build();
+    }
 
     /**
      * Endpoint to return a specific deployment.

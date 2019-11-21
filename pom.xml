@@ -10,6 +10,7 @@
 	<url>http://maven.apache.org</url>
 
 	<properties>
+		<beanutils.version>1.9.4</beanutils.version>
 		<hibernate.version>5.4.4.Final</hibernate.version>
 		<hibernate.entity.version>5.4.8.Final</hibernate.entity.version>
 		<jackson.version>2.10.0</jackson.version>
@@ -170,6 +171,13 @@
 			<groupId>io.swagger.core.v3</groupId>
 			<artifactId>swagger-annotations</artifactId>
 			<version>${swagger.version}</version>
+		</dependency>
+		
+		<!-- Apache -->
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>${beanutils.version}</version>
 		</dependency>
 
 		<!-- Logger -->

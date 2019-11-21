@@ -3,6 +3,9 @@ package com.octo.controller;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -20,8 +23,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.octo.model.dto.deployment.DeploymentDTO;
+import com.octo.model.dto.deployment.LastDeploymentDTO;
 import com.octo.model.exception.OctoException;
 import com.octo.service.DeploymentService;
+import com.octo.service.DeploymentViewService;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(locations = { "classpath:application-context.xml" })
@@ -29,6 +34,9 @@ public class DeploymentControllerTest extends JerseyTest {
 
     @Mock
     DeploymentService service;
+
+    @Mock
+    DeploymentViewService viewService;
 
     @InjectMocks
     DeploymentController controller;
@@ -79,5 +87,17 @@ public class DeploymentControllerTest extends JerseyTest {
 
         assertNotNull(response);
         assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
+    }
+
+    @Test
+    public void testGetLastDeployments() {
+        List<LastDeploymentDTO> expected = new ArrayList<>();
+        Mockito.when(this.viewService.find()).thenReturn(expected);
+        final Response response = this.controller.getLastDeployments();
+
+        assertNotNull(response);
+        assertEquals(Status.OK.getStatusCode(), response.getStatus());
+        assertEquals(expected, response.getEntity());
+
     }
 }

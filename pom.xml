@@ -11,6 +11,7 @@
 
 	<properties>
 		<beanutils.version>1.9.4</beanutils.version>
+		<flyway.version>6.5.7</flyway.version>
 		<hibernate.version>5.4.4.Final</hibernate.version>
 		<hibernate.entity.version>5.4.8.Final</hibernate.entity.version>
 		<jackson.version>2.10.0</jackson.version>
@@ -142,7 +143,12 @@
 			<version>${jboss.transaction}</version>
 		</dependency>
 
-		<!-- PostgreSQL -->
+		<!-- Database -->
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
+			<version>${flyway.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
@@ -172,7 +178,7 @@
 			<artifactId>swagger-annotations</artifactId>
 			<version>${swagger.version}</version>
 		</dependency>
-		
+
 		<!-- Apache -->
 		<dependency>
 			<groupId>commons-beanutils</groupId>
@@ -323,6 +329,24 @@
 						</replacement>
 					</replacements>
 				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.flywaydb</groupId>
+				<artifactId>flyway-maven-plugin</artifactId>
+				<version>${flyway.version}</version>
+				<configuration>
+					<locations>
+						<location>classpath:/db/migration</location>
+					</locations>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.postgresql</groupId>
+						<artifactId>postgresql</artifactId>
+						<version>${postgresql.version}</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 		</plugins>
 		<resources>

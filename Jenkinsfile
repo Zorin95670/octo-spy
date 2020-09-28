@@ -96,41 +96,6 @@ if (env.JOB_NAME.startsWith("releasemb-")) {
             }
         }
     }
-    if (currentBuild.result == "SUCCESS" && SHOULD_PACKAGE) {
-        println("Development version detected, snapshot creation will start.")
-        stretch_dsc_file = jenkinsHelper.generateDebianSourcePackage("snapshot", "stretch")
-        stage('Build and publish for stretch') {
-            jenkinsHelper.buildAndPublishDebianPackage(stretch_dsc_file, "stretch", ["qa-cw"])
-        }
-
-    } else {
-        println("As it is NOT a development version, SNAPSHOT WON'T BE CREATED")
-    }
-} else if (currentBuild.projectName.startsWith("pck-")) {
-    node("stretch") {
-        wrap([$class: "MesosSingleUseSlave"]) {
-            ansiColor('xterm') {
-                sshagent([jenkinsHelper.JENKINS_CREDENTIALS_ID]) {
-                    jenkinsHelper.checkout()
-                    jenkinsHelper.artifactoryBuild()
-                    if (currentBuild.result == null) {
-                        currentBuild.result = "SUCCESS"
-                    }
-                    stage ("Stash everything") {
-                        stash(name: "workspace", useDefaultExcludes: false)
-                    }
-                }
-            }
-        }
-    }
-    if (currentBuild.result == "SUCCESS") {
-        def packageFor = ["qa-cw", "cw"]
-        stretch_dsc_file = jenkinsHelper.generateDebianSourcePackage("build_dsc", "stretch")
-        stage('Build and publish for stretch') {
-             jenkinsHelper.buildAndPublishDebianPackage(stretch_dsc_file, "stretch", packageFor)
-        }
-
-    }
 } else if (currentBuild.projectName.startsWith("pr-")) {
     node("stretch") {
         wrap([$class: "MesosSingleUseSlave"]) {

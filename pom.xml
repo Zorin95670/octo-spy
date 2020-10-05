@@ -11,28 +11,28 @@
 
 	<properties>
 		<beanutils.version>1.9.4</beanutils.version>
-		<flyway.version>6.5.7</flyway.version>
+		<flyway.version>7.0.0</flyway.version>
 		<hibernate.version>5.4.4.Final</hibernate.version>
 		<hibernate.entity.version>5.4.8.Final</hibernate.entity.version>
-		<jackson.version>2.10.0</jackson.version>
+		<jackson.version>2.11.3	</jackson.version>
 		<jacoco-version>0.8.3</jacoco-version>
 		<jakarta.ws.rs.version>2.1.6</jakarta.ws.rs.version>
 		<java.persistence>2.2</java.persistence>
 		<jboss.transaction>1.1.1.Final</jboss.transaction>
 		<jersey.version>2.29.1</jersey.version>
-		<junit.version>4.12</junit.version>
+		<junit.version>4.13</junit.version>
 		<logback.version>1.2.3</logback.version>
 		<maven-dependency-plugin.version>3.1.1</maven-dependency-plugin.version>
 		<maven-war-plugin.version>3.2.2</maven-war-plugin.version>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven.resources.plugin>3.0.1</maven.resources.plugin>
-		<mockito.version>3.1.0</mockito.version>
-		<postgresql.version>42.2.8</postgresql.version>
+		<mockito.version>3.5.13</mockito.version>
+		<postgresql.version>42.2.16</postgresql.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<replacer.version>1.5.3</replacer.version>
-		<spring.version>5.2.1.RELEASE</spring.version>
-		<swagger.version>2.0.10</swagger.version>
+		<spring.version>5.2.9.RELEASE</spring.version>
+		<swagger.version>2.1.5</swagger.version>
 		<swagger-ui.version>3.17.0</swagger-ui.version>
 	</properties>
 

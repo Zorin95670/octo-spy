@@ -35,7 +35,7 @@ public class PreviousDeploymentFilter implements BiFunction<CriteriaBuilder, Roo
     public final Predicate apply(final CriteriaBuilder builder, final Root<Deployment> root) {
         return builder.and(builder.equal(root.get("project"), entity.getProject().getId()),
                 builder.equal(root.get("environment"), entity.getEnvironment().getId()),
-                builder.equal(root.get("alive"), true));
+                builder.equal(root.get("client"), entity.getClient()), builder.equal(root.get("alive"), true));
     }
 
 }

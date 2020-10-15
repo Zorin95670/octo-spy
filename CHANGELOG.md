@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 2020/10/15: Version 1.1.0
+
+### Features
+
+* Add deployment date in last deployment endpoint
+
 ## 2020/10/05: Version 1.0.3
 
 ### Bug fixes

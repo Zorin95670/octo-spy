@@ -1,5 +1,7 @@
 package com.octo.model.entity;
 
+import java.sql.Timestamp;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -41,6 +43,11 @@ public class DeploymentView {
      */
     @Column(name = "client", insertable = false, updatable = false)
     private String client;
+    /**
+     * The creation date of this row.
+     */
+    @Column(name = "insert_date", updatable = false)
+    private Timestamp insertDate;
 
     /**
      * Get deployment id.
@@ -137,4 +144,29 @@ public class DeploymentView {
         this.client = client;
     }
 
+    /**
+     * Get the creation date of this entity.
+     *
+     * @return Creation date.
+     */
+    public Timestamp getInsertDate() {
+        if (this.insertDate == null) {
+            return null;
+        }
+        return Timestamp.valueOf(insertDate.toLocalDateTime());
+    }
+
+    /**
+     * Set the creation date of this entity.
+     *
+     * @param insertDate
+     *            Creation date.
+     */
+    public void setInsertDate(final Timestamp insertDate) {
+        if (insertDate == null) {
+            this.insertDate = null;
+            return;
+        }
+        this.insertDate = Timestamp.valueOf(insertDate.toLocalDateTime());
+    }
 }

@@ -1,5 +1,8 @@
 package com.octo.model.dto.deployment;
 
+import java.sql.Timestamp;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.octo.model.dto.common.DefaultDTO;
 
 /**
@@ -29,6 +32,11 @@ public class LastDeploymentDTO extends DefaultDTO {
      * Client.
      */
     private String client;
+    /**
+     * The creation date of this row.
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Timestamp insertDate;
 
     /**
      * Get id.
@@ -125,4 +133,29 @@ public class LastDeploymentDTO extends DefaultDTO {
         this.client = client;
     }
 
+    /**
+     * Get the creation date of this entity.
+     *
+     * @return Creation date.
+     */
+    public Timestamp getInsertDate() {
+        if (this.insertDate == null) {
+            return null;
+        }
+        return Timestamp.from(insertDate.toInstant());
+    }
+
+    /**
+     * Set the creation date of this entity.
+     *
+     * @param insertDate
+     *            Creation date.
+     */
+    public void setInsertDate(final Timestamp insertDate) {
+        if (insertDate == null) {
+            this.insertDate = null;
+            return;
+        }
+        this.insertDate = Timestamp.from(insertDate.toInstant());
+    }
 }

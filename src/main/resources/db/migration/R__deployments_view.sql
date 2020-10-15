@@ -2,11 +2,12 @@ DROP VIEW IF EXISTS deployments_view;
 
 CREATE OR REPLACE VIEW deployments_view AS
 SELECT
-  deployments.dpl_id  AS "dpl_id",
-  projects.name       AS "project",
-  environments.name   AS "environment",
-  deployments.version AS "version",
-  deployments.client  AS "client"
+  deployments.dpl_id      AS "dpl_id",
+  projects.name           AS "project",
+  environments.name       AS "environment",
+  deployments.version     AS "version",
+  deployments.client      AS "client",
+  deployments.insert_date AS "insert_date"
 FROM
   projects
 LEFT OUTER JOIN (

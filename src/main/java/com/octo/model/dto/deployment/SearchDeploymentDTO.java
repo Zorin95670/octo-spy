@@ -1,46 +1,52 @@
 package com.octo.model.dto.deployment;
 
-import java.sql.Timestamp;
-
-import com.cji.models.common.DefaultDTO;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.cji.utils.predicate.filter.FilterType;
+import com.cji.utils.predicate.filter.FilterType.Type;
+import com.cji.utils.predicate.filter.QueryFilter;
+import com.octo.model.entity.Environment;
+import com.octo.model.entity.Project;
 
 /**
- * Last alive deployment DTO.
+ * DTO to search deployment.
  */
-public class LastDeploymentDTO extends DefaultDTO {
+public class SearchDeploymentDTO extends QueryFilter {
     /**
      * Primary key.
      */
-    private Long id;
+    @FilterType(type = Type.NUMBER)
+    private String id;
     /**
      * Deployment's environment name.
      */
+    @FilterType(type = Type.NUMBER)
     private String environment;
     /**
      * Deployment's project name.
      */
+    @FilterType(type = Type.NUMBER)
     private String project;
     /**
      * Deployed version.
      */
+    @FilterType(type = Type.TEXT)
     private String version;
     /**
      * Client.
      */
+    @FilterType(type = Type.TEXT)
     private String client;
     /**
-     * The creation date of this row.
+     * Is deployment is sill alive.
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Timestamp insertDate;
+    @FilterType(type = Type.BOOLEAN)
+    private String alive;
 
     /**
      * Get id.
      *
      * @return Id.
      */
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
@@ -50,7 +56,7 @@ public class LastDeploymentDTO extends DefaultDTO {
      * @param id
      *            Id.
      */
-    public void setId(final Long id) {
+    public void setId(final String id) {
         this.id = id;
     }
 
@@ -74,6 +80,22 @@ public class LastDeploymentDTO extends DefaultDTO {
     }
 
     /**
+     * Set environment's name.
+     *
+     * @param entity
+     *            Environment entity.
+     */
+    public void setEnvironment(final Environment entity) {
+        String name = null;
+
+        if (entity != null) {
+            name = entity.getName();
+        }
+
+        this.setEnvironment(name);
+    }
+
+    /**
      * Get project's name.
      *
      * @return Project's name.
@@ -90,6 +112,22 @@ public class LastDeploymentDTO extends DefaultDTO {
      */
     public void setProject(final String project) {
         this.project = project;
+    }
+
+    /**
+     * Set project's name.
+     *
+     * @param entity
+     *            Project entity.
+     */
+    public void setProject(final Project entity) {
+        String name = null;
+
+        if (entity != null) {
+            name = entity.getName();
+        }
+
+        this.setProject(name);
     }
 
     /**
@@ -131,28 +169,22 @@ public class LastDeploymentDTO extends DefaultDTO {
     }
 
     /**
-     * Get the creation date of this entity.
+     * Is deployment alive.
      *
-     * @return Creation date.
+     * @return Alive state.
      */
-    public Timestamp getInsertDate() {
-        if (this.insertDate == null) {
-            return null;
-        }
-        return Timestamp.from(insertDate.toInstant());
+    public String getAlive() {
+        return alive;
     }
 
     /**
-     * Set the creation date of this entity.
+     * Set deployement alive state.
      *
-     * @param insertDate
-     *            Creation date.
+     * @param alive
+     *            Alive state.
      */
-    public void setInsertDate(final Timestamp insertDate) {
-        if (insertDate == null) {
-            this.insertDate = null;
-            return;
-        }
-        this.insertDate = Timestamp.from(insertDate.toInstant());
+    public void setAlive(final String alive) {
+        this.alive = alive;
     }
+
 }

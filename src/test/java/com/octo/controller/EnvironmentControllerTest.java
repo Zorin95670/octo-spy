@@ -1,7 +1,6 @@
 package com.octo.controller;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +8,7 @@ import java.util.List;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Response;
 
+import org.glassfish.jersey.internal.inject.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Test;
@@ -38,8 +38,15 @@ public class EnvironmentControllerTest extends JerseyTest {
 
     @Override
     protected Application configure() {
-        MockitoAnnotations.initMocks(this);
-        final ResourceConfig rc = new ResourceConfig(EnvironmentController.class);
+        MockitoAnnotations.openMocks(this);
+        final ResourceConfig rc = new ResourceConfig().register(EnvironmentController.class)
+                .register(new AbstractBinder() {
+                    @Override
+                    protected void configure() {
+                        this.bind(EnvironmentControllerTest.this.controller).to(EnvironmentController.class);
+                    }
+                });
+        ;
 
         rc.property("contextConfigLocation", "classpath:application-context.xml");
 
@@ -55,6 +62,6 @@ public class EnvironmentControllerTest extends JerseyTest {
 
         assertEquals(HttpStatus.OK.value(), response.getStatus());
         ArrayNode array = response.readEntity(ArrayNode.class);
-        assertNotEquals(1, array.size());
+        assertEquals(1, array.size());
     }
 }

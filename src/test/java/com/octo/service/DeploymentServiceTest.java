@@ -5,6 +5,10 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -12,91 +16,52 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import com.octo.dao.IDAO;
+import com.cji.dao.IDAO;
+import com.cji.models.error.ErrorType;
+import com.cji.models.error.GlobalException;
+import com.cji.utils.predicate.filter.QueryFilter;
 import com.octo.model.dto.deployment.DeploymentDTO;
 import com.octo.model.dto.deployment.NewDeploymentDTO;
-import com.octo.model.dto.environment.EnvironmentDTO;
-import com.octo.model.dto.project.ProjectDTO;
 import com.octo.model.entity.Deployment;
 import com.octo.model.entity.Environment;
 import com.octo.model.entity.Project;
-import com.octo.model.error.ErrorType;
-import com.octo.model.exception.OctoException;
 
 public class DeploymentServiceTest {
 
     @Mock
-    IDAO<Environment, EnvironmentDTO> environmentDAO;
+    IDAO<Environment, QueryFilter> environmentDAO;
 
     @Mock
-    IDAO<Deployment, DeploymentDTO> deploymentDAO;
+    IDAO<Deployment, QueryFilter> deploymentDAO;
 
     @Mock
-    IDAO<Project, ProjectDTO> projectDAO;
+    IDAO<Project, QueryFilter> projectDAO;
 
     @InjectMocks
     DeploymentService service;
 
     @Before
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    public void testLoadById() throws OctoException {
-        // Test null ID
-        OctoException exception = null;
-
-        try {
-            service.loadById(null);
-        } catch (OctoException e) {
-            exception = e;
-        }
-
-        assertNotNull(exception);
-        assertNotNull(exception.getError());
-        assertEquals(ErrorType.EMPTY_VALUE.getMessage(), exception.getError().getMessage());
-        assertEquals("id", exception.getError().getField());
-        assertNull(exception.getError().getValue());
-
-        // Test unknow ID
-        Mockito.when(this.deploymentDAO.loadById(Long.valueOf(1L))).thenReturn(null);
-        exception = null;
-
-        try {
-            service.loadById(Long.valueOf(1L));
-        } catch (OctoException e) {
-            exception = e;
-        }
-
-        assertNotNull(exception);
-        assertNotNull(exception.getError());
-        assertEquals(ErrorType.ENTITY_NOT_FOUND.getMessage(), exception.getError().getMessage());
-        assertEquals("id", exception.getError().getField());
-        assertEquals(Long.valueOf(1L).toString(), exception.getError().getValue());
-
-        // Test valid ID
-        Mockito.when(this.deploymentDAO.loadById(Long.valueOf(2L))).thenReturn(new Deployment());
-        exception = null;
-        DeploymentDTO dto = null;
-        try {
-            dto = service.loadById(Long.valueOf(2L));
-        } catch (OctoException e) {
-            exception = e;
-        }
-        assertNull(exception);
-        assertNotNull(dto);
+    public void testLoad() {
+        Mockito.when(this.deploymentDAO.loadEntityById(Mockito.any())).thenReturn(new Deployment());
+        assertNotNull(service.load(1L));
     }
 
     @Test
-    public void testSave() throws OctoException {
+    public void testSave() {
         // Test null environment
-        OctoException exception = null;
+        GlobalException exception = null;
         NewDeploymentDTO input = new NewDeploymentDTO();
+        Mockito.when(this.environmentDAO.load(Mockito.any())).thenReturn(Optional.empty());
+        Mockito.when(this.projectDAO.load(Mockito.any())).thenReturn(Optional.empty());
 
         try {
             service.save(input);
-        } catch (OctoException e) {
+        } catch (GlobalException e) {
             exception = e;
         }
 
@@ -112,7 +77,7 @@ public class DeploymentServiceTest {
 
         try {
             service.save(input);
-        } catch (OctoException e) {
+        } catch (GlobalException e) {
             exception = e;
         }
 
@@ -129,7 +94,7 @@ public class DeploymentServiceTest {
 
         try {
             service.save(input);
-        } catch (OctoException e) {
+        } catch (GlobalException e) {
             exception = e;
         }
 
@@ -145,7 +110,7 @@ public class DeploymentServiceTest {
 
         try {
             service.save(input);
-        } catch (OctoException e) {
+        } catch (GlobalException e) {
             exception = e;
         }
 
@@ -155,46 +120,6 @@ public class DeploymentServiceTest {
         assertEquals("version", exception.getError().getField());
         assertNull(exception.getError().getValue());
 
-        // Test bad environment
-        exception = null;
-        input.setEnvironment("bad");
-        input.setVersion("version");
-
-        Mockito.when(this.environmentDAO.load(Mockito.any())).thenReturn(null);
-
-        try {
-            service.save(input);
-        } catch (OctoException e) {
-            exception = e;
-        }
-
-        assertNotNull(exception);
-        assertNotNull(exception.getError());
-        assertEquals(ErrorType.BAD_VALUE.getMessage(), exception.getError().getMessage());
-        assertEquals("environment", exception.getError().getField());
-        assertEquals("bad", exception.getError().getValue());
-
-        // Test bad project
-        exception = null;
-        input.setEnvironment("environment");
-        input.setVersion("version");
-        input.setProject("bad");
-
-        Mockito.when(this.environmentDAO.load(Mockito.any())).thenReturn(new Environment());
-        Mockito.when(this.projectDAO.load(Mockito.any())).thenReturn(null);
-
-        try {
-            service.save(input);
-        } catch (OctoException e) {
-            exception = e;
-        }
-
-        assertNotNull(exception);
-        assertNotNull(exception.getError());
-        assertEquals(ErrorType.BAD_VALUE.getMessage(), exception.getError().getMessage());
-        assertEquals("project", exception.getError().getField());
-        assertEquals("bad", exception.getError().getValue());
-
         // Test all good
         exception = null;
         input.setClient("client");
@@ -202,19 +127,42 @@ public class DeploymentServiceTest {
         input.setVersion("version");
         input.setProject("project");
 
-        Mockito.when(this.environmentDAO.load(Mockito.any())).thenReturn(new Environment());
-        Mockito.when(this.deploymentDAO.save(Mockito.any())).thenReturn(new Deployment());
-        Mockito.when(this.projectDAO.load(Mockito.any())).thenReturn(new Project());
+        Environment environment = new Environment();
+        environment.setId(1L);
+        environment.setName("QA");
+        Project project = new Project();
+        project.setId(1L);
+        project.setName("project");
+        Deployment deployment = new Deployment();
+        deployment.setAlive(true);
+        deployment.setClient("client");
+        deployment.setEnvironment(environment);
+        deployment.setProject(project);
+        Mockito.when(this.deploymentDAO.save(Mockito.any())).thenReturn(deployment);
         DeploymentDTO dto = null;
 
         try {
             dto = service.save(input);
-        } catch (OctoException e) {
+        } catch (GlobalException e) {
             exception = e;
         }
 
-        assertNull(exception);
-        assertNotNull(dto);
+        assertNotNull(exception);
+        assertNotNull(exception.getError());
+        assertEquals(ErrorType.ENTITY_NOT_FOUND.getMessage(), exception.getError().getMessage());
+        assertEquals("environment", exception.getError().getField());
+        Mockito.when(this.environmentDAO.load(Mockito.any())).thenReturn(Optional.of(environment));
+
+        try {
+            dto = service.save(input);
+        } catch (GlobalException e) {
+            exception = e;
+        }
+
+        assertNotNull(exception);
+        assertNotNull(exception.getError());
+        assertEquals(ErrorType.ENTITY_NOT_FOUND.getMessage(), exception.getError().getMessage());
+        assertEquals("project", exception.getError().getField());
 
         // Test all good and disable previous deployment
         exception = null;
@@ -224,15 +172,25 @@ public class DeploymentServiceTest {
         input.setProject("project");
         input.setAlive(true);
 
-        Mockito.when(this.environmentDAO.load(Mockito.any())).thenReturn(new Environment());
+        Mockito.when(this.environmentDAO.load(Mockito.any())).thenReturn(Optional.of(environment));
+        Mockito.when(this.projectDAO.load(Mockito.any())).thenReturn(Optional.of(project));
         Mockito.when(this.deploymentDAO.save(Mockito.any())).thenReturn(new Deployment());
-        Mockito.when(this.deploymentDAO.load(Mockito.any())).thenReturn(null);
-        Mockito.when(this.projectDAO.load(Mockito.any())).thenReturn(new Project());
+        Mockito.when(this.deploymentDAO.loadById(Mockito.any())).thenReturn(null);
         dto = null;
 
         try {
             dto = service.save(input);
-        } catch (OctoException e) {
+        } catch (GlobalException e) {
+            exception = e;
+        }
+
+        assertNull(exception);
+        assertNotNull(dto);
+
+        input.setAlive(false);
+        try {
+            dto = service.save(input);
+        } catch (GlobalException e) {
             exception = e;
         }
 
@@ -241,7 +199,7 @@ public class DeploymentServiceTest {
     }
 
     @Test
-    public void testDisablePreviousDeployment() throws OctoException {
+    public void testDisablePreviousDeployment() {
         Project project = new Project();
         project.setId(1L);
 
@@ -253,24 +211,26 @@ public class DeploymentServiceTest {
         deployment.setEnvironment(environment);
 
         // Test no entity to disable
-        OctoException exception = null;
+        GlobalException exception = null;
         try {
-            Mockito.when(this.deploymentDAO.load(Mockito.any())).thenReturn(null);
+            Mockito.when(this.deploymentDAO.find(Mockito.any())).thenReturn(new ArrayList<>());
             this.service.disablePreviousDeployment(deployment);
-        } catch (OctoException e) {
+        } catch (GlobalException e) {
             exception = e;
         }
 
         // Test entity to disable
         Deployment entityToUpdate = new Deployment();
-        entityToUpdate.setAlive(true);
+        entityToUpdate.setAlive(false);
         assertNull(exception);
         exception = null;
         try {
-            Mockito.when(this.deploymentDAO.load(Mockito.any())).thenReturn(entityToUpdate);
+            List<Deployment> list = new ArrayList<>();
+            list.add(entityToUpdate);
+            Mockito.when(this.deploymentDAO.find(Mockito.any())).thenReturn(list);
             Mockito.when(this.deploymentDAO.save(Mockito.any())).thenReturn(null);
             this.service.disablePreviousDeployment(deployment);
-        } catch (OctoException e) {
+        } catch (GlobalException e) {
             exception = e;
         }
 
@@ -279,14 +239,14 @@ public class DeploymentServiceTest {
     }
 
     @Test
-    public void testDelete() throws OctoException {
+    public void testDelete() {
         Mockito.when(this.deploymentDAO.loadById(Mockito.any())).thenReturn(new Deployment());
         Mockito.doNothing().when(this.deploymentDAO).delete(Mockito.any());
 
-        OctoException exception = null;
+        GlobalException exception = null;
         try {
             this.service.delete(1L);
-        } catch (OctoException e) {
+        } catch (GlobalException e) {
             exception = e;
         }
 

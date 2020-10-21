@@ -8,17 +8,14 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.octo.dao.IDAO;
-import com.octo.model.dto.common.DefaultDTO;
+import com.cji.dao.IDAO;
+import com.cji.utils.bean.BeanMapper;
+import com.cji.utils.predicate.filter.QueryFilter;
 import com.octo.model.dto.deployment.LastDeploymentDTO;
 import com.octo.model.entity.DeploymentView;
-import com.octo.utils.mapper.BeanMapper;
 
 /**
  * Deployment service.
- *
- * @author vmoittie
- *
  */
 @Service
 @Transactional
@@ -28,7 +25,7 @@ public class DeploymentViewService {
      * Deployment's DAO.
      */
     @Autowired
-    private IDAO<DeploymentView, DefaultDTO> deploymentViewDAO;
+    private IDAO<DeploymentView, QueryFilter> deploymentViewDAO;
 
     /**
      * find last deployments.
@@ -36,9 +33,8 @@ public class DeploymentViewService {
      * @return deployments.
      */
     public List<LastDeploymentDTO> find() {
-        List<DeploymentView> entities = this.deploymentViewDAO.findAll();
+        List<DeploymentView> entities = this.deploymentViewDAO.find(null, true);
 
-        return entities.stream().map(new BeanMapper<DeploymentView, LastDeploymentDTO>(LastDeploymentDTO.class))
-                .collect(Collectors.toList());
+        return entities.stream().map(new BeanMapper<>(LastDeploymentDTO.class)).collect(Collectors.toList());
     }
 }

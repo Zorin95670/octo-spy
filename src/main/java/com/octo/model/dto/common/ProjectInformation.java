@@ -1,10 +1,9 @@
 package com.octo.model.dto.common;
 
+import com.cji.models.common.DefaultDTO;
+
 /**
  * All project's information.
- *
- * @author vmoittie
- *
  */
 public class ProjectInformation extends DefaultDTO {
 

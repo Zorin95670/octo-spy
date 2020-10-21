@@ -7,15 +7,15 @@ import javax.ws.rs.core.Response;
 
 import org.junit.Test;
 
-import com.octo.model.error.ErrorType;
-import com.octo.model.exception.OctoException;
+import com.cji.models.error.ErrorType;
+import com.cji.models.error.GlobalException;
 
-public class OctoExceptionHandlerTest {
+public class GlobalExceptionHandlerTest {
 
     @Test
     public void toResponseTest() {
-        final OctoExceptionHandler handler = new OctoExceptionHandler();
-        OctoException exception = new OctoException(ErrorType.BAD_VALUE, null, null);
+        final GlobalExceptionHandler handler = new GlobalExceptionHandler();
+        GlobalException exception = new GlobalException(ErrorType.WRONG_VALUE, null, null);
 
         final Response response = handler.toResponse(exception);
         assertNotNull(response);

@@ -7,14 +7,11 @@ import javax.ws.rs.ext.ExceptionMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.octo.model.error.Error;
-import com.octo.model.error.ErrorType;
+import com.cji.models.error.ErrorDTO;
+import com.cji.models.error.ErrorType;
 
 /**
  * Handle all uncaught exception and send appropriate response.
- *
- * @author vmoittie
- *
  */
 public class UncaughtExceptionHandler implements ExceptionMapper<Throwable> {
 
@@ -24,7 +21,7 @@ public class UncaughtExceptionHandler implements ExceptionMapper<Throwable> {
     @Override
     public final Response toResponse(final Throwable exception) {
         LOGGER.error("Uncatch error", exception);
-        final Error error = new Error(ErrorType.INTERNAL_ERROR.getMessage(), null, null, exception);
+        final ErrorDTO error = new ErrorDTO(ErrorType.INTERNAL_ERROR.getMessage(), null, null, exception);
 
         return Response.status(ErrorType.INTERNAL_ERROR.getStatus()).entity(error).type(MediaType.APPLICATION_JSON)
                 .build();

@@ -8,7 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.octo.model.dto.common.DefaultDTO;
+import com.cji.dao.IDAO;
+import com.cji.utils.predicate.filter.QueryFilter;
 import com.octo.model.entity.Deployment;
 
 @RunWith(SpringRunner.class)
@@ -16,7 +17,7 @@ import com.octo.model.entity.Deployment;
 public class DeploymentDAOTest {
 
     @Autowired
-    private IDAO<Deployment, DefaultDTO> deploymentDAO;
+    private IDAO<Deployment, QueryFilter> deploymentDAO;
 
     @Test
     public void test() {

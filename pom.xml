@@ -11,6 +11,7 @@
 
 	<properties>
 		<beanutils.version>1.9.4</beanutils.version>
+		<cji-lib.version>1.0.0-SNAPSHOT</cji-lib.version>
 		<flyway.version>7.0.0</flyway.version>
 		<hibernate.version>5.4.4.Final</hibernate.version>
 		<hibernate.entity.version>5.4.8.Final</hibernate.entity.version>
@@ -37,6 +38,12 @@
 	</properties>
 
 	<dependencies>
+		<!-- CJI-lib -->
+		<dependency>
+			<groupId>com.cji</groupId>
+			<artifactId>CJI-lib</artifactId>
+			<version>${cji-lib.version}</version>
+		</dependency>
 		<!-- Java API for RESTful Web Services -->
 		<dependency>
 			<groupId>jakarta.ws.rs</groupId>

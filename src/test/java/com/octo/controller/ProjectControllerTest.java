@@ -21,7 +21,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.octo.model.dto.project.NewProjectDTO;
 import com.octo.model.dto.project.ProjectDTO;
-import com.octo.model.exception.OctoException;
 import com.octo.service.ProjectService;
 
 @RunWith(SpringRunner.class)
@@ -36,7 +35,7 @@ public class ProjectControllerTest extends JerseyTest {
 
     @Override
     protected Application configure() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         final ResourceConfig rc = new ResourceConfig().register(ProjectController.class).register(new AbstractBinder() {
             @Override
             protected void configure() {
@@ -51,8 +50,8 @@ public class ProjectControllerTest extends JerseyTest {
     }
 
     @Test
-    public void testGetProject() throws OctoException {
-        Mockito.when(this.service.loadById(1L)).thenReturn(new ProjectDTO());
+    public void testGetProject() {
+        Mockito.when(this.service.load(1L)).thenReturn(new ProjectDTO());
         final Response response = this.controller.getProject(1L);
 
         assertNotNull(response);
@@ -61,7 +60,7 @@ public class ProjectControllerTest extends JerseyTest {
     }
 
     @Test
-    public void testCreateProject() throws OctoException {
+    public void testCreateProject() {
         Mockito.when(this.service.save(Mockito.any())).thenReturn(new ProjectDTO());
         final Response response = this.controller.createProject(new NewProjectDTO());
 
@@ -71,7 +70,7 @@ public class ProjectControllerTest extends JerseyTest {
     }
 
     @Test
-    public void testDeleteProject() throws OctoException {
+    public void testDeleteProject() {
         Mockito.doNothing().when(this.service).delete(1L);
         final Response response = this.controller.deleteProject(1L);
 

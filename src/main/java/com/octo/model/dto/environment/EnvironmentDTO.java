@@ -1,14 +1,11 @@
 package com.octo.model.dto.environment;
 
-import com.octo.model.dto.common.DefaultDTO;
+import com.cji.models.common.DefaultDTO;
 
 import io.swagger.v3.oas.annotations.Parameter;
 
 /**
  * Default Environment DTO.
- *
- * @author vmoittie
- *
  */
 public class EnvironmentDTO extends DefaultDTO {
 

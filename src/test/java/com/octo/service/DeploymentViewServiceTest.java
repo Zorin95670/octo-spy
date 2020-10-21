@@ -1,6 +1,5 @@
 package com.octo.service;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.ArrayList;
@@ -13,32 +12,28 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import com.octo.dao.IDAO;
-import com.octo.model.dto.deployment.LastDeploymentDTO;
+import com.cji.dao.IDAO;
+import com.cji.utils.predicate.filter.QueryFilter;
 import com.octo.model.entity.DeploymentView;
 
 public class DeploymentViewServiceTest {
 
     @Mock
-    IDAO<DeploymentView, LastDeploymentDTO> deploymentViewDAO;
+    IDAO<DeploymentView, QueryFilter> deploymentViewDAO;
 
     @InjectMocks
     DeploymentViewService service;
 
     @Before
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    public void testFind() {
-
-        Mockito.when(this.deploymentViewDAO.findAll()).thenReturn(new ArrayList<DeploymentView>());
-
-        List<LastDeploymentDTO> result = service.find();
-
-        assertNotNull(result);
-        assertEquals(0, result.size());
+    public void testFindAll() {
+        List<DeploymentView> list = new ArrayList<>();
+        Mockito.when(this.deploymentViewDAO.find(Mockito.any(), Mockito.any())).thenReturn(list);
+        assertNotNull(service.find());
     }
 
 }

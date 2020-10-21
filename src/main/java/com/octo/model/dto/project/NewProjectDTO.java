@@ -1,12 +1,9 @@
 package com.octo.model.dto.project;
 
-import com.octo.model.dto.common.DefaultDTO;
+import com.cji.models.common.DefaultDTO;
 
 /**
  * Create project DTO.
- *
- * @author vmoittie
- *
  */
 public class NewProjectDTO extends DefaultDTO {
 

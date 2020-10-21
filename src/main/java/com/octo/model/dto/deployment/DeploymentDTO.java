@@ -2,16 +2,13 @@ package com.octo.model.dto.deployment;
 
 import java.sql.Timestamp;
 
+import com.cji.models.common.DefaultDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.octo.model.dto.common.DefaultDTO;
 import com.octo.model.entity.Environment;
 import com.octo.model.entity.Project;
 
 /**
  * Default deployment DTO.
- *
- * @author vmoittie
- *
  */
 public class DeploymentDTO extends DefaultDTO {
     /**

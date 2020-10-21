@@ -17,9 +17,6 @@ import com.octo.utils.Constants;
 
 /**
  * Project model.
- *
- * @author vmoittie
- *
  */
 @Entity
 @Table(name = "projects")

@@ -13,5 +13,4 @@ docker run -p 5432:5432 --rm -ti --name postgres -e POSTGRES_PASSWORD=password -
 
 - Execute this maven command to initialize database
 
-mvn compile && mvn flyway:migrate
-
+mvn compile && mvn flyway:migrate -Dflyway.url=jdbc:postgresql://localhost:5432/octo_db -Dflyway.user=octo -Dflyway.password=password

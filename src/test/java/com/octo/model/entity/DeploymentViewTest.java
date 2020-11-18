@@ -35,7 +35,7 @@ public class DeploymentViewTest {
         assertEquals("project", dto.getProject());
         assertEquals("version", dto.getVersion());
         assertEquals(time, dto.getInsertDate());
-        
+
         dto.setInsertDate(null);
         assertNull(dto.getInsertDate());
     }

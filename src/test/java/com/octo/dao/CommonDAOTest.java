@@ -67,11 +67,11 @@ public class CommonDAOTest {
 
         // Test load by criteria
         data = defaultDAO.load((builder, root) -> {
-            return builder.equal(root.get("name"), "QA");
+            return builder.equal(root.get("name"), "Test");
         });
         assertNotNull(data);
         assertNotNull(data.getId());
-        assertEquals("QA", data.getName());
+        assertEquals("Test", data.getName());
         data = defaultDAO.load((builder, root) -> {
             return builder.equal(root.get("name"), "bad");
         });

@@ -17,23 +17,45 @@ def prepareDB() {
             export TS=\$(date +%s)
             export DBNAME=test_octo_db_\${TS}_${BUILD_NUMBER}
             export DBUSER=test_octo_user_\${TS}_${BUILD_NUMBER}
-            sed -i "s/octo_db/\${DBNAME}/g" ./octo-db/scripts/*
-            sed -i -E "/_locks/!s/ octo/ \${DBUSER}/g" ./octo-db/scripts/*
-            sed -i -E "/_locks/!s/ octo;/ \${DBUSER}/g" ./octo-db/scripts/*
 
-            sed -i "s/octo_db/\${DBNAME}/g ; s/localhost/4tests.ci.c4m.qa.arkena.com/g; s/username=.*/username=\${DBUSER}/g; s/password=.*/password=password/g" ./src/test/resources/application.properties
-            sed -i "s/octo_db/\${DBNAME}/g ; s/localhost/4tests.ci.c4m.qa.arkena.com/g; s/:octo}/:\${DBUSER}}/g;" ./src/test/resources/application-context.xml
+            echo "CREATE DATABASE \${DBNAME} ENCODING = 'UTF8';" > jenkins_init.sql
+            echo "CREATE USER \${DBUSER} WITH ENCRYPTED PASSWORD 'password';" >> jenkins_init.sql
+            echo "GRANT CONNECT ON DATABASE \${DBNAME} TO \${DBUSER};" >> jenkins_init.sql
+            echo "GRANT USAGE ON SCHEMA public TO \${DBUSER};" >> jenkins_init.sql
+            echo "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO \${DBUSER};" >> jenkins_init.sql
+            echo "GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO \${DBUSER};" >> jenkins_init.sql
 
-            psql -h 4tests.ci.c4m.qa.arkena.com -U postgres \$(find ./octo-db/scripts/ -name "*.sql"  ! -name "*clean*.sql" -print | sort -n | sed  's/\\.\\//-f /')
+            echo "DROP DATABASE IF EXISTS \${DBNAME};" > jenkins_clean.sql
+            echo "DROP OWNED BY \${DBUSER};" >> jenkins_clean.sql
+            echo "DROP ROLE \${DBUSER};" >> jenkins_clean.sql
+
+            echo "flyway.url=jdbc:postgresql://4tests.common.qa.tvvideoms.com:5432/\${DBNAME}" > flyway.conf
+            echo "flyway.user=\${DBUSER}" >> flyway.conf
+            echo "flyway.password=password" >> flyway.conf
+
+
+
+            sed -i "s/octo_db/\${DBNAME}/g ; s/octo;/\${DBUSER};/g;" ./src/main/resources/db/**/*
+            sed -i "s/octo_db/\${DBNAME}/g ; s/localhost/4tests.common.qa.tvvideoms.com/g; s/:octo}/:\${DBUSER}}/g;" ./src/test/resources/application-context.xml
+
+            psql -h 4tests.common.qa.tvvideoms.com -U postgres -f ./jenkins_init.sql
         """)
     }
 }
 
-def cleanDB() {
-    stage("Clean DB") {
-        sh("""
-            psql -h 4tests.ci.c4m.qa.arkena.com -U postgres \$(find ./octo-db/scripts/ -name "*clean*.sql" -print | sort -n | sed  's/\\.\\//-f /')
-        """)
+def build(jenkinsHelper) {
+    stage("Build") {
+        withMaven(maven: "maven", jdk: jenkinsHelper.getJavaFromPom(), mavenOpts: "-XX:MaxPermSize=512m") {
+            MVN_VERSION = jenkinsHelper.getMvnVersion()
+            sh("""
+              mvn compile
+              mvn flyway:clean -Dflyway.configFiles=./flyway.conf
+              mvn flyway:migrate -Dflyway.configFiles=./flyway.conf
+              mvn clean install
+              mvn flyway:clean -Dflyway.configFiles=./flyway.conf
+              psql -h 4tests.common.qa.tvvideoms.com -U postgres -f ./jenkins_clean.sql
+            """)
+        }
     }
 }
 
@@ -43,43 +65,11 @@ if (env.JOB_NAME.startsWith("releasemb-")) {
             wrap([$class: "MesosSingleUseSlave"]) {
                 jenkinsHelper.checkout(true, "postgresql-client")
 
-                checkout([
-                    $class: "GitSCM",
-                    branches: [[name: "master"]],
-                    doGenerateSubmoduleConfigurations: false,
-                    extensions: [
-                        [
-                            $class: "RelativeTargetDirectory",
-                            relativeTargetDir: "octo-db"
-                        ],
-                        [
-                            $class: "SubmoduleOption",
-                            disableSubmodules: false,
-                            parentCredentials: true,
-                            recursiveSubmodules: true,
-                            reference: "",
-                            trackingSubmodules: false
-                        ]
-                    ],
-                    submoduleCfg: [],
-                    userRemoteConfigs: [[
-                        credentialsId: jenkinsHelper.JENKINS_CREDENTIALS_ID,
-                        url: "git@git.arkena.net:vmoittie/octo-db.git"
-                    ]]
-                ])
-
                 PKG_VERSION = sh(returnStdout: true, script: "echo -n \$(dpkg-parsechangelog -S Version)")
 
                 prepareDB()
 
-                stage("Build") {
-                    withMaven(maven: "maven", jdk: jenkinsHelper.getJavaFromPom(), mavenOpts: "-XX:MaxPermSize=512m") {
-                        MVN_VERSION = jenkinsHelper.getMvnVersion()
-                        sh("mvn clean install")
-                    }
-                }
-
-                cleanDB()
+                build(jenkinsHelper)
 
                 SHOULD_PACKAGE = env.BRANCH_NAME == "master" && PKG_VERSION.contains("~dev") && MVN_VERSION.endsWith("SNAPSHOT") && isNotTriggeredByTimer
                 jenkinsHelper.sonarAnalysis()
@@ -102,40 +92,9 @@ if (env.JOB_NAME.startsWith("releasemb-")) {
             ansiColor("xterm") {
                 jenkinsHelper.checkout(true, "postgresql-client")
 
-                checkout([
-                    $class: "GitSCM",
-                    branches: [[name: "master"]],
-                    doGenerateSubmoduleConfigurations: false,
-                    extensions: [
-                        [
-                            $class: "RelativeTargetDirectory",
-                            relativeTargetDir: "octo-db"
-                        ],
-                        [
-                            $class: "SubmoduleOption",
-                            disableSubmodules: false,
-                            parentCredentials: true,
-                            recursiveSubmodules: true,
-                            reference: "",
-                            trackingSubmodules: false
-                        ]
-                    ],
-                    submoduleCfg: [],
-                    userRemoteConfigs: [[
-                        credentialsId: jenkinsHelper.JENKINS_CREDENTIALS_ID,
-                        url: "git@git.arkena.net:vmoittie/octo-db.git"
-                    ]]
-                ])
-
                 prepareDB()
 
-                stage("Build") {
-                    withMaven(maven: "maven", jdk: jenkinsHelper.getJavaFromPom(), mavenOpts: "-XX:MaxPermSize=512m") {
-                        sh("mvn clean install")
-                    }
-                }
-
-                cleanDB()
+                build(jenkinsHelper)
 
                 jenkinsHelper.sonarMergeRequestAnalysis()
                 stage("Results") {

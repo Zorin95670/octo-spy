@@ -9,9 +9,6 @@ import javax.persistence.Table;
 
 /**
  * Deployment view entity.
- *
- * @author vmoittie
- *
  */
 @Entity
 @Table(name = "deployments_view")

@@ -59,7 +59,7 @@ public class ProjectController {
     @Path("/{id}")
     public final Response getProject(@PathParam("id") final Long id) {
         LOGGER.info("Receive GET request to get project with id {}", id);
-        return Response.ok(this.service.loadById(id)).build();
+        return Response.ok(this.service.load(id)).build();
     }
 
     /**

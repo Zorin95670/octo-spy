@@ -8,22 +8,19 @@ import javax.ws.rs.ext.Provider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.octo.model.exception.OctoException;
+import com.cji.models.error.GlobalException;
 
 /**
- * Handle octo exception and send appropriate response.
- *
- * @author vmoittie
- *
+ * Handle global exception and send appropriate response. *
  */
 @Provider
-public class OctoExceptionHandler implements ExceptionMapper<OctoException> {
+public class GlobalExceptionHandler implements ExceptionMapper<GlobalException> {
 
     /** Logger. **/
-    private static final Logger LOGGER = LoggerFactory.getLogger(OctoExceptionHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @Override
-    public final Response toResponse(final OctoException exception) {
+    public final Response toResponse(final GlobalException exception) {
         LOGGER.error("General error", exception);
         return Response.status(exception.getStatus()).entity(exception.getError()).type(MediaType.APPLICATION_JSON)
                 .build();

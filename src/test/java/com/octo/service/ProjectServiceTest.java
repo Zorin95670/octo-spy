@@ -11,80 +11,41 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import com.octo.dao.IDAO;
+import com.cji.dao.IDAO;
+import com.cji.models.error.ErrorType;
+import com.cji.models.error.GlobalException;
+import com.cji.utils.predicate.filter.QueryFilter;
 import com.octo.model.dto.project.NewProjectDTO;
 import com.octo.model.dto.project.ProjectDTO;
 import com.octo.model.entity.Project;
-import com.octo.model.error.ErrorType;
-import com.octo.model.exception.OctoException;
 
 public class ProjectServiceTest {
 
     @Mock
-    IDAO<Project, ProjectDTO> projectDAO;
+    IDAO<Project, QueryFilter> projectDAO;
 
     @InjectMocks
     ProjectService service;
 
     @Before
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    public void testLoadById() throws OctoException {
-        // Test null ID
-        OctoException exception = null;
-
-        try {
-            service.loadById(null);
-        } catch (OctoException e) {
-            exception = e;
-        }
-
-        assertNotNull(exception);
-        assertNotNull(exception.getError());
-        assertEquals(ErrorType.EMPTY_VALUE.getMessage(), exception.getError().getMessage());
-        assertEquals("id", exception.getError().getField());
-        assertNull(exception.getError().getValue());
-
-        // Test unknow ID
-        Mockito.when(this.projectDAO.loadById(Long.valueOf(1L))).thenReturn(null);
-        exception = null;
-
-        try {
-            service.loadById(Long.valueOf(1L));
-        } catch (OctoException e) {
-            exception = e;
-        }
-
-        assertNotNull(exception);
-        assertNotNull(exception.getError());
-        assertEquals(ErrorType.ENTITY_NOT_FOUND.getMessage(), exception.getError().getMessage());
-        assertEquals("id", exception.getError().getField());
-        assertEquals(Long.valueOf(1L).toString(), exception.getError().getValue());
-
-        // Test valid ID
-        Mockito.when(this.projectDAO.loadById(Long.valueOf(2L))).thenReturn(new Project());
-        exception = null;
-        ProjectDTO dto = null;
-        try {
-            dto = service.loadById(Long.valueOf(2L));
-        } catch (OctoException e) {
-            exception = e;
-        }
-        assertNull(exception);
-        assertNotNull(dto);
+    public void testLoad() {
+        Mockito.when(this.projectDAO.loadEntityById(Mockito.any())).thenReturn(new Project());
+        assertNotNull(service.load(1L));
     }
 
     @Test
-    public void testSave() throws OctoException {
+    public void testSave() {
         // Test null name
-        OctoException exception = null;
+        GlobalException exception = null;
 
         try {
             service.save(null);
-        } catch (OctoException e) {
+        } catch (GlobalException e) {
             exception = e;
         }
 
@@ -99,7 +60,7 @@ public class ProjectServiceTest {
 
         try {
             service.save(input);
-        } catch (OctoException e) {
+        } catch (GlobalException e) {
             exception = e;
         }
 
@@ -118,7 +79,7 @@ public class ProjectServiceTest {
 
         try {
             dto = service.save(input);
-        } catch (OctoException e) {
+        } catch (GlobalException e) {
             exception = e;
         }
 
@@ -128,14 +89,14 @@ public class ProjectServiceTest {
     }
 
     @Test
-    public void testDelete() throws OctoException {
+    public void testDelete() {
         Mockito.when(this.projectDAO.loadById(Mockito.any())).thenReturn(new Project());
         Mockito.doNothing().when(this.projectDAO).delete(Mockito.any());
 
-        OctoException exception = null;
+        GlobalException exception = null;
         try {
             this.service.delete(1L);
-        } catch (OctoException e) {
+        } catch (GlobalException e) {
             exception = e;
         }
 

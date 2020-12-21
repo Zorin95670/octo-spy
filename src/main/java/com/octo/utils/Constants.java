@@ -23,4 +23,12 @@ public final class Constants {
      * Environment id start value.
      */
     public static final int START_VALUE = 10;
+    /**
+     * Project field's name.
+     */
+    public static final String FIELD_PROJECT = "project";
+    /**
+     * Environment field's name.
+     */
+    public static final String FIELD_ENVIRONMENT = "environment";
 }

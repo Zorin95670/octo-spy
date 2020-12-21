@@ -6,21 +6,17 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.octo.dao.IDAO;
-import com.octo.model.dto.common.DefaultDTO;
+import com.cji.dao.IDAO;
+import com.cji.models.error.ErrorType;
+import com.cji.models.error.GlobalException;
+import com.cji.utils.bean.BeanMapper;
+import com.cji.utils.predicate.filter.QueryFilter;
 import com.octo.model.dto.project.NewProjectDTO;
 import com.octo.model.dto.project.ProjectDTO;
 import com.octo.model.entity.Project;
-import com.octo.model.error.ErrorType;
-import com.octo.model.exception.OctoException;
-import com.octo.utils.mapper.project.ProjectDTOMapper;
-import com.octo.utils.mapper.project.ProjectEntityMapper;
 
 /**
  * Project service.
- *
- * @author vmoittie
- *
  */
 @Service
 @Transactional
@@ -30,7 +26,7 @@ public class ProjectService {
      * Project DAO.
      */
     @Autowired
-    private IDAO<Project, DefaultDTO> projectDAO;
+    private IDAO<Project, QueryFilter> projectDAO;
 
     /**
      * Load project by id.
@@ -41,18 +37,8 @@ public class ProjectService {
      * @throws OctoException
      *             On all database error.
      */
-    public ProjectDTO loadById(final Long id) {
-        if (id == null) {
-            throw new OctoException(ErrorType.EMPTY_VALUE, "id", null);
-        }
-
-        Project entity = this.projectDAO.loadById(id);
-
-        if (entity == null) {
-            throw new OctoException(ErrorType.ENTITY_NOT_FOUND, "id", id.toString());
-        }
-
-        return new ProjectDTOMapper().apply(entity);
+    public ProjectDTO load(final Long id) {
+        return new BeanMapper<>(ProjectDTO.class).apply(projectDAO.loadEntityById(id));
     }
 
     /**
@@ -66,14 +52,12 @@ public class ProjectService {
      */
     public ProjectDTO save(final NewProjectDTO dto) {
         if (dto == null || StringUtils.isBlank(dto.getName())) {
-            throw new OctoException(ErrorType.EMPTY_VALUE, "name", null);
+            throw new GlobalException(ErrorType.EMPTY_VALUE, "name", null);
         }
 
-        Project entity = new ProjectEntityMapper().apply(dto);
+        Project entity = new BeanMapper<>(Project.class).apply(dto);
 
-        entity = this.projectDAO.save(entity);
-
-        return new ProjectDTOMapper().apply(entity);
+        return new BeanMapper<>(ProjectDTO.class).apply(this.projectDAO.save(entity));
     }
 
     /**
@@ -83,7 +67,7 @@ public class ProjectService {
      *            Id of project to update.
      */
     public void delete(final Long id) {
-        final Project entity = this.projectDAO.loadById(id);
+        final Project entity = this.projectDAO.loadEntityById(id);
         this.projectDAO.delete(entity);
     }
 }

@@ -1,7 +1,6 @@
 package com.octo.service;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,29 +12,27 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import com.octo.dao.IDAO;
-import com.octo.model.dto.environment.EnvironmentDTO;
+import com.cji.dao.IDAO;
+import com.cji.utils.predicate.filter.QueryFilter;
 import com.octo.model.entity.Environment;
 
 public class EnvironmentServiceTest {
 
     @Mock
-    IDAO<Environment, EnvironmentDTO> dao;
+    IDAO<Environment, QueryFilter> environmentDAO;
 
     @InjectMocks
     EnvironmentService service;
 
     @Before
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
     public void testFindAll() {
-        Mockito.when(this.dao.findAll()).thenReturn(new ArrayList<Environment>());
-
-        List<EnvironmentDTO> list = service.findAll();
-        assertNotNull(list);
-        assertTrue(list.isEmpty());
+        List<Environment> list = new ArrayList<>();
+        Mockito.when(this.environmentDAO.find(Mockito.any(), Mockito.any())).thenReturn(list);
+        assertNotNull(service.findAll());
     }
 }

@@ -24,7 +24,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.octo.model.dto.deployment.DeploymentDTO;
 import com.octo.model.dto.deployment.LastDeploymentDTO;
-import com.octo.model.exception.OctoException;
 import com.octo.service.DeploymentService;
 import com.octo.service.DeploymentViewService;
 
@@ -43,7 +42,7 @@ public class DeploymentControllerTest extends JerseyTest {
 
     @Override
     protected Application configure() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         final ResourceConfig rc = new ResourceConfig().register(DeploymentController.class)
                 .register(new AbstractBinder() {
                     @Override
@@ -59,8 +58,8 @@ public class DeploymentControllerTest extends JerseyTest {
     }
 
     @Test
-    public void testGetDeployment() throws OctoException {
-        Mockito.when(this.service.loadById(Mockito.anyLong())).thenReturn(new DeploymentDTO());
+    public void testGetDeployment() {
+        Mockito.when(this.service.load(Mockito.anyLong())).thenReturn(new DeploymentDTO());
 
         final Response response = this.controller.getDeployment(1L);
 
@@ -70,7 +69,7 @@ public class DeploymentControllerTest extends JerseyTest {
     }
 
     @Test
-    public void testCreateDeployment() throws OctoException {
+    public void testCreateDeployment() {
         Mockito.when(this.service.save(Mockito.any())).thenReturn(new DeploymentDTO());
 
         final Response response = this.controller.createDeployment(null);
@@ -81,7 +80,7 @@ public class DeploymentControllerTest extends JerseyTest {
     }
 
     @Test
-    public void testDeleteDeployment() throws OctoException {
+    public void testDeleteDeployment() {
         Mockito.doNothing().when(this.service).delete(1L);
         final Response response = this.controller.deleteDeployment(1L);
 

@@ -2,17 +2,15 @@ package com.octo.dao;
 
 import org.springframework.stereotype.Repository;
 
-import com.octo.model.dto.common.DefaultDTO;
+import com.cji.dao.CommonDAO;
+import com.cji.utils.predicate.filter.QueryFilter;
 import com.octo.model.entity.Project;
 
 /**
  * DAO for project entity.
- *
- * @author vmoittie
- *
  */
 @Repository("projectDAO")
-public class ProjectDAO extends CommonDAO<Project, DefaultDTO> {
+public class ProjectDAO extends CommonDAO<Project, QueryFilter> {
 
     /**
      * Default constructor.

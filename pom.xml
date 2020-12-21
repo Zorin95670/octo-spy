@@ -5,38 +5,44 @@
 	<groupId>com.octo</groupId>
 	<artifactId>octo-spy</artifactId>
 	<packaging>war</packaging>
-	<version>1.1.0</version>
+	<version>1.1.1-SNAPSHOT</version>
 	<name>octo-spy</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
 		<beanutils.version>1.9.4</beanutils.version>
-		<flyway.version>7.0.0</flyway.version>
-		<hibernate.version>5.4.4.Final</hibernate.version>
-		<hibernate.entity.version>5.4.8.Final</hibernate.entity.version>
-		<jackson.version>2.11.3	</jackson.version>
+		<cji-lib.version>1.0.0-SNAPSHOT</cji-lib.version>
+		<flyway.version>7.3.2</flyway.version>
+		<hibernate.version>5.4.26.Final</hibernate.version>
+		<jackson.version>2.12.0</jackson.version>
 		<jacoco-version>0.8.3</jacoco-version>
 		<jakarta.ws.rs.version>2.1.6</jakarta.ws.rs.version>
 		<java.persistence>2.2</java.persistence>
 		<jboss.transaction>1.1.1.Final</jboss.transaction>
 		<jersey.version>2.29.1</jersey.version>
-		<junit.version>4.13</junit.version>
+		<junit.version>4.13.1</junit.version>
 		<logback.version>1.2.3</logback.version>
 		<maven-dependency-plugin.version>3.1.1</maven-dependency-plugin.version>
 		<maven-war-plugin.version>3.2.2</maven-war-plugin.version>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven.resources.plugin>3.0.1</maven.resources.plugin>
-		<mockito.version>3.5.13</mockito.version>
-		<postgresql.version>42.2.16</postgresql.version>
+		<mockito.version>3.6.28</mockito.version>
+		<postgresql.version>42.2.18</postgresql.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<replacer.version>1.5.3</replacer.version>
-		<spring.version>5.2.9.RELEASE</spring.version>
+		<spring.version>5.3.2</spring.version>
 		<swagger.version>2.1.5</swagger.version>
 		<swagger-ui.version>3.17.0</swagger-ui.version>
 	</properties>
 
 	<dependencies>
+		<!-- CJI-lib -->
+		<dependency>
+			<groupId>com.cji</groupId>
+			<artifactId>CJI-lib</artifactId>
+			<version>${cji-lib.version}</version>
+		</dependency>
 		<!-- Java API for RESTful Web Services -->
 		<dependency>
 			<groupId>jakarta.ws.rs</groupId>
@@ -135,7 +141,7 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
-			<version>${hibernate.entity.version}</version>
+			<version>${hibernate.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jboss.spec.javax.transaction</groupId>

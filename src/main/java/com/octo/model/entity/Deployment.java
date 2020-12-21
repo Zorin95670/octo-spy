@@ -19,9 +19,6 @@ import com.octo.utils.Constants;
 
 /**
  * Deployment entity.
- *
- * @author vmoittie
- *
  */
 @Entity
 @Table(name = "deployments")

@@ -14,9 +14,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * Handle all client error exception and send appropriate response.
- *
- * @author vmoittie
- *
  */
 @Provider
 public class ClientErrorHandler implements ExceptionMapper<WebApplicationException> {

@@ -1,7 +1,9 @@
 package com.octo.model.entity;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -13,30 +15,33 @@ public class DeploymentViewTest {
     @Test
     public void testGetterAndSetter() {
         Timestamp time = Timestamp.from(Instant.now());
-        DeploymentView dto = new DeploymentView();
+        DeploymentView entity = new DeploymentView();
 
-        assertNull(dto.getClient());
-        assertNull(dto.getEnvironment());
-        assertNull(dto.getId());
-        assertNull(dto.getProject());
-        assertNull(dto.getVersion());
-        assertNull(dto.getInsertDate());
+        assertNull(entity.getClient());
+        assertNull(entity.getEnvironment());
+        assertNull(entity.getId());
+        assertNull(entity.getProject());
+        assertNull(entity.getVersion());
+        assertNull(entity.getInsertDate());
+        assertFalse(entity.isInProgress());
 
-        dto.setClient("client");
-        dto.setEnvironment("environment");
-        dto.setId(1L);
-        dto.setProject("project");
-        dto.setVersion("version");
-        dto.setInsertDate(time);
+        entity.setClient("client");
+        entity.setEnvironment("environment");
+        entity.setId(1L);
+        entity.setProject("project");
+        entity.setVersion("version");
+        entity.setInsertDate(time);
+        entity.setInProgress(true);
 
-        assertEquals("client", dto.getClient());
-        assertEquals("environment", dto.getEnvironment());
-        assertEquals(Long.valueOf(1L), dto.getId());
-        assertEquals("project", dto.getProject());
-        assertEquals("version", dto.getVersion());
-        assertEquals(time, dto.getInsertDate());
+        assertEquals("client", entity.getClient());
+        assertEquals("environment", entity.getEnvironment());
+        assertEquals(Long.valueOf(1L), entity.getId());
+        assertEquals("project", entity.getProject());
+        assertEquals("version", entity.getVersion());
+        assertEquals(time, entity.getInsertDate());
+        assertTrue(entity.isInProgress());
 
-        dto.setInsertDate(null);
-        assertNull(dto.getInsertDate());
+        entity.setInsertDate(null);
+        assertNull(entity.getInsertDate());
     }
 }

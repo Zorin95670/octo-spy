@@ -41,6 +41,11 @@ public class DeploymentView {
     @Column(name = "client", insertable = false, updatable = false)
     private String client;
     /**
+     * Is in progress.
+     */
+    @Column(name = "in_progress", insertable = false, updatable = false)
+    private boolean inProgress;
+    /**
      * The creation date of this row.
      */
     @Column(name = "insert_date", updatable = false)
@@ -165,5 +170,24 @@ public class DeploymentView {
             return;
         }
         this.insertDate = Timestamp.valueOf(insertDate.toLocalDateTime());
+    }
+
+    /**
+     * Is deployment in progress.
+     *
+     * @return The progress state.
+     */
+    public boolean isInProgress() {
+        return inProgress;
+    }
+
+    /**
+     * Set deployment's progress state.
+     *
+     * @param inProgress
+     *            The progress state to set.
+     */
+    public void setInProgress(final boolean inProgress) {
+        this.inProgress = inProgress;
     }
 }

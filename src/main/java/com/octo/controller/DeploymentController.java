@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import com.octo.model.dto.deployment.NewDeploymentDTO;
+import com.octo.model.dto.deployment.SearchDeploymentDTO;
 import com.octo.service.DeploymentService;
 import com.octo.service.DeploymentViewService;
 
@@ -114,6 +115,26 @@ public class DeploymentController {
     public Response deleteDeployment(@PathParam("id") final Long id) {
         LOGGER.info("Receive DELETE request to delete deployment with id {}", id);
         this.service.delete(id);
+        return Response.noContent().build();
+    }
+
+    /**
+     * Delete progress of deployment.
+     *
+     * @param dto
+     *            Filter to search progress.
+     * @return No content or error.
+     */
+    @DELETE
+    @Operation(summary = "Delete progress of deployment.",
+            responses = { @ApiResponse(responseCode = "204"), @ApiResponse(responseCode = "404",
+                    content = @Content(mediaType = "application/json", schema = @Schema(allOf = { Error.class })),
+                    description = "Error on no progress to delete.") })
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/progress")
+    public final Response deleteProgressDeployment(final SearchDeploymentDTO dto) {
+        LOGGER.info("Receive DELETE request to delete progress of deployment");
+        service.deleteProgressDeployment(dto);
         return Response.noContent().build();
     }
 }

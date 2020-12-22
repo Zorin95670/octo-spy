@@ -17,15 +17,18 @@ public class NewDeploymentDTOTest {
         assertNull(dto.getClient());
         assertNull(dto.getEnvironment());
         assertNull(dto.getVersion());
+        assertFalse(dto.isInProgress());
 
         dto.setAlive(true);
         dto.setClient("client");
         dto.setEnvironment("environment");
         dto.setVersion("version");
+        dto.setInProgress(true);
 
         assertTrue(dto.isAlive());
         assertEquals("client", dto.getClient());
         assertEquals("environment", dto.getEnvironment());
         assertEquals("version", dto.getVersion());
+        assertTrue(dto.isInProgress());
     }
 }

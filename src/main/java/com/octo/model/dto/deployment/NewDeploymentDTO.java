@@ -25,9 +25,13 @@ public class NewDeploymentDTO extends DefaultDTO {
      */
     private String client;
     /**
-     * Is deployment is sill alive.
+     * Is deployment is still alive.
      */
     private boolean alive;
+    /**
+     * Is deployment is in progress.
+     */
+    private boolean inProgress;
 
     /**
      * Get environment's name.
@@ -122,5 +126,24 @@ public class NewDeploymentDTO extends DefaultDTO {
      */
     public void setAlive(final boolean alive) {
         this.alive = alive;
+    }
+
+    /**
+     * Is deployment in progress.
+     *
+     * @return The progress state.
+     */
+    public boolean isInProgress() {
+        return inProgress;
+    }
+
+    /**
+     * Set deployment's progress state.
+     *
+     * @param inProgress
+     *            The progress state to set.
+     */
+    public void setInProgress(final boolean inProgress) {
+        this.inProgress = inProgress;
     }
 }

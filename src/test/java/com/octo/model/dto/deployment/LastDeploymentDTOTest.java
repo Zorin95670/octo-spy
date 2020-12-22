@@ -1,7 +1,9 @@
 package com.octo.model.dto.deployment;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -21,6 +23,7 @@ public class LastDeploymentDTOTest {
         assertNull(dto.getProject());
         assertNull(dto.getVersion());
         assertNull(dto.getInsertDate());
+        assertFalse(dto.isInProgress());
 
         dto.setClient("client");
         dto.setEnvironment("environment");
@@ -28,6 +31,7 @@ public class LastDeploymentDTOTest {
         dto.setProject("project");
         dto.setVersion("version");
         dto.setInsertDate(time);
+        dto.setInProgress(true);
 
         assertEquals("client", dto.getClient());
         assertEquals("environment", dto.getEnvironment());
@@ -35,6 +39,7 @@ public class LastDeploymentDTOTest {
         assertEquals("project", dto.getProject());
         assertEquals("version", dto.getVersion());
         assertEquals(time, dto.getInsertDate());
+        assertTrue(dto.isInProgress());
 
         dto.setInsertDate(null);
         assertNull(dto.getInsertDate());

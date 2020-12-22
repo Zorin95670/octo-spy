@@ -30,6 +30,10 @@ public class LastDeploymentDTO extends DefaultDTO {
      */
     private String client;
     /**
+     * Is deployment in progress.
+     */
+    private boolean inProgress;
+    /**
      * The creation date of this row.
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -154,5 +158,24 @@ public class LastDeploymentDTO extends DefaultDTO {
             return;
         }
         this.insertDate = Timestamp.from(insertDate.toInstant());
+    }
+
+    /**
+     * Is deployment in progress.
+     *
+     * @return The progress state.
+     */
+    public boolean isInProgress() {
+        return inProgress;
+    }
+
+    /**
+     * Set deployment's progress state.
+     *
+     * @param inProgress
+     *            The progress state to set.
+     */
+    public void setInProgress(final boolean inProgress) {
+        this.inProgress = inProgress;
     }
 }

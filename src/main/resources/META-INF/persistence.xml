@@ -8,6 +8,7 @@
 		<class>com.octo.model.entity.Deployment</class>
 		<class>com.octo.model.entity.DeploymentView</class>
 		<class>com.octo.model.entity.Project</class>
+		<class>com.octo.model.entity.DeploymentProgress</class>
 		<properties>
 			<property name="hibernate.dialect"
 				value="org.hibernate.dialect.PostgreSQLDialect" />

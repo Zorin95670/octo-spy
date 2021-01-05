@@ -22,7 +22,9 @@ import com.cji.models.error.GlobalException;
 import com.cji.utils.predicate.filter.QueryFilter;
 import com.octo.model.dto.deployment.DeploymentDTO;
 import com.octo.model.dto.deployment.NewDeploymentDTO;
+import com.octo.model.dto.deployment.SearchDeploymentDTO;
 import com.octo.model.entity.Deployment;
+import com.octo.model.entity.DeploymentProgress;
 import com.octo.model.entity.Environment;
 import com.octo.model.entity.Project;
 
@@ -33,6 +35,9 @@ public class DeploymentServiceTest {
 
     @Mock
     IDAO<Deployment, QueryFilter> deploymentDAO;
+
+    @Mock
+    IDAO<DeploymentProgress, QueryFilter> deploymentProgressDAO;
 
     @Mock
     IDAO<Project, QueryFilter> projectDAO;
@@ -199,6 +204,44 @@ public class DeploymentServiceTest {
     }
 
     @Test
+    public void testSaveWithProgress() {
+        Environment environment = new Environment();
+        environment.setId(1L);
+        environment.setName("QA");
+        Project project = new Project();
+        project.setId(1L);
+        project.setName("project");
+        Deployment deployment = new Deployment();
+        deployment.setAlive(true);
+        deployment.setClient("client");
+        deployment.setEnvironment(environment);
+        deployment.setProject(project);
+
+        Mockito.when(this.environmentDAO.load(Mockito.any())).thenReturn(Optional.of(environment));
+        Mockito.when(this.projectDAO.load(Mockito.any())).thenReturn(Optional.of(project));
+        Mockito.when(this.deploymentDAO.loadById(Mockito.any())).thenReturn(deployment);
+        Mockito.when(this.deploymentDAO.save(Mockito.any())).thenReturn(deployment);
+        Mockito.when(this.deploymentProgressDAO.save(Mockito.any())).thenReturn(null);
+        NewDeploymentDTO dto = new NewDeploymentDTO();
+        dto.setClient("client");
+        dto.setEnvironment("QA");
+        dto.setVersion("version");
+        dto.setProject("project");
+        dto.setAlive(true);
+        dto.setInProgress(true);
+
+        GlobalException exception = null;
+        try {
+            service.save(dto);
+        } catch (GlobalException e) {
+            exception = e;
+        }
+
+        assertNull(exception);
+        Mockito.verify(this.deploymentProgressDAO, Mockito.times(1)).save(Mockito.any());
+    }
+
+    @Test
     public void testDisablePreviousDeployment() {
         Project project = new Project();
         project.setId(1L);
@@ -253,4 +296,123 @@ public class DeploymentServiceTest {
         assertNull(exception);
     }
 
+    @Test
+    public void testDeleteProgress() {
+        Project project = new Project();
+        project.setId(1L);
+
+        Environment environment = new Environment();
+        environment.setId(1L);
+
+        Deployment deployment = new Deployment();
+        deployment.setId(1L);
+        deployment.setProject(project);
+        deployment.setEnvironment(environment);
+
+        SearchDeploymentDTO dto = new SearchDeploymentDTO();
+        GlobalException exception = null;
+        try {
+            this.service.deleteProgressDeployment(dto);
+        } catch (GlobalException e) {
+            exception = e;
+        }
+        assertNotNull(exception);
+        assertNotNull(exception.getError());
+        assertEquals(ErrorType.EMPTY_VALUE.getMessage(), exception.getError().getMessage());
+        assertEquals("environment", exception.getError().getField());
+
+        Mockito.when(this.environmentDAO.load(Mockito.any())).thenReturn(Optional.empty());
+        dto.setEnvironment("test");
+        exception = null;
+        try {
+            this.service.deleteProgressDeployment(dto);
+        } catch (GlobalException e) {
+            exception = e;
+        }
+        assertNotNull(exception);
+        assertNotNull(exception.getError());
+        assertEquals(ErrorType.ENTITY_NOT_FOUND.getMessage(), exception.getError().getMessage());
+        assertEquals("environment", exception.getError().getField());
+
+        Mockito.when(this.environmentDAO.load(Mockito.any())).thenReturn(Optional.of(environment));
+        exception = null;
+        try {
+            this.service.deleteProgressDeployment(dto);
+        } catch (GlobalException e) {
+            exception = e;
+        }
+        assertNotNull(exception);
+        assertNotNull(exception.getError());
+        assertEquals(ErrorType.EMPTY_VALUE.getMessage(), exception.getError().getMessage());
+        assertEquals("project", exception.getError().getField());
+
+        Mockito.when(this.projectDAO.load(Mockito.any())).thenReturn(Optional.empty());
+        dto.setProject("test");
+        exception = null;
+        try {
+            this.service.deleteProgressDeployment(dto);
+        } catch (GlobalException e) {
+            exception = e;
+        }
+        assertNotNull(exception);
+        assertNotNull(exception.getError());
+        assertEquals(ErrorType.ENTITY_NOT_FOUND.getMessage(), exception.getError().getMessage());
+        assertEquals("project", exception.getError().getField());
+
+        Mockito.when(this.projectDAO.load(Mockito.any())).thenReturn(Optional.of(project));
+        Mockito.when(this.deploymentDAO.load(Mockito.any())).thenReturn(Optional.empty());
+        exception = null;
+        try {
+            this.service.deleteProgressDeployment(dto);
+        } catch (GlobalException e) {
+            exception = e;
+        }
+        assertNotNull(exception);
+        assertNotNull(exception.getError());
+        assertEquals(ErrorType.ENTITY_NOT_FOUND.getMessage(), exception.getError().getMessage());
+        assertEquals("deployment", exception.getError().getField());
+
+        Mockito.when(this.deploymentDAO.load(Mockito.any())).thenReturn(Optional.of(deployment));
+        Mockito.when(this.deploymentProgressDAO.load(Mockito.any())).thenReturn(Optional.empty());
+        exception = null;
+        try {
+            this.service.deleteProgressDeployment(dto);
+        } catch (GlobalException e) {
+            exception = e;
+        }
+        assertNotNull(exception);
+        assertNotNull(exception.getError());
+        assertEquals(ErrorType.ENTITY_NOT_FOUND.getMessage(), exception.getError().getMessage());
+        assertEquals("deploymentProgress", exception.getError().getField());
+    }
+
+    @Test
+    public void testDeleteProgressWithData() {
+        Project project = new Project();
+        project.setId(1L);
+
+        Environment environment = new Environment();
+        environment.setId(1L);
+
+        Deployment deployment = new Deployment();
+        deployment.setId(1L);
+        deployment.setProject(project);
+        deployment.setEnvironment(environment);
+
+        GlobalException exception = null;
+        SearchDeploymentDTO dto = new SearchDeploymentDTO();
+        dto.setEnvironment("test");
+        dto.setProject("test");
+        Mockito.when(this.deploymentDAO.load(Mockito.any())).thenReturn(Optional.of(deployment));
+        Mockito.when(this.deploymentProgressDAO.load(Mockito.any())).thenReturn(Optional.of(new DeploymentProgress()));
+        Mockito.when(this.environmentDAO.load(Mockito.any())).thenReturn(Optional.of(environment));
+        Mockito.when(this.projectDAO.load(Mockito.any())).thenReturn(Optional.of(project));
+        exception = null;
+        try {
+            this.service.deleteProgressDeployment(dto);
+        } catch (GlobalException e) {
+            exception = e;
+        }
+        assertNull(exception);
+    }
 }

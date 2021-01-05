@@ -99,4 +99,13 @@ public class DeploymentControllerTest extends JerseyTest {
         assertEquals(expected, response.getEntity());
 
     }
+
+    @Test
+    public void testDeleteDeploymentProgress() {
+        Mockito.doNothing().when(this.service).deleteProgressDeployment(Mockito.any());
+        final Response response = this.controller.deleteProgressDeployment(null);
+
+        assertNotNull(response);
+        assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
+    }
 }

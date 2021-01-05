@@ -16,7 +16,9 @@ import com.octo.model.dto.common.SearchByNameDTO;
 import com.octo.model.dto.deployment.DeploymentDTO;
 import com.octo.model.dto.deployment.NewDeploymentDTO;
 import com.octo.model.dto.deployment.SearchDeploymentDTO;
+import com.octo.model.dto.deployment.SearchProgressDeploymentDTO;
 import com.octo.model.entity.Deployment;
+import com.octo.model.entity.DeploymentProgress;
 import com.octo.model.entity.Environment;
 import com.octo.model.entity.Project;
 import com.octo.utils.Constants;
@@ -33,6 +35,12 @@ public class DeploymentService {
      */
     @Autowired
     private IDAO<Deployment, QueryFilter> deploymentDAO;
+
+    /**
+     * Progress of deployment's DAO.
+     */
+    @Autowired
+    private IDAO<DeploymentProgress, QueryFilter> deploymentProgressDAO;
 
     /**
      * Environment's DAO.
@@ -66,7 +74,7 @@ public class DeploymentService {
      */
     public DeploymentDTO save(final NewDeploymentDTO dto) {
         if (dto.getEnvironment() == null) {
-            throw new GlobalException(ErrorType.EMPTY_VALUE, "environment", null);
+            throw new GlobalException(ErrorType.EMPTY_VALUE, Constants.FIELD_ENVIRONMENT, null);
         }
         if (dto.getProject() == null) {
             throw new GlobalException(ErrorType.EMPTY_VALUE, Constants.FIELD_PROJECT, null);
@@ -100,6 +108,12 @@ public class DeploymentService {
         }
 
         entity = this.deploymentDAO.save(entity);
+
+        if (dto.isInProgress()) {
+            DeploymentProgress progress = new DeploymentProgress();
+            progress.setDeployment(entity);
+            this.deploymentProgressDAO.save(progress);
+        }
 
         return new BeanMapper<>(DeploymentDTO.class).apply(entity);
     }
@@ -139,5 +153,43 @@ public class DeploymentService {
     public void delete(final Long id) {
         final Deployment entity = this.deploymentDAO.loadById(id);
         this.deploymentDAO.delete(entity);
+    }
+
+    /**
+     * Delete progress of deployment.
+     *
+     * @param dto
+     *            Filter.
+     */
+    public void deleteProgressDeployment(final SearchDeploymentDTO dto) {
+        if (dto.getEnvironment() == null) {
+            throw new GlobalException(ErrorType.EMPTY_VALUE, Constants.FIELD_ENVIRONMENT);
+        }
+        Optional<Environment> environment = this.environmentDAO.load(new SearchByNameDTO(dto.getEnvironment()));
+        if (!environment.isPresent()) {
+            throw new GlobalException(ErrorType.ENTITY_NOT_FOUND, Constants.FIELD_ENVIRONMENT);
+        }
+        if (dto.getProject() == null) {
+            throw new GlobalException(ErrorType.EMPTY_VALUE, Constants.FIELD_PROJECT);
+        }
+        Optional<Project> project = this.projectDAO.load(new SearchByNameDTO(dto.getProject()));
+        if (!project.isPresent()) {
+            throw new GlobalException(ErrorType.ENTITY_NOT_FOUND, Constants.FIELD_PROJECT);
+        }
+
+        dto.setEnvironment(environment.get().getId().toString());
+        dto.setProject(project.get().getId().toString());
+        Optional<Deployment> deployment = this.deploymentDAO.load(dto);
+        if (!deployment.isPresent()) {
+            throw new GlobalException(ErrorType.ENTITY_NOT_FOUND, "deployment");
+        }
+        SearchProgressDeploymentDTO searchDTO = new SearchProgressDeploymentDTO();
+        searchDTO.setDeployment(deployment.get().getId().toString());
+        Optional<DeploymentProgress> progress = this.deploymentProgressDAO.load(searchDTO);
+
+        if (!progress.isPresent()) {
+            throw new GlobalException(ErrorType.ENTITY_NOT_FOUND, "deploymentProgress");
+        }
+        this.deploymentProgressDAO.delete(progress.get());
     }
 }

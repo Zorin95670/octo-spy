@@ -1,10 +1,11 @@
 # CHANGELOG
 
-## XXXX/XX/XX: Version 1.1.1-SNAPSHOT
+## 2021/01/06: Version 1.2.0
 
 ### Features
 
 * [HARMONY-3644] Integrate CJI-lib
+* [HARMONY-3548] Save progress of deployment
 
 ## 2020/10/15: Version 1.1.0
 

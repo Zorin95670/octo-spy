@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 2021/01/06: Version 1.2.1
+
+### Bug fixes
+
+* Fix dockerfile with internal repository settings
+
 ## 2021/01/06: Version 1.2.0
 
 ### Features

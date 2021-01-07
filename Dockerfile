@@ -1,4 +1,5 @@
-FROM maven:3.6.1-jdk-8-alpine as builder
+FROM maven:3.6.3-jdk-11 as builder
+RUN mkdir -p /root/.m2 && mkdir /root/.m2/repository
 COPY settings.xml /root/.m2
 COPY . /app/
 RUN cd /app && mvn clean package -Dmaven.test.skip=true

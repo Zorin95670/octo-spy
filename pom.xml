@@ -11,7 +11,7 @@
 
 	<properties>
 		<beanutils.version>1.9.4</beanutils.version>
-		<cji-lib.version>1.0.0-SNAPSHOT</cji-lib.version>
+		<cji-lib.version>1.0.0</cji-lib.version>
 		<flyway.version>7.4.0</flyway.version>
 		<hibernate.version>5.4.26.Final</hibernate.version>
 		<jackson.version>2.12.0</jackson.version>

@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 2021/01/09: Version 1.3.0
+
+### Features
+
+* [HARMONY-3553] Add endpoint to get deployments
+
 ## 2021/01/06: Version 1.2.1
 
 ### Bug fixes

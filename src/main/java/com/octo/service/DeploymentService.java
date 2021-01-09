@@ -1,6 +1,8 @@
 package com.octo.service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cji.dao.IDAO;
+import com.cji.models.common.Resource;
 import com.cji.models.error.ErrorType;
 import com.cji.models.error.GlobalException;
 import com.cji.utils.bean.BeanMapper;
@@ -16,11 +19,14 @@ import com.octo.model.dto.common.SearchByNameDTO;
 import com.octo.model.dto.deployment.DeploymentDTO;
 import com.octo.model.dto.deployment.NewDeploymentDTO;
 import com.octo.model.dto.deployment.SearchDeploymentDTO;
+import com.octo.model.dto.deployment.SearchDeploymentViewDTO;
 import com.octo.model.dto.deployment.SearchProgressDeploymentDTO;
 import com.octo.model.entity.Deployment;
 import com.octo.model.entity.DeploymentProgress;
+import com.octo.model.entity.DeploymentView;
 import com.octo.model.entity.Environment;
 import com.octo.model.entity.Project;
+import com.octo.utils.Configuration;
 import com.octo.utils.Constants;
 
 /**
@@ -35,6 +41,12 @@ public class DeploymentService {
      */
     @Autowired
     private IDAO<Deployment, QueryFilter> deploymentDAO;
+
+    /**
+     * Deployment's DAO.
+     */
+    @Autowired
+    private IDAO<DeploymentView, QueryFilter> deploymentViewDAO;
 
     /**
      * Progress of deployment's DAO.
@@ -53,6 +65,12 @@ public class DeploymentService {
      */
     @Autowired
     private IDAO<Project, QueryFilter> projectDAO;
+
+    /**
+     * Configuration class.
+     */
+    @Autowired
+    private Configuration configuration;
 
     /**
      * Load Deployment by id.
@@ -191,5 +209,41 @@ public class DeploymentService {
             throw new GlobalException(ErrorType.ENTITY_NOT_FOUND, "deploymentProgress");
         }
         this.deploymentProgressDAO.delete(progress.get());
+    }
+
+    /**
+     * Count deployments.
+     *
+     * @param dto
+     *            Filter.
+     * @return Number of selected deployments.
+     */
+    public Long count(final SearchDeploymentViewDTO dto) {
+        return this.deploymentViewDAO.count(dto);
+    }
+
+    /**
+     * Find deployments.
+     *
+     * @param dto
+     *            Filter.
+     * @return List of selected deployments.
+     */
+    public Resource<DeploymentDTO> find(final SearchDeploymentViewDTO dto) {
+        if (dto.getPage() < 0) {
+            throw new GlobalException(ErrorType.WRONG_VALUE, "page", Integer.toString(dto.getPage()));
+        }
+
+        if (dto.getCount() <= 0) {
+            dto.setCount(this.configuration.getDefaultApiLimit());
+        } else if (dto.getCount() > this.configuration.getMaximumApiLimit()) {
+            dto.setCount(this.configuration.getMaximumApiLimit());
+        }
+
+        final Long total = this.count(dto);
+        final List<DeploymentDTO> deployments = this.deploymentViewDAO.find(dto).stream()
+                .map(new BeanMapper<>(DeploymentDTO.class)).collect(Collectors.toList());
+
+        return new Resource<>(total, deployments, dto.getPage(), dto.getCount());
     }
 }

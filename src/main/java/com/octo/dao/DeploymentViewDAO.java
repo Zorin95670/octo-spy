@@ -9,7 +9,7 @@ import com.octo.model.entity.DeploymentView;
 /**
  * DAO for deployment entity.
  */
-@Repository("deploymentViewDAO")
+@Repository("DeploymentViewDAO")
 public class DeploymentViewDAO extends CommonDAO<DeploymentView, QueryFilter> {
 
     /**

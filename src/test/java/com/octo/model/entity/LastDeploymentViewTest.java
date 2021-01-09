@@ -10,12 +10,12 @@ import java.time.Instant;
 
 import org.junit.Test;
 
-public class DeploymentViewTest {
+public class LastDeploymentViewTest {
 
     @Test
     public void testGetterAndSetter() {
         Timestamp time = Timestamp.from(Instant.now());
-        DeploymentView entity = new DeploymentView();
+        LastDeploymentView entity = new LastDeploymentView();
 
         assertNull(entity.getClient());
         assertNull(entity.getEnvironment());
@@ -24,7 +24,6 @@ public class DeploymentViewTest {
         assertNull(entity.getVersion());
         assertNull(entity.getInsertDate());
         assertFalse(entity.isInProgress());
-        assertFalse(entity.isAlive());
 
         entity.setClient("client");
         entity.setEnvironment("environment");
@@ -33,7 +32,6 @@ public class DeploymentViewTest {
         entity.setVersion("version");
         entity.setInsertDate(time);
         entity.setInProgress(true);
-        entity.setAlive(true);
 
         assertEquals("client", entity.getClient());
         assertEquals("environment", entity.getEnvironment());
@@ -42,7 +40,6 @@ public class DeploymentViewTest {
         assertEquals("version", entity.getVersion());
         assertEquals(time, entity.getInsertDate());
         assertTrue(entity.isInProgress());
-        assertTrue(entity.isAlive());
 
         entity.setInsertDate(null);
         assertNull(entity.getInsertDate());

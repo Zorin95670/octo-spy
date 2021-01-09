@@ -19,13 +19,17 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.cji.models.common.Resource;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.octo.model.dto.deployment.DeploymentDTO;
 import com.octo.model.dto.deployment.LastDeploymentDTO;
 import com.octo.service.DeploymentService;
-import com.octo.service.DeploymentViewService;
+import com.octo.service.LastDeploymentViewService;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(locations = { "classpath:application-context.xml" })
@@ -35,7 +39,7 @@ public class DeploymentControllerTest extends JerseyTest {
     DeploymentService service;
 
     @Mock
-    DeploymentViewService viewService;
+    LastDeploymentViewService viewService;
 
     @InjectMocks
     DeploymentController controller;
@@ -107,5 +111,23 @@ public class DeploymentControllerTest extends JerseyTest {
 
         assertNotNull(response);
         assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
+    }
+
+    @Test
+    public void testGetDeployments() throws JsonProcessingException {
+        Mockito.when(this.service.find(Mockito.any())).thenReturn(new Resource<>(5L, new ArrayList<>(), 0, 0));
+        Response response = this.controller.getDeployments(null);
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.PARTIAL_CONTENT.value(), response.getStatus());
+        final String json = new ObjectMapper().writeValueAsString(response.getEntity());
+
+        assertEquals("{\"total\":5,\"page\":0,\"count\":0,\"resources\":[]}", json);
+
+        Mockito.when(this.service.find(Mockito.any())).thenReturn(new Resource<>(0L, new ArrayList<>(), 0, 0));
+        response = this.controller.getDeployments(null);
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK.value(), response.getStatus());
     }
 }

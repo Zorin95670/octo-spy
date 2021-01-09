@@ -1,5 +1,6 @@
 package com.octo.controller;
 
+import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -14,12 +15,16 @@ import javax.ws.rs.core.Response.Status;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 
+import com.cji.models.common.Resource;
+import com.octo.model.dto.deployment.DeploymentDTO;
 import com.octo.model.dto.deployment.NewDeploymentDTO;
 import com.octo.model.dto.deployment.SearchDeploymentDTO;
+import com.octo.model.dto.deployment.SearchDeploymentViewDTO;
 import com.octo.service.DeploymentService;
-import com.octo.service.DeploymentViewService;
+import com.octo.service.LastDeploymentViewService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -52,7 +57,7 @@ public class DeploymentController {
      * Deployment service.
      */
     @Autowired
-    private DeploymentViewService viewService;
+    private LastDeploymentViewService lastDeploymentViewService;
 
     /**
      * Endpoint to return a last deployments.
@@ -63,7 +68,7 @@ public class DeploymentController {
     @Path("/last")
     public final Response getLastDeployments() {
         LOGGER.info("Receive GET request to get last deployment");
-        return Response.ok(this.viewService.find()).build();
+        return Response.ok(this.lastDeploymentViewService.find()).build();
     }
 
     /**
@@ -80,6 +85,26 @@ public class DeploymentController {
     public final Response getDeployment(@PathParam("id") final Long id) {
         LOGGER.info("Receive GET request to get deployment with id {}", id);
         return Response.ok(this.service.load(id)).build();
+    }
+
+    /**
+     * Endpoint to return a deployments list.
+     *
+     * @param dto
+     *            Filter.
+     * @return Deployments.
+     * @throws OctoException
+     *             On all database error.
+     */
+    @GET
+    public final Response getDeployments(final @BeanParam SearchDeploymentViewDTO dto) {
+        LOGGER.info("Receive GET request to get deployments with {}", dto);
+        final Resource<DeploymentDTO> resources = this.service.find(dto);
+        int status = HttpStatus.OK.value();
+        if (!Long.valueOf(resources.getResources().size()).equals(resources.getTotal())) {
+            status = HttpStatus.PARTIAL_CONTENT.value();
+        }
+        return Response.status(status).entity(resources).build();
     }
 
     /**

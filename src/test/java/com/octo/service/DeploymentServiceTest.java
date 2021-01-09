@@ -11,23 +11,32 @@ import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import com.cji.dao.IDAO;
+import com.cji.models.common.Resource;
 import com.cji.models.error.ErrorType;
 import com.cji.models.error.GlobalException;
 import com.cji.utils.predicate.filter.QueryFilter;
 import com.octo.model.dto.deployment.DeploymentDTO;
 import com.octo.model.dto.deployment.NewDeploymentDTO;
 import com.octo.model.dto.deployment.SearchDeploymentDTO;
+import com.octo.model.dto.deployment.SearchDeploymentViewDTO;
 import com.octo.model.entity.Deployment;
 import com.octo.model.entity.DeploymentProgress;
+import com.octo.model.entity.DeploymentView;
 import com.octo.model.entity.Environment;
 import com.octo.model.entity.Project;
+import com.octo.utils.Configuration;
 
+@RunWith(SpringRunner.class)
+@ContextConfiguration(locations = { "classpath:application-context.xml" })
 public class DeploymentServiceTest {
 
     @Mock
@@ -37,10 +46,16 @@ public class DeploymentServiceTest {
     IDAO<Deployment, QueryFilter> deploymentDAO;
 
     @Mock
+    IDAO<DeploymentView, QueryFilter> deploymentViewDAO;
+
+    @Mock
     IDAO<DeploymentProgress, QueryFilter> deploymentProgressDAO;
 
     @Mock
     IDAO<Project, QueryFilter> projectDAO;
+
+    @Mock
+    Configuration configuration;
 
     @InjectMocks
     DeploymentService service;
@@ -414,5 +429,79 @@ public class DeploymentServiceTest {
             exception = e;
         }
         assertNull(exception);
+    }
+
+    @Test
+    public void testCount() {
+        Mockito.when(this.deploymentViewDAO.count(Mockito.any())).thenReturn(1L);
+        assertEquals(Long.valueOf(1L), this.service.count(null));
+    }
+
+    @Test
+    public void testFind() {
+        List<DeploymentView> list = new ArrayList<DeploymentView>();
+        Mockito.when(this.deploymentViewDAO.count(Mockito.any())).thenReturn(2L);
+        Mockito.when(this.deploymentViewDAO.find(Mockito.any())).thenReturn(list);
+
+        Mockito.when(this.configuration.getDefaultApiLimit()).thenReturn(1);
+        Mockito.when(this.configuration.getMaximumApiLimit()).thenReturn(10);
+
+        SearchDeploymentViewDTO dto = new SearchDeploymentViewDTO();
+        dto.setPage(-1);
+
+        GlobalException exception = null;
+
+        try {
+            this.service.find(dto);
+        } catch (GlobalException e) {
+            exception = e;
+        }
+        assertNotNull(exception);
+        assertNotNull(exception.getError());
+        assertEquals(ErrorType.WRONG_VALUE.getMessage(), exception.getError().getMessage());
+        assertEquals("page", exception.getError().getField());
+        exception = null;
+
+        dto.setPage(0);
+        Resource<DeploymentDTO> deployments = null;
+        try {
+            deployments = this.service.find(dto);
+        } catch (GlobalException e) {
+            exception = e;
+        }
+        assertNull(exception);
+        assertNotNull(deployments);
+        assertEquals(0, deployments.getPage());
+        assertEquals(1, deployments.getCount());
+        assertEquals(Long.valueOf(2L), deployments.getTotal());
+        assertEquals(new ArrayList<>(), deployments.getResources());
+
+        dto.setCount(100);
+        deployments = null;
+        try {
+            deployments = this.service.find(dto);
+        } catch (GlobalException e) {
+            exception = e;
+        }
+        assertNull(exception);
+        assertNotNull(deployments);
+        assertEquals(0, deployments.getPage());
+        assertEquals(10, deployments.getCount());
+        assertEquals(Long.valueOf(2L), deployments.getTotal());
+        assertEquals(new ArrayList<>(), deployments.getResources());
+
+        dto.setCount(9);
+        deployments = null;
+        try {
+            deployments = this.service.find(dto);
+        } catch (GlobalException e) {
+            exception = e;
+        }
+        assertNull(exception);
+        assertNotNull(deployments);
+        assertEquals(0, deployments.getPage());
+        assertEquals(9, deployments.getCount());
+        assertEquals(Long.valueOf(2L), deployments.getTotal());
+        assertEquals(new ArrayList<>(), deployments.getResources());
     }
 }

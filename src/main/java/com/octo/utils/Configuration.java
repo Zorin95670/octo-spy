@@ -39,13 +39,13 @@ public class Configuration {
     /**
      * Default value for API limit.
      */
-    @Value("${api.default.limit}")
+    @Value("${api.default.limit:10}")
     private int defaultApiLimit;
 
     /**
      * Maximum value for API limit.
      */
-    @Value("${api.maximum.limit}")
+    @Value("${api.maximum.limit:100}")
     private int maximumApiLimit;
 
     /**
@@ -62,7 +62,7 @@ public class Configuration {
      *
      * @return the project's version.
      */
-    public final String getVersion() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -71,7 +71,7 @@ public class Configuration {
      *
      * @return Project's environments.
      */
-    public final String getEnvironment() {
+    public String getEnvironment() {
         return this.environment;
     }
 
@@ -80,7 +80,7 @@ public class Configuration {
      *
      * @return Project's client.
      */
-    public final String getClient() {
+    public String getClient() {
         return this.client;
     }
 
@@ -89,7 +89,7 @@ public class Configuration {
      *
      * @return The default API limit.
      */
-    public final int getDefaultApiLimit() {
+    public int getDefaultApiLimit() {
         return this.defaultApiLimit;
     }
 
@@ -98,7 +98,7 @@ public class Configuration {
      *
      * @return the maximum API limit.
      */
-    public final int getMaximumApiLimit() {
+    public int getMaximumApiLimit() {
         return this.maximumApiLimit;
     }
 

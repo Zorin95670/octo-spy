@@ -7,34 +7,15 @@ SELECT
     environments.name                      AS "environment",
     deployments.version                    AS "version",
     deployments.client                     AS "client",
+    deployments.alive                      AS "alive",
     deployments.insert_date                AS "insert_date",
     deployment_progress.dpg_id IS NOT NULL AS "in_progress"
 FROM
-    projects
-LEFT OUTER JOIN (
-    SELECT
-        MAX(insert_date) AS "insert_date",
-        pro_id,
-        env_id,
-        client
-    FROM
-        deployments
-    WHERE
-        alive = true
-    GROUP BY
-        pro_id,
-        env_id,
-        client) LAST_DEPLOYMENT
-ON
-    projects.pro_id = LAST_DEPLOYMENT.pro_id
-LEFT OUTER JOIN
     deployments
+LEFT OUTER JOIN
+    projects
 ON
-    deployments.insert_date = LAST_DEPLOYMENT.insert_date
-AND deployments.pro_id = LAST_DEPLOYMENT.pro_id
-AND deployments.env_id = LAST_DEPLOYMENT.env_id
-AND deployments.client = LAST_DEPLOYMENT.client
-AND deployments.alive = true
+    projects.pro_id = deployments.pro_id
 LEFT OUTER JOIN
     environments
 ON

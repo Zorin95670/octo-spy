@@ -10,17 +10,17 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.cji.dao.IDAO;
 import com.cji.utils.predicate.filter.QueryFilter;
-import com.octo.model.entity.DeploymentView;
+import com.octo.model.entity.LastDeploymentView;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(locations = { "classpath:application-context.xml" })
-public class DeploymentViewDAOTest {
+public class LastDeploymentViewDAOTest {
 
     @Autowired
-    private IDAO<DeploymentView, QueryFilter> deploymentViewDAO;
+    private IDAO<LastDeploymentView, QueryFilter> lastDeploymentViewDAO;
 
     @Test
     public void test() {
-        assertEquals(DeploymentView.class, deploymentViewDAO.getType());
+        assertEquals(LastDeploymentView.class, lastDeploymentViewDAO.getType());
     }
 }

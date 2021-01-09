@@ -14,15 +14,15 @@ import org.mockito.MockitoAnnotations;
 
 import com.cji.dao.IDAO;
 import com.cji.utils.predicate.filter.QueryFilter;
-import com.octo.model.entity.DeploymentView;
+import com.octo.model.entity.LastDeploymentView;
 
-public class DeploymentViewServiceTest {
+public class LastDeploymentViewServiceTest {
 
     @Mock
-    IDAO<DeploymentView, QueryFilter> deploymentViewDAO;
+    IDAO<LastDeploymentView, QueryFilter> lastDeploymentViewDAO;
 
     @InjectMocks
-    DeploymentViewService service;
+    LastDeploymentViewService service;
 
     @Before
     public void setUp() {
@@ -31,8 +31,8 @@ public class DeploymentViewServiceTest {
 
     @Test
     public void testFindAll() {
-        List<DeploymentView> list = new ArrayList<>();
-        Mockito.when(this.deploymentViewDAO.find(Mockito.any(), Mockito.any())).thenReturn(list);
+        List<LastDeploymentView> list = new ArrayList<>();
+        Mockito.when(this.lastDeploymentViewDAO.find(Mockito.any(), Mockito.any())).thenReturn(list);
         assertNotNull(service.find());
     }
 

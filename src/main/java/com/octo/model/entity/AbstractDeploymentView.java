@@ -3,16 +3,14 @@ package com.octo.model.entity;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.MappedSuperclass;
 
 /**
- * Deployment view entity.
+ * Default deployment view entity.
  */
-@Entity
-@Table(name = "deployments_view")
-public class DeploymentView {
+@MappedSuperclass
+public abstract class AbstractDeploymentView {
 
     /**
      * Primary key.

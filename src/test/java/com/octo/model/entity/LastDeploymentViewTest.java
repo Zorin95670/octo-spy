@@ -10,12 +10,12 @@ import java.time.Instant;
 
 import org.junit.Test;
 
-public class DeploymentViewTest {
+public class LastDeploymentViewTest {
 
     @Test
     public void testGetterAndSetter() {
         Timestamp time = Timestamp.from(Instant.now());
-        DeploymentView entity = new DeploymentView();
+        LastDeploymentView entity = new LastDeploymentView();
 
         assertNull(entity.getClient());
         assertNull(entity.getEnvironment());

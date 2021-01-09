@@ -25,7 +25,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.octo.model.dto.deployment.DeploymentDTO;
 import com.octo.model.dto.deployment.LastDeploymentDTO;
 import com.octo.service.DeploymentService;
-import com.octo.service.DeploymentViewService;
+import com.octo.service.LastDeploymentViewService;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(locations = { "classpath:application-context.xml" })
@@ -35,7 +35,7 @@ public class DeploymentControllerTest extends JerseyTest {
     DeploymentService service;
 
     @Mock
-    DeploymentViewService viewService;
+    LastDeploymentViewService viewService;
 
     @InjectMocks
     DeploymentController controller;

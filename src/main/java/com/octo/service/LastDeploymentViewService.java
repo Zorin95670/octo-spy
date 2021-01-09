@@ -12,20 +12,20 @@ import com.cji.dao.IDAO;
 import com.cji.utils.bean.BeanMapper;
 import com.cji.utils.predicate.filter.QueryFilter;
 import com.octo.model.dto.deployment.LastDeploymentDTO;
-import com.octo.model.entity.DeploymentView;
+import com.octo.model.entity.LastDeploymentView;
 
 /**
  * Deployment service.
  */
 @Service
 @Transactional
-public class DeploymentViewService {
+public class LastDeploymentViewService {
 
     /**
      * Deployment's DAO.
      */
     @Autowired
-    private IDAO<DeploymentView, QueryFilter> deploymentViewDAO;
+    private IDAO<LastDeploymentView, QueryFilter> lastDeploymentViewDAO;
 
     /**
      * find last deployments.
@@ -33,7 +33,7 @@ public class DeploymentViewService {
      * @return deployments.
      */
     public List<LastDeploymentDTO> find() {
-        List<DeploymentView> entities = this.deploymentViewDAO.find(null, true);
+        List<LastDeploymentView> entities = this.lastDeploymentViewDAO.find(null, true);
 
         return entities.stream().map(new BeanMapper<>(LastDeploymentDTO.class)).collect(Collectors.toList());
     }

@@ -7,6 +7,7 @@
 		<class>com.octo.model.entity.Environment</class>
 		<class>com.octo.model.entity.Deployment</class>
 		<class>com.octo.model.entity.LastDeploymentView</class>
+		<class>com.octo.model.entity.DeploymentView</class>
 		<class>com.octo.model.entity.Project</class>
 		<class>com.octo.model.entity.DeploymentProgress</class>
 		<properties>

@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
-		<file>/var/log/tomcat8/octo-spy.log</file>
-		<append>true</append>
-		<encoder>
-			<pattern>%date{ISO8601} [%thread] %-5level [%mdc] %logger{35} - %msg%n</pattern>
-		</encoder>
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%date{ISO8601} [%thread] %-5level [%mdc] %logger{35} - %replace(%msg){'[\r\n]', ''}%n</pattern>
+        </layout>
 	</appender>
 
 	<logger name="com.harmony" level="info" additivity="false">
-		<appender-ref ref="FILE" />
+		<appender-ref ref="CONSOLE" />
 	</logger>
 
 	<root level="info">
-		<appender-ref ref="FILE" />
+		<appender-ref ref="CONSOLE" />
 	</root>
 </configuration>

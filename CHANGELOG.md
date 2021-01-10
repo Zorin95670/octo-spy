@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 2021/01/10: Version 1.4.0
+
+### Features
+
+* Add saving group in project's creation
+
 ## 2021/01/09: Version 1.3.0
 
 ### Features

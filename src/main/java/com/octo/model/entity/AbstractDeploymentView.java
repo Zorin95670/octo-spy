@@ -29,6 +29,11 @@ public abstract class AbstractDeploymentView {
     @Column(name = "project", insertable = false, updatable = false)
     private String project;
     /**
+     * Deployment's master project.
+     */
+    @Column(name = "master_project", insertable = false, updatable = false)
+    private String masterProject;
+    /**
      * Deployed version.
      */
     @Column(name = "version", insertable = false, updatable = false)
@@ -104,6 +109,25 @@ public abstract class AbstractDeploymentView {
      */
     public void setProject(final String project) {
         this.project = project;
+    }
+
+    /**
+     * Get master project name.
+     *
+     * @return Master project name.
+     */
+    public String getMasterProject() {
+        return masterProject;
+    }
+
+    /**
+     * Set master project name.
+     *
+     * @param masterProject
+     *            Master project name.
+     */
+    public void setMasterProject(final String masterProject) {
+        this.masterProject = masterProject;
     }
 
     /**

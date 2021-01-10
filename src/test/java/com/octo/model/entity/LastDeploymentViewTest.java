@@ -21,6 +21,7 @@ public class LastDeploymentViewTest {
         assertNull(entity.getEnvironment());
         assertNull(entity.getId());
         assertNull(entity.getProject());
+        assertNull(entity.getMasterProject());
         assertNull(entity.getVersion());
         assertNull(entity.getInsertDate());
         assertFalse(entity.isInProgress());
@@ -29,6 +30,7 @@ public class LastDeploymentViewTest {
         entity.setEnvironment("environment");
         entity.setId(1L);
         entity.setProject("project");
+        entity.setMasterProject("master");
         entity.setVersion("version");
         entity.setInsertDate(time);
         entity.setInProgress(true);
@@ -37,6 +39,7 @@ public class LastDeploymentViewTest {
         assertEquals("environment", entity.getEnvironment());
         assertEquals(Long.valueOf(1L), entity.getId());
         assertEquals("project", entity.getProject());
+        assertEquals("master", entity.getMasterProject());
         assertEquals("version", entity.getVersion());
         assertEquals(time, entity.getInsertDate());
         assertTrue(entity.isInProgress());

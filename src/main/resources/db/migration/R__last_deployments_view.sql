@@ -4,6 +4,7 @@ CREATE VIEW last_deployments_view AS
 SELECT
     deployments.dpl_id                     AS "dpl_id",
     projects.name                          AS "project",
+    master_project.name                    AS "master_project",
     environments.name                      AS "environment",
     deployments.version                    AS "version",
     deployments.client                     AS "client",
@@ -42,4 +43,16 @@ ON
 LEFT OUTER JOIN
     deployment_progress
 ON
-    deployment_progress.dpl_id = deployments.dpl_id;
+    deployment_progress.dpl_id = deployments.dpl_id
+LEFT OUTER JOIN
+	project_groups
+ON
+    projects.pro_id = project_groups.pro_id
+LEFT OUTER JOIN
+	groups
+ON
+    groups.grp_id = project_groups.grp_id
+LEFT OUTER JOIN
+	projects master_project
+ON
+    groups.pro_id = master_project.pro_id;

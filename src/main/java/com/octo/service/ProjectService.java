@@ -1,5 +1,7 @@
 package com.octo.service;
 
+import java.util.Optional;
+
 import javax.transaction.Transactional;
 
 import org.apache.commons.lang3.StringUtils;
@@ -11,9 +13,11 @@ import com.cji.models.error.ErrorType;
 import com.cji.models.error.GlobalException;
 import com.cji.utils.bean.BeanMapper;
 import com.cji.utils.predicate.filter.QueryFilter;
+import com.octo.model.dto.common.SearchByNameDTO;
 import com.octo.model.dto.project.NewProjectDTO;
 import com.octo.model.dto.project.ProjectDTO;
 import com.octo.model.entity.Project;
+import com.octo.utils.Constants;
 
 /**
  * Project service.
@@ -27,6 +31,12 @@ public class ProjectService {
      */
     @Autowired
     private IDAO<Project, QueryFilter> projectDAO;
+
+    /**
+     * Group service.
+     */
+    @Autowired
+    private IGroupService groupService;
 
     /**
      * Load project by id.
@@ -57,7 +67,19 @@ public class ProjectService {
 
         Project entity = new BeanMapper<>(Project.class).apply(dto);
 
-        return new BeanMapper<>(ProjectDTO.class).apply(this.projectDAO.save(entity));
+        entity = this.projectDAO.save(entity);
+
+        if (dto.getIsMaster()) {
+            groupService.create(entity);
+        } else if (StringUtils.isNotBlank(dto.getMasterName())) {
+            Optional<Project> masterProject = this.projectDAO.load(new SearchByNameDTO(dto.getMasterName()));
+            if (!masterProject.isPresent()) {
+                throw new GlobalException(ErrorType.ENTITY_NOT_FOUND, Constants.FIELD_PROJECT, dto.getMasterName());
+            }
+            groupService.addProjectToGroup(masterProject.get(), entity);
+        }
+
+        return new BeanMapper<>(ProjectDTO.class).apply(entity);
     }
 
     /**

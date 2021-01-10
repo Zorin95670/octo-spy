@@ -1,0 +1,58 @@
+package com.octo.service;
+
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.cji.dao.IDAO;
+import com.cji.utils.predicate.filter.QueryFilter;
+import com.octo.model.entity.Group;
+import com.octo.model.entity.Project;
+import com.octo.model.entity.ProjectGroup;
+
+/**
+ * Implementation of group service.
+ */
+@Service
+@Transactional
+public class GroupService implements IGroupService {
+
+    /**
+     * Group's DAO.
+     */
+    @Autowired
+    private IDAO<Group, QueryFilter> groupDAO;
+
+    /**
+     * Project group's DAO.
+     */
+    @Autowired
+    private IDAO<ProjectGroup, QueryFilter> projectGroupDAO;
+
+    @Override
+    public Group create(Project project) {
+        Group entity = new Group();
+        entity.setMasterProject(project);
+        entity = groupDAO.save(entity);
+
+        ProjectGroup projectGroup = new ProjectGroup();
+        projectGroup.setGroup(entity);
+        projectGroup.setProject(project);
+
+        projectGroupDAO.save(projectGroup);
+
+        return entity;
+    }
+
+    @Override
+    public ProjectGroup addProjectToGroup(Project masterProject, Project project) {
+        Group group = groupDAO.loadEntityById(masterProject.getId(), "masterProject");
+
+        ProjectGroup projectGroup = new ProjectGroup();
+        projectGroup.setGroup(group);
+        projectGroup.setProject(project);
+
+        return projectGroupDAO.save(projectGroup);
+    }
+}

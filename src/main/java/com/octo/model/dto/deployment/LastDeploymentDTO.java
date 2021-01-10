@@ -22,6 +22,10 @@ public class LastDeploymentDTO extends DefaultDTO {
      */
     private String project;
     /**
+     * Deployment's master project name.
+     */
+    private String masterProject;
+    /**
      * Deployed version.
      */
     private String version;
@@ -94,6 +98,25 @@ public class LastDeploymentDTO extends DefaultDTO {
      */
     public void setProject(final String project) {
         this.project = project;
+    }
+
+    /**
+     * Get master project name.
+     *
+     * @return Master project name.
+     */
+    public String getMasterProject() {
+        return masterProject;
+    }
+
+    /**
+     * Set master project name.
+     *
+     * @param masterProject
+     *            Master project name.
+     */
+    public void setMasterProject(final String masterProject) {
+        this.masterProject = masterProject;
     }
 
     /**

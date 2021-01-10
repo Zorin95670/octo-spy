@@ -23,6 +23,7 @@ public class DeploymentDTOTest {
         assertNull(dto.getClient());
         assertNull(dto.getEnvironment());
         assertNull(dto.getProject());
+        assertNull(dto.getMasterProject());
         assertNull(dto.getId());
         assertNull(dto.getInsertDate());
         assertNull(dto.getUpdateDate());
@@ -32,6 +33,7 @@ public class DeploymentDTOTest {
         dto.setClient("client");
         dto.setEnvironment("environment");
         dto.setProject("project");
+        dto.setMasterProject("master");
         dto.setId(1L);
         dto.setInsertDate(Timestamp.from(Instant.ofEpochMilli(1L)));
         dto.setUpdateDate(Timestamp.from(Instant.ofEpochMilli(2L)));
@@ -44,6 +46,7 @@ public class DeploymentDTOTest {
         assertEquals(Timestamp.from(Instant.ofEpochMilli(2L)), dto.getUpdateDate());
         assertEquals("environment", dto.getEnvironment());
         assertEquals("project", dto.getProject());
+        assertEquals("master", dto.getMasterProject());
         assertEquals("version", dto.getVersion());
 
         Environment environment = null;
@@ -69,6 +72,18 @@ public class DeploymentDTOTest {
         project.setName("test");
         dto.setProject(project);
         assertEquals("test", dto.getProject());
+
+        Project master = null;
+        dto.setMasterProject(master);
+        assertNull(dto.getMasterProject());
+
+        master = new Project();
+        dto.setMasterProject(master);
+        assertNull(dto.getMasterProject());
+
+        project.setName("master");
+        dto.setMasterProject(project);
+        assertEquals("master", dto.getMasterProject());
 
         dto.setInsertDate(null);
         dto.setUpdateDate(null);

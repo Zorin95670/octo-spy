@@ -24,6 +24,10 @@ public class DeploymentDTO extends DefaultDTO {
      */
     private String project;
     /**
+     * Deployment's master project name.
+     */
+    private String masterProject;
+    /**
      * Deployed version.
      */
     private String version;
@@ -133,6 +137,41 @@ public class DeploymentDTO extends DefaultDTO {
         }
 
         this.setProject(name);
+    }
+
+    /**
+     * Get master project's name.
+     *
+     * @return Master project's name.
+     */
+    public String getMasterProject() {
+        return masterProject;
+    }
+
+    /**
+     * Set master project's name.
+     *
+     * @param masterProject
+     *            Master project's name.
+     */
+    public void setMasterProject(final String masterProject) {
+        this.masterProject = masterProject;
+    }
+
+    /**
+     * Set master project's name.
+     *
+     * @param entity
+     *            Master project entity.
+     */
+    public void setMasterProject(final Project entity) {
+        String name = null;
+
+        if (entity != null) {
+            name = entity.getName();
+        }
+
+        this.setMasterProject(name);
     }
 
     /**

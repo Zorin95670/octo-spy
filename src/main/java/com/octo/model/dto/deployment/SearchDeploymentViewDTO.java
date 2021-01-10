@@ -31,6 +31,12 @@ public class SearchDeploymentViewDTO extends QueryFilter {
     @QueryParam("project")
     private String project;
     /**
+     * Deployment's master project name.
+     */
+    @FilterType(type = Type.TEXT)
+    @QueryParam("masterProject")
+    private String masterProject;
+    /**
      * Deployed version.
      */
     @FilterType(type = Type.TEXT)
@@ -142,6 +148,41 @@ public class SearchDeploymentViewDTO extends QueryFilter {
         }
 
         this.setProject(name);
+    }
+
+    /**
+     * Get master project name.
+     *
+     * @return Master project name.
+     */
+    public String getMasterProject() {
+        return masterProject;
+    }
+
+    /**
+     * Set master project name.
+     *
+     * @param masterProject
+     *            Master project name.
+     */
+    public void setMasterProject(final String masterProject) {
+        this.masterProject = masterProject;
+    }
+
+    /**
+     * Set master project's name.
+     *
+     * @param entity
+     *            Master project entity.
+     */
+    public void setMasterProject(final Project entity) {
+        String name = null;
+
+        if (entity != null) {
+            name = entity.getName();
+        }
+
+        this.setMasterProject(name);
     }
 
     /**

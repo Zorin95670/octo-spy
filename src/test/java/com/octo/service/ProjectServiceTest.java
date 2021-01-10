@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import java.util.Optional;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -17,12 +19,16 @@ import com.cji.models.error.GlobalException;
 import com.cji.utils.predicate.filter.QueryFilter;
 import com.octo.model.dto.project.NewProjectDTO;
 import com.octo.model.dto.project.ProjectDTO;
+import com.octo.model.entity.Group;
 import com.octo.model.entity.Project;
 
 public class ProjectServiceTest {
 
     @Mock
     IDAO<Project, QueryFilter> projectDAO;
+
+    @Mock
+    IGroupService groupService;
 
     @InjectMocks
     ProjectService service;
@@ -85,7 +91,53 @@ public class ProjectServiceTest {
 
         assertNull(exception);
         assertNotNull(dto);
+    }
 
+    @Test
+    public void saveMasterProject() {
+        NewProjectDTO dto = new NewProjectDTO();
+        dto.setIsMaster(true);
+        dto.setName("test");
+
+        Mockito.when(projectDAO.save(Mockito.any())).thenReturn(new Project());
+        Mockito.when(groupService.create(Mockito.any())).thenReturn(new Group());
+
+        assertNotNull(service.save(dto));
+        Mockito.verify(groupService).create(Mockito.any());
+    }
+
+    @Test
+    public void saveGroupProject() {
+        NewProjectDTO dto = new NewProjectDTO();
+        dto.setIsMaster(false);
+        dto.setName("test");
+        dto.setMasterName("master");
+
+        Mockito.when(projectDAO.save(Mockito.any())).thenReturn(new Project());
+        Mockito.when(projectDAO.load(Mockito.any())).thenReturn(Optional.empty());
+        Mockito.when(groupService.create(Mockito.any())).thenReturn(new Group());
+
+        GlobalException exception = null;
+        try {
+            service.save(dto);
+        } catch (GlobalException e) {
+            exception = e;
+        }
+        assertNotNull(exception);
+        assertNotNull(exception.getError());
+        assertEquals(ErrorType.ENTITY_NOT_FOUND.getMessage(), exception.getError().getMessage());
+        assertEquals("project", exception.getError().getField());
+        assertEquals("master", exception.getError().getValue());
+
+        Mockito.when(projectDAO.load(Mockito.any())).thenReturn(Optional.of(new Project()));
+        exception = null;
+        try {
+            service.save(dto);
+        } catch (GlobalException e) {
+            exception = e;
+        }
+        assertNull(exception);
+        Mockito.verify(groupService).addProjectToGroup(Mockito.any(), Mockito.any());
     }
 
     @Test

@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 2021/07/06: Version 1.5.0
+
+### Features
+
+* Add the MIT license
+
 ## 2021/01/10: Version 1.4.0
 
 ### Features

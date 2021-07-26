@@ -45,12 +45,12 @@ public class DeploymentDTO extends DefaultDTO {
     /**
      * The creation date of this row.
      */
-    @JsonFormat(pattern = "YYYY/MM/DD HH:mm:ss")
+    @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
     private Timestamp insertDate;
     /**
      * The last update date ot this row.
      */
-    @JsonFormat(pattern = "YYYY/MM/DD HH:mm:ss")
+    @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
     private Timestamp updateDate;
 
     /**

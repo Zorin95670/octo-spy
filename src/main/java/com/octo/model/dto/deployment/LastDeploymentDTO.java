@@ -48,7 +48,7 @@ public class LastDeploymentDTO extends DefaultDTO {
     /**
      * The creation date of this row.
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
     private Timestamp insertDate;
 
     /**

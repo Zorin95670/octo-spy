@@ -1,35 +1,60 @@
-package com.octo.model.dto.project;
+package com.octo.model.entity;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.octo.model.common.DefaultDTO;
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Version;
+
+import com.octo.utils.Constants;
 
 /**
- * Project DTO.
+ * Abstract project entity.
  *
- * @author Vincent Moittié
+ * @author vmoittie
  *
  */
-public class ProjectDTO extends DefaultDTO {
+@MappedSuperclass
+public abstract class AbstractProject {
+
     /**
      * Primary key.
      */
+    @Id
+    @SequenceGenerator(name = "projects_seq", sequenceName = "projects_pro_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "projects_seq")
+    @Column(name = "pro_id", updatable = false, nullable = false)
     private Long id;
     /**
      * Project's name.
      */
+    @Column(name = "name", nullable = false, length = Constants.DEFAULT_SIZE_OF_STRING)
     private String name;
     /**
      * The creation date of this row.
      */
-    @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
+    @Column(name = "insert_date", updatable = false)
     private Timestamp insertDate;
     /**
      * The last update date of this row.
      */
-    @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
+    @Column(name = "update_date")
+    @Version
     private Timestamp updateDate;
+
+    /**
+     * Set insertDate before persist in repository.
+     */
+    @PrePersist
+    public void prePersist() {
+        this.setInsertDate(Timestamp.valueOf(LocalDateTime.now()));
+    }
 
     /**
      * Get primary key value.
@@ -120,5 +145,4 @@ public class ProjectDTO extends DefaultDTO {
         }
         this.updateDate = Timestamp.from(updateDate.toInstant());
     }
-
 }

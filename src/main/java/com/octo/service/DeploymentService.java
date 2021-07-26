@@ -10,11 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.octo.dao.IDAO;
-import com.octo.models.common.Resource;
-import com.octo.models.error.ErrorType;
-import com.octo.models.error.GlobalException;
-import com.octo.utils.bean.BeanMapper;
-import com.octo.utils.predicate.filter.QueryFilter;
+import com.octo.model.common.Resource;
 import com.octo.model.dto.common.SearchByNameDTO;
 import com.octo.model.dto.deployment.DeploymentDTO;
 import com.octo.model.dto.deployment.NewDeploymentDTO;
@@ -26,11 +22,18 @@ import com.octo.model.entity.DeploymentProgress;
 import com.octo.model.entity.DeploymentView;
 import com.octo.model.entity.Environment;
 import com.octo.model.entity.Project;
+import com.octo.model.error.ErrorType;
+import com.octo.model.error.GlobalException;
 import com.octo.utils.Configuration;
 import com.octo.utils.Constants;
+import com.octo.utils.bean.BeanMapper;
+import com.octo.utils.predicate.filter.QueryFilter;
 
 /**
  * Deployment service.
+ *
+ * @author Vincent Moittié
+ *
  */
 @Service
 @Transactional

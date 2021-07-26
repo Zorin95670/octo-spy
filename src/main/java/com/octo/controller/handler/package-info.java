@@ -1,7 +1,7 @@
 /**
  * Package contains handler use by the api.
  *
- * @author vmoittie
+ * @author Vincent Moittié
  *
  */
 package com.octo.controller.handler;

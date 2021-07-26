@@ -3,7 +3,7 @@ package com.octo.utils;
 /**
  * All constants value.
  *
- * @author vmoittie
+ * @author Vincent Moittié
  *
  */
 public final class Constants {
@@ -19,6 +19,11 @@ public final class Constants {
      * Default length of string in database.
      */
     public static final int DEFAULT_SIZE_OF_STRING = 100;
+
+    /**
+     * Long length of string in database.
+     */
+    public static final int LONG_SIZE_OF_STRING = 255;
     /**
      * Environment id start value.
      */
@@ -31,4 +36,8 @@ public final class Constants {
      * Environment field's name.
      */
     public static final String FIELD_ENVIRONMENT = "environment";
+    /**
+     * Field key.
+     */
+    public static final String FIELD_KEY = "field";
 }

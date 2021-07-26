@@ -6,6 +6,9 @@ import com.octo.utils.predicate.filter.QueryFilter;
 
 /**
  * DTO to search entity by name.
+ *
+ * @author Vincent Moittié
+ *
  */
 public class SearchByNameDTO extends QueryFilter {
     /**

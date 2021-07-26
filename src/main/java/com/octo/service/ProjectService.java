@@ -1,6 +1,8 @@
 package com.octo.service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -9,18 +11,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.octo.dao.IDAO;
-import com.octo.models.error.ErrorType;
-import com.octo.models.error.GlobalException;
-import com.octo.utils.bean.BeanMapper;
-import com.octo.utils.predicate.filter.QueryFilter;
 import com.octo.model.dto.common.SearchByNameDTO;
 import com.octo.model.dto.project.NewProjectDTO;
 import com.octo.model.dto.project.ProjectDTO;
+import com.octo.model.dto.project.ProjectViewDTO;
+import com.octo.model.dto.project.SearchProjectViewDTO;
 import com.octo.model.entity.Project;
+import com.octo.model.entity.ProjectView;
+import com.octo.model.error.ErrorType;
+import com.octo.model.error.GlobalException;
 import com.octo.utils.Constants;
+import com.octo.utils.bean.BeanMapper;
+import com.octo.utils.predicate.filter.QueryFilter;
 
 /**
  * Project service.
+ *
+ * @author Vincent Moittié
+ *
  */
 @Service
 @Transactional
@@ -31,6 +39,12 @@ public class ProjectService {
      */
     @Autowired
     private IDAO<Project, QueryFilter> projectDAO;
+
+    /**
+     * Project DAO.
+     */
+    @Autowired
+    private IDAO<ProjectView, QueryFilter> projectViewDAO;
 
     /**
      * Group service.
@@ -44,8 +58,6 @@ public class ProjectService {
      * @param id
      *            Primary key.
      * @return Project.
-     * @throws OctoException
-     *             On all database error.
      */
     public ProjectDTO load(final Long id) {
         return new BeanMapper<>(ProjectDTO.class).apply(projectDAO.loadEntityById(id));
@@ -57,8 +69,6 @@ public class ProjectService {
      * @param dto
      *            DTO to save
      * @return Project.
-     * @throws OctoException
-     *             On all database error.
      */
     public ProjectDTO save(final NewProjectDTO dto) {
         if (dto == null || StringUtils.isBlank(dto.getName())) {
@@ -91,5 +101,10 @@ public class ProjectService {
     public void delete(final Long id) {
         final Project entity = this.projectDAO.loadEntityById(id);
         this.projectDAO.delete(entity);
+    }
+
+    public List<ProjectViewDTO> findAll(final SearchProjectViewDTO dto) {
+        return this.projectViewDAO.find(dto, true).stream().map(new BeanMapper<>(ProjectViewDTO.class))
+                .collect(Collectors.toList());
     }
 }

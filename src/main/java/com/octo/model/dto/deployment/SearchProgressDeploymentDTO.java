@@ -6,6 +6,9 @@ import com.octo.utils.predicate.filter.QueryFilter;
 
 /**
  * DTO to search progress of deployment.
+ *
+ * @author Vincent Moittié
+ *
  */
 public class SearchProgressDeploymentDTO extends QueryFilter {
     /**

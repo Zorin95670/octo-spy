@@ -1,9 +1,12 @@
-package com.octo.models.error;
+package com.octo.model.error;
 
 import javax.ws.rs.core.Response.Status;
 
 /**
  * Default application exception.
+ *
+ * @author Vincent Moittié
+ *
  */
 public class GlobalException extends RuntimeException {
 

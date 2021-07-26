@@ -1,12 +1,15 @@
-package com.octo.models.dto.count;
+package com.octo.model.dto.count;
 
 import javax.ws.rs.QueryParam;
 
-import com.octo.utils.predicate.filter.QueryFilter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.octo.utils.predicate.filter.QueryFilter;
 
 /**
  * Count DTO.
+ *
+ * @author Vincent Moittié
+ *
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CountDTO extends QueryFilter {

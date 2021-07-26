@@ -11,12 +11,15 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
 
-import com.octo.models.error.ErrorType;
-import com.octo.models.error.GlobalException;
+import com.octo.model.error.ErrorType;
+import com.octo.model.error.GlobalException;
 import com.octo.utils.predicate.PredicateOperator;
 
 /**
  * Class to extract date filter from the query.
+ *
+ * @author Vincent Moittié
+ *
  */
 public class DatePredicateFilter extends PredicateFilter {
     /**

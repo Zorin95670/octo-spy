@@ -16,8 +16,8 @@ import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import com.octo.models.error.ErrorType;
-import com.octo.models.error.GlobalException;
+import com.octo.model.error.ErrorType;
+import com.octo.model.error.GlobalException;
 import com.octo.utils.predicate.PredicateMapper;
 import com.octo.utils.predicate.filter.QueryFilter;
 
@@ -28,6 +28,9 @@ import com.octo.utils.predicate.filter.QueryFilter;
  *            Entity
  * @param <Y>
  *            EntityDTO
+ *
+ * @author Vincent Moittié
+ *
  */
 public abstract class CommonDAO<T, Y extends QueryFilter> implements IDAO<T, Y> {
 
@@ -290,8 +293,6 @@ public abstract class CommonDAO<T, Y extends QueryFilter> implements IDAO<T, Y> 
      * @param entity
      *            Entity to get order information.
      * @return Criteria Order.
-     * @throws GlobalException
-     *             Throw exception on bad order field.
      */
     protected Order getEntityOrder(final CriteriaBuilder builder, final Root<T> root, final Y entity) {
         try {

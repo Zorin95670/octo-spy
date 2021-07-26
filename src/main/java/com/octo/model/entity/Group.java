@@ -17,6 +17,9 @@ import javax.persistence.Version;
 
 /**
  * Group entity.
+ *
+ * @author Vincent Moittié
+ *
  */
 @Entity
 @Table(name = "groups")

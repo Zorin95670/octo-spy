@@ -9,13 +9,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.octo.dao.IDAO;
-import com.octo.utils.bean.BeanMapper;
-import com.octo.utils.predicate.filter.QueryFilter;
 import com.octo.model.dto.environment.EnvironmentDTO;
 import com.octo.model.entity.Environment;
+import com.octo.utils.bean.BeanMapper;
+import com.octo.utils.predicate.filter.QueryFilter;
 
 /**
  * Environment service.
+ *
+ * @author Vincent Moittié
+ *
  */
 @Service
 @Transactional

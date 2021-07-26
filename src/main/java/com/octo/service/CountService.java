@@ -19,21 +19,24 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.octo.dao.IDAO;
-import com.octo.models.dto.count.CountDTO;
-import com.octo.models.error.ErrorType;
-import com.octo.models.error.GlobalException;
+import com.octo.model.dto.count.CountDTO;
+import com.octo.model.error.ErrorType;
+import com.octo.model.error.GlobalException;
 import com.octo.utils.json.ObjectArrayToJsonConsumer;
 import com.octo.utils.predicate.PredicateMapper;
 import com.octo.utils.predicate.filter.QueryFilter;
 import com.octo.utils.reflect.ClassHasFieldPredicate;
 import com.octo.utils.reflect.FieldUtils;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * Count service.
+ *
+ * @author Vincent Moittié
+ *
  */
 @Service
 @Transactional(propagation = Propagation.REQUIRED)

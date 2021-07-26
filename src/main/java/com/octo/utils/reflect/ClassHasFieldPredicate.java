@@ -5,7 +5,7 @@ import java.util.function.Predicate;
 /**
  * Check if class contains this field name.
  *
- * @author vmoittie
+ * @author Vincent Moittié
  *
  */
 public class ClassHasFieldPredicate implements Predicate<String> {

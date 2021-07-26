@@ -4,6 +4,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+/**
+ * Deployment view entity.
+ *
+ * @author Vincent Moittié
+ *
+ */
 @Entity
 @Table(name = "deployments_view")
 public class DeploymentView extends AbstractDeploymentView {

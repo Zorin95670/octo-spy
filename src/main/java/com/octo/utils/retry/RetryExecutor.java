@@ -12,6 +12,9 @@ import org.slf4j.LoggerFactory;
  *
  * @param <T>
  *            Result of the action to return.
+ *
+ * @author Vincent Moittié
+ *
  */
 public class RetryExecutor<T> {
 

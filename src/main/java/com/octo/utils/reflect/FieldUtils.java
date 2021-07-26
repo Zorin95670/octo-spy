@@ -8,6 +8,9 @@ import java.util.Optional;
 
 /**
  * Provide some helpful method to work with field.
+ *
+ * @author Vincent Moittié
+ *
  */
 public final class FieldUtils {
 

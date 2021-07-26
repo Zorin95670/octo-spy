@@ -1,4 +1,4 @@
-package com.octo.models.common;
+package com.octo.model.common;
 
 import java.util.Collections;
 import java.util.List;
@@ -9,6 +9,9 @@ import com.octo.utils.predicate.filter.IQueryFilter;
 
 /**
  * Default DTO with generic method.
+ *
+ * @author Vincent Moittié
+ *
  */
 public abstract class DefaultDTO implements IQueryFilter {
 

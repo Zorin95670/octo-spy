@@ -1,9 +1,12 @@
-package com.octo.models.error;
+package com.octo.model.error;
 
 import java.io.Serializable;
 
 /**
  * Model of error.
+ *
+ * @author Vincent Moittié
+ *
  */
 public class ErrorDTO implements Serializable {
 

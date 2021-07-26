@@ -9,10 +9,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 /**
  * Convert Object to JSON String.
  *
- * @author vmoittie
- *
  * @param <T>
  *            Object to convert.
+ *
+ * @author Vincent Moittié
+ *
  */
 public class ToJsonMapper<T> implements Function<T, String> {
 

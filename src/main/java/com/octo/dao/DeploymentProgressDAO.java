@@ -2,12 +2,14 @@ package com.octo.dao;
 
 import org.springframework.stereotype.Repository;
 
-import com.octo.dao.CommonDAO;
-import com.octo.utils.predicate.filter.QueryFilter;
 import com.octo.model.entity.DeploymentProgress;
+import com.octo.utils.predicate.filter.QueryFilter;
 
 /**
  * DAO for progress of deployment entity.
+ *
+ * @author Vincent Moittié
+ *
  */
 @Repository("deploymentProgressDAO")
 public class DeploymentProgressDAO extends CommonDAO<DeploymentProgress, QueryFilter> {

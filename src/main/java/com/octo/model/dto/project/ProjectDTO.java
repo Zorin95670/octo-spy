@@ -2,11 +2,14 @@ package com.octo.model.dto.project;
 
 import java.sql.Timestamp;
 
-import com.octo.models.common.DefaultDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.octo.model.common.DefaultDTO;
 
 /**
  * Project DTO.
+ *
+ * @author Vincent Moittié
+ *
  */
 public class ProjectDTO extends DefaultDTO {
     /**
@@ -20,12 +23,12 @@ public class ProjectDTO extends DefaultDTO {
     /**
      * The creation date of this row.
      */
-    @JsonFormat(pattern = "YYYY/MM/DD HH:mm:ss")
+    @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
     private Timestamp insertDate;
     /**
      * The last update date of this row.
      */
-    @JsonFormat(pattern = "YYYY/MM/DD HH:mm:ss")
+    @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
     private Timestamp updateDate;
 
     /**

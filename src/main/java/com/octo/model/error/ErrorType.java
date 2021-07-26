@@ -1,9 +1,12 @@
-package com.octo.models.error;
+package com.octo.model.error;
 
 import javax.ws.rs.core.Response.Status;
 
 /**
  * List of controller exception error.
+ *
+ * @author Vincent Moittié
+ *
  */
 public enum ErrorType {
     /**

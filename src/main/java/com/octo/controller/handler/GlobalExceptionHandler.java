@@ -8,10 +8,13 @@ import javax.ws.rs.ext.Provider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.octo.models.error.GlobalException;
+import com.octo.model.error.GlobalException;
 
 /**
- * Handle global exception and send appropriate response. *
+ * Handle global exception and send appropriate response.
+ *
+ * @author Vincent Moittié
+ *
  */
 @Provider
 public class GlobalExceptionHandler implements ExceptionMapper<GlobalException> {

@@ -18,7 +18,9 @@ import com.octo.utils.predicate.filter.QueryFilter;
  *            Entity class.
  * @param <Y>
  *            DTO class.
- * @author vmoittie
+ *
+ * @author Vincent Moittié
+ *
  */
 public class PredicateMapper<T, Y extends QueryFilter> implements BiFunction<CriteriaBuilder, Root<T>, Predicate[]> {
 

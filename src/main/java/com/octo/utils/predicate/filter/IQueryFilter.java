@@ -5,6 +5,9 @@ import java.util.List;
 
 /**
  * Query with method to create filter.
+ *
+ * @author Vincent Moittié
+ *
  */
 public interface IQueryFilter {
     /**

@@ -18,11 +18,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 
-import com.octo.models.common.Resource;
+import com.octo.model.common.Resource;
 import com.octo.model.dto.deployment.DeploymentDTO;
 import com.octo.model.dto.deployment.NewDeploymentDTO;
 import com.octo.model.dto.deployment.SearchDeploymentDTO;
 import com.octo.model.dto.deployment.SearchDeploymentViewDTO;
+import com.octo.model.dto.deployment.SearchLastDeploymentViewDTO;
 import com.octo.service.DeploymentService;
 import com.octo.service.LastDeploymentViewService;
 
@@ -35,7 +36,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
 /**
  * Deployment controller.
  *
- * @author vmoittie
+ * @author Vincent Moittié
  *
  */
 @Path("/deployment")
@@ -66,9 +67,9 @@ public class DeploymentController {
      */
     @GET
     @Path("/last")
-    public final Response getLastDeployments() {
-        LOGGER.info("Receive GET request to get last deployment");
-        return Response.ok(this.lastDeploymentViewService.find()).build();
+    public final Response getLastDeployments(final @BeanParam SearchLastDeploymentViewDTO dto) {
+        LOGGER.info("Receive GET request to get last deployment with {}", dto);
+        return Response.ok(this.lastDeploymentViewService.find(dto)).build();
     }
 
     /**
@@ -77,8 +78,6 @@ public class DeploymentController {
      * @param id
      *            Deployment's id.
      * @return Deployment.
-     * @throws OctoException
-     *             On all database error.
      */
     @GET
     @Path("/{id}")
@@ -93,8 +92,6 @@ public class DeploymentController {
      * @param dto
      *            Filter.
      * @return Deployments.
-     * @throws OctoException
-     *             On all database error.
      */
     @GET
     public final Response getDeployments(final @BeanParam SearchDeploymentViewDTO dto) {
@@ -113,8 +110,6 @@ public class DeploymentController {
      * @param dto
      *            Deployment DTO.
      * @return Deployment.
-     * @throws OctoException
-     *             On all database error.
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)

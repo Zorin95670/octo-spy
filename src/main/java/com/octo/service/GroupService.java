@@ -6,13 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.octo.dao.IDAO;
-import com.octo.utils.predicate.filter.QueryFilter;
 import com.octo.model.entity.Group;
 import com.octo.model.entity.Project;
 import com.octo.model.entity.ProjectGroup;
+import com.octo.utils.predicate.filter.QueryFilter;
 
 /**
  * Implementation of group service.
+ *
+ * @author Vincent Moittié
+ *
  */
 @Service
 @Transactional

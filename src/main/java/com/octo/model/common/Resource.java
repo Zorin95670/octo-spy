@@ -1,4 +1,4 @@
-package com.octo.models.common;
+package com.octo.model.common;
 
 import java.util.List;
 
@@ -9,6 +9,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  *
  * @param <T>
  *            Resource's type.
+ *
+ * @author Vincent Moittié
+ *
  */
 public class Resource<T> {
 

@@ -2,13 +2,16 @@ package com.octo.model.dto.deployment;
 
 import java.sql.Timestamp;
 
-import com.octo.models.common.DefaultDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.octo.model.common.DefaultDTO;
 import com.octo.model.entity.Environment;
 import com.octo.model.entity.Project;
 
 /**
  * Default deployment DTO.
+ *
+ * @author Vincent Moittié
+ *
  */
 public class DeploymentDTO extends DefaultDTO {
     /**
@@ -42,12 +45,12 @@ public class DeploymentDTO extends DefaultDTO {
     /**
      * The creation date of this row.
      */
-    @JsonFormat(pattern = "YYYY/MM/DD HH:mm:ss")
+    @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
     private Timestamp insertDate;
     /**
      * The last update date ot this row.
      */
-    @JsonFormat(pattern = "YYYY/MM/DD HH:mm:ss")
+    @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
     private Timestamp updateDate;
 
     /**

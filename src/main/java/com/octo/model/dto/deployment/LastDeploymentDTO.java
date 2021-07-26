@@ -2,11 +2,14 @@ package com.octo.model.dto.deployment;
 
 import java.sql.Timestamp;
 
-import com.octo.models.common.DefaultDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.octo.model.common.DefaultDTO;
 
 /**
  * Last alive deployment DTO.
+ *
+ * @author Vincent Moittié
+ *
  */
 public class LastDeploymentDTO extends DefaultDTO {
     /**
@@ -37,10 +40,15 @@ public class LastDeploymentDTO extends DefaultDTO {
      * Is deployment in progress.
      */
     private boolean inProgress;
+
+    /**
+     * Is deployment on master project.
+     */
+    private boolean onMasterProject;
     /**
      * The creation date of this row.
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
     private Timestamp insertDate;
 
     /**
@@ -155,6 +163,25 @@ public class LastDeploymentDTO extends DefaultDTO {
      */
     public void setClient(final String client) {
         this.client = client;
+    }
+
+    /**
+     * Deployment on master project.
+     *
+     * @return On master project.
+     */
+    public boolean getOnMasterProject() {
+        return onMasterProject;
+    }
+
+    /**
+     * Set deployment on master project.
+     *
+     * @param onMasterProject
+     *            On master project.
+     */
+    public void setAlive(final boolean onMasterProject) {
+        this.onMasterProject = onMasterProject;
     }
 
     /**

@@ -12,6 +12,9 @@ import com.octo.utils.Constants;
 
 /**
  * Environment model.
+ *
+ * @author Vincent Moittié
+ *
  */
 @Entity
 @Table(name = "environments")

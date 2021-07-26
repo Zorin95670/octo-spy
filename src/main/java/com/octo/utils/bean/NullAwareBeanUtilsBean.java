@@ -8,7 +8,7 @@ import org.apache.commons.lang3.ArrayUtils;
 /**
  * Merge two object into one, ignore null properties.
  *
- * @author vmoittie
+ * @author Vincent Moittié
  *
  */
 public class NullAwareBeanUtilsBean extends BeanUtilsBean {

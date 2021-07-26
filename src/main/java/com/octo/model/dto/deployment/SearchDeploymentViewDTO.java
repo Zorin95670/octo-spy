@@ -2,14 +2,17 @@ package com.octo.model.dto.deployment;
 
 import javax.ws.rs.QueryParam;
 
+import com.octo.model.entity.Environment;
+import com.octo.model.entity.Project;
 import com.octo.utils.predicate.filter.FilterType;
 import com.octo.utils.predicate.filter.FilterType.Type;
 import com.octo.utils.predicate.filter.QueryFilter;
-import com.octo.model.entity.Environment;
-import com.octo.model.entity.Project;
 
 /**
  * DTO to search deployment.
+ *
+ * @author Vincent Moittié
+ *
  */
 public class SearchDeploymentViewDTO extends QueryFilter {
     /**

@@ -1,7 +1,7 @@
 /**
  * Package that contains all web controllers.
  *
- * @author vmoittie
+ * @author Vincent Moittié
  *
  */
 package com.octo.controller;

@@ -1,5 +1,6 @@
 package com.octo.controller;
 
+import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -16,8 +17,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import com.octo.model.dto.count.CountDTO;
 import com.octo.model.dto.project.NewProjectDTO;
+import com.octo.model.dto.project.SearchProjectViewDTO;
+import com.octo.model.entity.ProjectView;
+import com.octo.service.CountService;
 import com.octo.service.ProjectService;
+import com.octo.utils.bean.BeanMapper;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -28,7 +34,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
 /**
  * Project controller.
  *
- * @author vmoittie
+ * @author Vincent Moittié
  *
  */
 @Path("/project")
@@ -47,13 +53,39 @@ public class ProjectController {
     private ProjectService service;
 
     /**
+     * Service to manage count.
+     */
+    @Autowired
+    private CountService countService;
+
+    /**
+     * Count field of entry for restricted value.
+     *
+     * @param countBody
+     *            CountDTO
+     * @param uriInfo
+     *            URI info to get extraParameters filters.
+     * @param entriesBody
+     *            Entries to search.
+     * @return Resource to contains entries and total of this.
+     */
+    @GET
+    @Path("/count")
+    public Response count(@BeanParam final CountDTO countBody,
+            @BeanParam final SearchProjectViewDTO projectsBody) {
+        LOGGER.info("Received GET request to count projects with count DTO {} and search DTO {}",
+                countBody, projectsBody);
+        CountDTO countDTO = new BeanMapper<>(CountDTO.class).apply(countBody);
+        SearchProjectViewDTO entriesDTO = new BeanMapper<>(SearchProjectViewDTO.class).apply(projectsBody);
+        return Response.ok(this.countService.count(ProjectView.class, countDTO, entriesDTO)).build();
+    }
+
+    /**
      * Endpoint to return a specific project.
      *
      * @param id
      *            Deployment's id.
      * @return Deployment.
-     * @throws OctoException
-     *             On all database error.
      */
     @GET
     @Path("/{id}")
@@ -63,13 +95,21 @@ public class ProjectController {
     }
 
     /**
+     * Endpoint to return all projects.
+     * @return List of project name.
+     */
+    @GET
+    public final Response getProjects(final @BeanParam SearchProjectViewDTO dto) {
+        LOGGER.info("Receive GET request to get all projects with {}", dto);
+        return Response.ok(this.service.findAll(dto)).build();
+    }
+
+    /**
      * Create project.
      *
      * @param dto
      *            Project DTO.
      * @return Project.
-     * @throws OctoException
-     *             On all database error.
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)

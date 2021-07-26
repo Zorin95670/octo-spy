@@ -1,7 +1,7 @@
 /**
  * All application entity.
  *
- * @author vmoittie
+ * @author Vincent Moittié
  *
  */
 package com.octo.model.entity;

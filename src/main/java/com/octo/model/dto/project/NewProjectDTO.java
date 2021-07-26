@@ -1,7 +1,7 @@
 package com.octo.model.dto.project;
 
-import com.octo.models.common.DefaultDTO;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.octo.model.common.DefaultDTO;
 
 /**
  * Create project DTO.

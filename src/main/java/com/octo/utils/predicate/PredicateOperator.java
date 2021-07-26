@@ -3,6 +3,8 @@ package com.octo.utils.predicate;
 import java.util.Arrays;
 import java.util.Optional;
 
+import com.octo.utils.predicate.filter.IPredicateFilter;
+
 /**
  * List of available operator for QueryFilter.
  *

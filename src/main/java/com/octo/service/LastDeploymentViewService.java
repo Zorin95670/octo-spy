@@ -9,10 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.octo.dao.IDAO;
+import com.octo.model.dto.deployment.LastDeploymentDTO;
+import com.octo.model.dto.deployment.SearchLastDeploymentViewDTO;
+import com.octo.model.entity.LastDeploymentView;
 import com.octo.utils.bean.BeanMapper;
 import com.octo.utils.predicate.filter.QueryFilter;
-import com.octo.model.dto.deployment.LastDeploymentDTO;
-import com.octo.model.entity.LastDeploymentView;
 
 /**
  * Deployment service.

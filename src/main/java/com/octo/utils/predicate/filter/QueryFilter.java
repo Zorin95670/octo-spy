@@ -6,9 +6,9 @@ import java.util.List;
 
 import javax.ws.rs.QueryParam;
 
-import com.octo.models.common.DefaultDTO;
-import com.octo.models.error.ErrorType;
-import com.octo.models.error.GlobalException;
+import com.octo.model.common.DefaultDTO;
+import com.octo.model.error.ErrorType;
+import com.octo.model.error.GlobalException;
 import com.octo.utils.predicate.filter.FilterType.Type;
 import com.octo.utils.reflect.FieldUtils;
 

@@ -3,11 +3,10 @@ package com.octo.utils.predicate.filter;
 import javax.persistence.criteria.CommonAbstractCriteria;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.From;
 import javax.persistence.criteria.Predicate;
 
 import com.octo.utils.predicate.PredicateOperator;
-
-import javax.persistence.criteria.From;
 
 /**
  * Predicate extractor.

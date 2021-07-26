@@ -10,8 +10,8 @@ import java.util.function.Function;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.ConversionException;
 
-import com.octo.models.error.ErrorType;
-import com.octo.models.error.GlobalException;
+import com.octo.model.error.ErrorType;
+import com.octo.model.error.GlobalException;
 import com.octo.utils.reflect.FieldUtils;
 
 /**

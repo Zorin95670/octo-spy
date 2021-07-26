@@ -2,8 +2,8 @@ package com.octo.model.dto.project;
 
 import java.sql.Timestamp;
 
-import com.octo.models.common.DefaultDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.octo.model.common.DefaultDTO;
 
 /**
  * Project DTO.

@@ -1,6 +1,6 @@
 package com.octo.model.dto.common;
 
-import com.octo.models.common.DefaultDTO;
+import com.octo.model.common.DefaultDTO;
 
 /**
  * All project's information.

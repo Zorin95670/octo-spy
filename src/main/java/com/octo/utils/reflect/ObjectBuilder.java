@@ -3,8 +3,8 @@ package com.octo.utils.reflect;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 
-import com.octo.models.error.ErrorType;
-import com.octo.models.error.GlobalException;
+import com.octo.model.error.ErrorType;
+import com.octo.model.error.GlobalException;
 
 /**
  * Build object and set property on it.

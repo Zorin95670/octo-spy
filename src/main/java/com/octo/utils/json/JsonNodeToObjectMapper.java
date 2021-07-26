@@ -3,12 +3,12 @@ package com.octo.utils.json;
 import java.util.List;
 import java.util.function.Function;
 
-import com.octo.models.error.ErrorType;
-import com.octo.models.error.GlobalException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
+import com.octo.model.error.ErrorType;
+import com.octo.model.error.GlobalException;
 
 /**
  * Convert JSONNode to object or list of objects.

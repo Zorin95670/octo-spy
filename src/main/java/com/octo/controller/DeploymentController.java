@@ -18,7 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 
-import com.octo.models.common.Resource;
+import com.octo.model.common.Resource;
 import com.octo.model.dto.deployment.DeploymentDTO;
 import com.octo.model.dto.deployment.NewDeploymentDTO;
 import com.octo.model.dto.deployment.SearchDeploymentDTO;

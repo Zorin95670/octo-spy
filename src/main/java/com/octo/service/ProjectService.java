@@ -9,15 +9,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.octo.dao.IDAO;
-import com.octo.models.error.ErrorType;
-import com.octo.models.error.GlobalException;
-import com.octo.utils.bean.BeanMapper;
-import com.octo.utils.predicate.filter.QueryFilter;
 import com.octo.model.dto.common.SearchByNameDTO;
 import com.octo.model.dto.project.NewProjectDTO;
 import com.octo.model.dto.project.ProjectDTO;
+import com.octo.model.dto.project.ProjectViewDTO;
+import com.octo.model.dto.project.SearchProjectViewDTO;
 import com.octo.model.entity.Project;
+import com.octo.model.entity.ProjectView;
+import com.octo.model.error.ErrorType;
+import com.octo.model.error.GlobalException;
 import com.octo.utils.Constants;
+import com.octo.utils.bean.BeanMapper;
+import com.octo.utils.predicate.filter.QueryFilter;
 
 /**
  * Project service.

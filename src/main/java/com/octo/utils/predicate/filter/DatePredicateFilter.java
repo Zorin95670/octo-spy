@@ -11,8 +11,8 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
 
-import com.octo.models.error.ErrorType;
-import com.octo.models.error.GlobalException;
+import com.octo.model.error.ErrorType;
+import com.octo.model.error.GlobalException;
 import com.octo.utils.predicate.PredicateOperator;
 
 /**

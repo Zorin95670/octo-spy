@@ -16,8 +16,8 @@ import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import com.octo.models.error.ErrorType;
-import com.octo.models.error.GlobalException;
+import com.octo.model.error.ErrorType;
+import com.octo.model.error.GlobalException;
 import com.octo.utils.predicate.PredicateMapper;
 import com.octo.utils.predicate.filter.QueryFilter;
 

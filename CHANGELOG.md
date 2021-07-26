@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## 2021/07/26: Version 1.7.0
+
+### Features
+
+* Permit to filter deployment
+* Add count and get all projects endpoint
+* Add get all client's names endpoint
+
+### Bug fixes
+
+* Fix deployment date format
+
 ## 2021/07/26: Version 1.6.0
 
 ### Features

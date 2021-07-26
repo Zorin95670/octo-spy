@@ -23,6 +23,7 @@ import com.octo.model.dto.deployment.DeploymentDTO;
 import com.octo.model.dto.deployment.NewDeploymentDTO;
 import com.octo.model.dto.deployment.SearchDeploymentDTO;
 import com.octo.model.dto.deployment.SearchDeploymentViewDTO;
+import com.octo.model.dto.deployment.SearchLastDeploymentViewDTO;
 import com.octo.service.DeploymentService;
 import com.octo.service.LastDeploymentViewService;
 
@@ -66,9 +67,9 @@ public class DeploymentController {
      */
     @GET
     @Path("/last")
-    public final Response getLastDeployments() {
-        LOGGER.info("Receive GET request to get last deployment");
-        return Response.ok(this.lastDeploymentViewService.find()).build();
+    public final Response getLastDeployments(final @BeanParam SearchLastDeploymentViewDTO dto) {
+        LOGGER.info("Receive GET request to get last deployment with {}", dto);
+        return Response.ok(this.lastDeploymentViewService.find(dto)).build();
     }
 
     /**

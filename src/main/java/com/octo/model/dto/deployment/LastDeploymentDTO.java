@@ -40,6 +40,11 @@ public class LastDeploymentDTO extends DefaultDTO {
      * Is deployment in progress.
      */
     private boolean inProgress;
+
+    /**
+     * Is deployment on master project.
+     */
+    private boolean onMasterProject;
     /**
      * The creation date of this row.
      */
@@ -158,6 +163,25 @@ public class LastDeploymentDTO extends DefaultDTO {
      */
     public void setClient(final String client) {
         this.client = client;
+    }
+
+    /**
+     * Deployment on master project.
+     *
+     * @return On master project.
+     */
+    public boolean getOnMasterProject() {
+        return onMasterProject;
+    }
+
+    /**
+     * Set deployment on master project.
+     *
+     * @param onMasterProject
+     *            On master project.
+     */
+    public void setAlive(final boolean onMasterProject) {
+        this.onMasterProject = onMasterProject;
     }
 
     /**

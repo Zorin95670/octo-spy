@@ -36,8 +36,8 @@ public class LastDeploymentViewService {
      *
      * @return deployments.
      */
-    public List<LastDeploymentDTO> find() {
-        List<LastDeploymentView> entities = this.lastDeploymentViewDAO.find(null, true);
+    public List<LastDeploymentDTO> find(final SearchLastDeploymentViewDTO dto) {
+        List<LastDeploymentView> entities = this.lastDeploymentViewDAO.find(dto, true);
 
         return entities.stream().map(new BeanMapper<>(LastDeploymentDTO.class)).collect(Collectors.toList());
     }

@@ -4,6 +4,12 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
 
+/**
+ * Class to extract array filter from the query.
+ *
+ * @author Vincent Moittié
+ *
+ */
 public class ArrayPredicateFilter extends PredicateFilter {
 
     /**

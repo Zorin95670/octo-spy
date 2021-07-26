@@ -19,6 +19,9 @@ import com.octo.utils.Constants;
 
 /**
  * Deployment entity.
+ *
+ * @author Vincent Moittié
+ *
  */
 @Entity
 @Table(name = "deployments")

@@ -7,6 +7,9 @@ import com.octo.model.common.DefaultDTO;
 
 /**
  * Last alive deployment DTO.
+ *
+ * @author Vincent Moittié
+ *
  */
 public class LastDeploymentDTO extends DefaultDTO {
     /**

@@ -34,6 +34,9 @@ import com.octo.utils.reflect.FieldUtils;
 
 /**
  * Count service.
+ *
+ * @author Vincent Moittié
+ *
  */
 @Service
 @Transactional(propagation = Propagation.REQUIRED)

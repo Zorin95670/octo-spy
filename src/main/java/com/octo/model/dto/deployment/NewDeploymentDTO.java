@@ -4,6 +4,9 @@ import com.octo.model.common.DefaultDTO;
 
 /**
  * DTO to call on create deployment.
+ *
+ * @author Vincent Moittié
+ *
  */
 public class NewDeploymentDTO extends DefaultDTO {
 

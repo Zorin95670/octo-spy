@@ -7,6 +7,9 @@ import java.lang.annotation.Target;
 
 /**
  * Annotation to indicate if field is filtering.
+ *
+ * @author Vincent Moittié
+ *
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)

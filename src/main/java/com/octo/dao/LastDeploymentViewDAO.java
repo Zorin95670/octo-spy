@@ -7,6 +7,9 @@ import com.octo.utils.predicate.filter.QueryFilter;
 
 /**
  * DAO for last deployment entity.
+ *
+ * @author Vincent Moittié
+ *
  */
 @Repository("lastDeploymentViewDAO")
 public class LastDeploymentViewDAO extends CommonDAO<LastDeploymentView, QueryFilter> {

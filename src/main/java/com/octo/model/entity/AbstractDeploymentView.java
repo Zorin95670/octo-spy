@@ -8,6 +8,9 @@ import javax.persistence.MappedSuperclass;
 
 /**
  * Default deployment view entity.
+ *
+ * @author Vincent Moittié
+ *
  */
 @MappedSuperclass
 public abstract class AbstractDeploymentView {

@@ -6,6 +6,9 @@ import io.swagger.v3.oas.annotations.Parameter;
 
 /**
  * Default Environment DTO.
+ *
+ * @author Vincent Moittié
+ *
  */
 public class EnvironmentDTO extends DefaultDTO {
 

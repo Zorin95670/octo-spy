@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 /**
  * Json merger.
  *
- * @author vmoittie
+ * @author Vincent Moittié
  *
  */
 public class JsonMerger implements Function<JsonNode[], JsonNode> {

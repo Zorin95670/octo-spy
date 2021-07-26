@@ -14,6 +14,9 @@ import com.octo.utils.reflect.FieldUtils;
 
 /**
  * Class to manage query option for controller.
+ *
+ * @author Vincent Moittié
+ *
  */
 public class QueryFilter extends DefaultDTO {
 

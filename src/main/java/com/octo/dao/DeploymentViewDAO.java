@@ -7,6 +7,9 @@ import com.octo.utils.predicate.filter.QueryFilter;
 
 /**
  * DAO for deployment entity.
+ *
+ * @author Vincent Moittié
+ *
  */
 @Repository("DeploymentViewDAO")
 public class DeploymentViewDAO extends CommonDAO<DeploymentView, QueryFilter> {

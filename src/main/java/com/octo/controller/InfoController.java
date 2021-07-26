@@ -19,7 +19,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
 /**
  * Controller to manage project version.
  *
- * @author vmoittie
+ * @author Vincent Moittié
  *
  */
 @Path("/info")

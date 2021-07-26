@@ -23,7 +23,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
 /**
  * Controller to manage environment.
  *
- * @author vmoittie
+ * @author Vincent Moittié
  *
  */
 @Path("/environment")

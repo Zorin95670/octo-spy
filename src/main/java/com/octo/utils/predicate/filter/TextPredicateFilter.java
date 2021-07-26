@@ -10,6 +10,9 @@ import com.octo.utils.predicate.PredicateOperator;
 
 /**
  * Class to extract text filter from the query.
+ *
+ * @author Vincent Moittié
+ *
  */
 public class TextPredicateFilter extends PredicateFilter {
 

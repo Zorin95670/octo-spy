@@ -1,7 +1,7 @@
 /**
  * All deployment DTO.
  *
- * @author vmoittie
+ * @author Vincent Moittié
  *
  */
 package com.octo.model.dto.deployment;

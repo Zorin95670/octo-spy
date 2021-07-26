@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 /**
  * Receive an array with 2 elements, the first element is the name of JSON attribute and the second is the value.
  *
- * @author vmoittie
+ * @author Vincent Moittié
  *
  */
 public class ObjectArrayToJsonConsumer implements Consumer<Object[]> {

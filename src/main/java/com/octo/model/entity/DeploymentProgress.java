@@ -17,6 +17,9 @@ import javax.persistence.Version;
 
 /**
  * Progress of deployment entity.
+ *
+ * @author Vincent Moittié
+ *
  */
 @Entity
 @Table(name = "deployment_progress")

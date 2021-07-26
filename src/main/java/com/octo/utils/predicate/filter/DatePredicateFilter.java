@@ -17,6 +17,9 @@ import com.octo.utils.predicate.PredicateOperator;
 
 /**
  * Class to extract date filter from the query.
+ *
+ * @author Vincent Moittié
+ *
  */
 public class DatePredicateFilter extends PredicateFilter {
     /**

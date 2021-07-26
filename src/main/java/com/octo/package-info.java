@@ -1,7 +1,7 @@
 /**
  * Default package for octo-spy.
  *
- * @author vmoittie
+ * @author Vincent Moittié
  *
  */
 package com.octo;

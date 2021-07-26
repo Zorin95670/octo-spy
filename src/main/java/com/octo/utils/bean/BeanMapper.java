@@ -21,6 +21,9 @@ import com.octo.utils.reflect.FieldUtils;
  *            Source.
  * @param <Y>
  *            Destination.
+ *
+ * @author Vincent Moittié
+ *
  */
 public class BeanMapper<T, Y> implements Function<T, Y> {
 

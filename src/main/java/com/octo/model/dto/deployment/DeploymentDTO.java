@@ -9,6 +9,9 @@ import com.octo.model.entity.Project;
 
 /**
  * Default deployment DTO.
+ *
+ * @author Vincent Moittié
+ *
  */
 public class DeploymentDTO extends DefaultDTO {
     /**

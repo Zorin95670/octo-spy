@@ -13,6 +13,9 @@ import com.octo.utils.predicate.filter.QueryFilter;
 
 /**
  * Implementation of group service.
+ *
+ * @author Vincent Moittié
+ *
  */
 @Service
 @Transactional

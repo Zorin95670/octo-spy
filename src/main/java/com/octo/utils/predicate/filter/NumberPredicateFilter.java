@@ -16,6 +16,9 @@ import com.octo.utils.predicate.PredicateOperator;
 
 /**
  * Class to extract number filter from the query.
+ *
+ * @author Vincent Moittié
+ *
  */
 public class NumberPredicateFilter extends PredicateFilter {
 

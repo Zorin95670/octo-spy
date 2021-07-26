@@ -15,6 +15,9 @@ import com.octo.model.error.GlobalException;
  *
  * @param <T>
  *            Type of the object to return.
+ *
+ * @author Vincent Moittié
+ *
  */
 public class JsonNodeToObjectMapper<T> implements Function<JsonNode, T> {
 

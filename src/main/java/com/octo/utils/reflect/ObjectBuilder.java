@@ -11,6 +11,9 @@ import com.octo.model.error.GlobalException;
  *
  * @param <T>
  *            Object.
+ *
+ * @author Vincent Moittié
+ *
  */
 public final class ObjectBuilder<T> {
 

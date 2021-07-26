@@ -1,7 +1,7 @@
 /**
  * All environment DTO.
  *
- * @author vmoittie
+ * @author Vincent Moittié
  *
  */
 package com.octo.model.dto.environment;

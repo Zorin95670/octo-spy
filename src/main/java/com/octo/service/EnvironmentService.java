@@ -16,6 +16,9 @@ import com.octo.utils.predicate.filter.QueryFilter;
 
 /**
  * Environment service.
+ *
+ * @author Vincent Moittié
+ *
  */
 @Service
 @Transactional

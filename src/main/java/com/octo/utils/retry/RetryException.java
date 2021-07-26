@@ -2,6 +2,9 @@ package com.octo.utils.retry;
 
 /**
  * Exception to throw in code executed by RetryExecutor to perform a retry.
+ *
+ * @author Vincent Moittié
+ *
  */
 public class RetryException extends RuntimeException {
 

@@ -7,6 +7,9 @@ import com.octo.utils.predicate.filter.QueryFilter;
 
 /**
  * DAO for progress of deployment entity.
+ *
+ * @author Vincent Moittié
+ *
  */
 @Repository("deploymentProgressDAO")
 public class DeploymentProgressDAO extends CommonDAO<DeploymentProgress, QueryFilter> {

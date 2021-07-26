@@ -5,6 +5,9 @@ import com.octo.model.common.DefaultDTO;
 
 /**
  * Create project DTO.
+ *
+ * @author Vincent Moittié
+ *
  */
 @JsonIgnoreProperties
 public class NewProjectDTO extends DefaultDTO {

@@ -7,6 +7,9 @@ import com.octo.utils.predicate.filter.QueryFilter;
 
 /**
  * Environment DAO.
+ *
+ * @author Vincent Moittié
+ *
  */
 @Repository("environmentDAO")
 public class EnvironmentDAO extends CommonDAO<Environment, QueryFilter> {

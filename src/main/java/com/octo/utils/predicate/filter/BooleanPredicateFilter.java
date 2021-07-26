@@ -6,6 +6,9 @@ import javax.persistence.criteria.Predicate;
 
 /**
  * Class to extract boolean filter from the query.
+ *
+ * @author Vincent Moittié
+ *
  */
 public class BooleanPredicateFilter extends PredicateFilter {
 

@@ -4,6 +4,9 @@ import com.octo.model.common.DefaultDTO;
 
 /**
  * All project's information.
+ *
+ * @author Vincent Moittié
+ *
  */
 public class ProjectInformation extends DefaultDTO {
 

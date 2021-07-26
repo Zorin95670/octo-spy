@@ -3,7 +3,7 @@ package com.octo.utils;
 /**
  * All constants value.
  *
- * @author vmoittie
+ * @author Vincent Moittié
  *
  */
 public final class Constants {

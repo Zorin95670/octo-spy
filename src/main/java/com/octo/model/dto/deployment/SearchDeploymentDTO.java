@@ -8,6 +8,9 @@ import com.octo.utils.predicate.filter.QueryFilter;
 
 /**
  * DTO to search deployment.
+ *
+ * @author Vincent Moittié
+ *
  */
 public class SearchDeploymentDTO extends QueryFilter {
     /**

@@ -10,6 +10,9 @@ import com.octo.utils.predicate.PredicateOperator;
 
 /**
  * Predicate extractor.
+ *
+ * @author Vincent Moittié
+ *
  */
 public interface IPredicateFilter {
 

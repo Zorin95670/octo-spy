@@ -6,6 +6,9 @@ import com.octo.model.dto.count.CountDTO;
 
 /**
  * Count DAO, to count object in database.
+ *
+ * @author Vincent Moittié
+ *
  */
 @Repository("countDAO")
 public class CountDAO extends CommonDAO<Object[], CountDTO> {

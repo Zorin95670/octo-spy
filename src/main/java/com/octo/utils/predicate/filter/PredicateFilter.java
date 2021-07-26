@@ -12,6 +12,9 @@ import com.octo.utils.predicate.PredicateOperator;
 
 /**
  * Abstract class to implements default field for QueryFilter.
+ *
+ * @author Vincent Moittié
+ *
  */
 public abstract class PredicateFilter implements IPredicateFilter {
 

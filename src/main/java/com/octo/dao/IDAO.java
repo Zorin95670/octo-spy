@@ -16,6 +16,9 @@ import com.octo.utils.predicate.filter.QueryFilter;
  *            Entity.
  * @param <Y>
  *            Entity filter.
+ *
+ * @author Vincent Moittié
+ *
  */
 public interface IDAO<T, Y extends QueryFilter> {
 

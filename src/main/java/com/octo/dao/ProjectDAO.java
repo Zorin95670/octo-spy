@@ -7,6 +7,9 @@ import com.octo.utils.predicate.filter.QueryFilter;
 
 /**
  * DAO for project entity.
+ *
+ * @author Vincent Moittié
+ *
  */
 @Repository("projectDAO")
 public class ProjectDAO extends CommonDAO<Project, QueryFilter> {

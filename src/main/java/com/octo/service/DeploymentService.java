@@ -31,6 +31,9 @@ import com.octo.utils.predicate.filter.QueryFilter;
 
 /**
  * Deployment service.
+ *
+ * @author Vincent Moittié
+ *
  */
 @Service
 @Transactional

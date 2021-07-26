@@ -7,6 +7,9 @@ import com.octo.model.common.DefaultDTO;
 
 /**
  * Project DTO.
+ *
+ * @author Vincent Moittié
+ *
  */
 public class ProjectDTO extends DefaultDTO {
     /**

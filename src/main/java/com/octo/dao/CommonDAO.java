@@ -28,6 +28,9 @@ import com.octo.utils.predicate.filter.QueryFilter;
  *            Entity
  * @param <Y>
  *            EntityDTO
+ *
+ * @author Vincent Moittié
+ *
  */
 public abstract class CommonDAO<T, Y extends QueryFilter> implements IDAO<T, Y> {
 

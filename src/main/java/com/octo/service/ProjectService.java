@@ -24,6 +24,9 @@ import com.octo.utils.predicate.filter.QueryFilter;
 
 /**
  * Project service.
+ *
+ * @author Vincent Moittié
+ *
  */
 @Service
 @Transactional

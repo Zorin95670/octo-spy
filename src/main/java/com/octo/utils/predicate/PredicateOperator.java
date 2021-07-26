@@ -10,6 +10,8 @@ import com.octo.utils.predicate.filter.IPredicateFilter;
  *
  * @see IPredicateFilter
  *
+ * @author Vincent Moittié
+ *
  */
 public enum PredicateOperator {
     /**

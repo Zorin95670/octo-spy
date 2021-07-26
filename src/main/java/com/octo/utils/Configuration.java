@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
- * Classe that contains all configuration properties in application.properties.
+ * Class that contains all configuration properties in application.properties.
  *
- * @author vmoittie
+ * @author Vincent Moittié
  *
  */
 @Component

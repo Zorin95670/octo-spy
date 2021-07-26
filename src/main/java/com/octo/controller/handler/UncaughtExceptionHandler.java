@@ -12,6 +12,9 @@ import com.octo.model.error.ErrorType;
 
 /**
  * Handle all uncaught exception and send appropriate response.
+ *
+ * @author Vincent Moittié
+ *
  */
 public class UncaughtExceptionHandler implements ExceptionMapper<Throwable> {
 

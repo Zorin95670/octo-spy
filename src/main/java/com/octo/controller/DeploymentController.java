@@ -35,7 +35,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
 /**
  * Deployment controller.
  *
- * @author vmoittie
+ * @author Vincent Moittié
  *
  */
 @Path("/deployment")

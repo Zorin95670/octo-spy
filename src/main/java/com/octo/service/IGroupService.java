@@ -6,6 +6,9 @@ import com.octo.model.entity.ProjectGroup;
 
 /**
  * Group service.
+ *
+ * @author Vincent Moittié
+ *
  */
 public interface IGroupService {
 

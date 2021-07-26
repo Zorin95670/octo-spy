@@ -1,7 +1,7 @@
 /**
  * Package that contains all models.
  *
- * @author vmoittie
+ * @author Vincent Moittié
  *
  */
 package com.octo.model;

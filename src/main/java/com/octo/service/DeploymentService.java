@@ -9,12 +9,12 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.cji.dao.IDAO;
-import com.cji.models.common.Resource;
-import com.cji.models.error.ErrorType;
-import com.cji.models.error.GlobalException;
-import com.cji.utils.bean.BeanMapper;
-import com.cji.utils.predicate.filter.QueryFilter;
+import com.octo.dao.IDAO;
+import com.octo.models.common.Resource;
+import com.octo.models.error.ErrorType;
+import com.octo.models.error.GlobalException;
+import com.octo.utils.bean.BeanMapper;
+import com.octo.utils.predicate.filter.QueryFilter;
 import com.octo.model.dto.common.SearchByNameDTO;
 import com.octo.model.dto.deployment.DeploymentDTO;
 import com.octo.model.dto.deployment.NewDeploymentDTO;

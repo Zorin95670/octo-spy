@@ -10,8 +10,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import com.cji.dao.IDAO;
-import com.cji.utils.predicate.filter.QueryFilter;
+import com.octo.dao.IDAO;
+import com.octo.utils.predicate.filter.QueryFilter;
 import com.octo.model.entity.Group;
 import com.octo.model.entity.Project;
 import com.octo.model.entity.ProjectGroup;

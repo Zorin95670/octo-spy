@@ -5,13 +5,12 @@
 	<groupId>com.octo</groupId>
 	<artifactId>octo-spy</artifactId>
 	<packaging>war</packaging>
-	<version>1.4.0</version>
+	<version>1.6.0</version>
 	<name>octo-spy</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
 		<beanutils.version>1.9.4</beanutils.version>
-		<cji-lib.version>1.0.0</cji-lib.version>
 		<flyway.version>7.4.0</flyway.version>
 		<hibernate.version>5.4.26.Final</hibernate.version>
 		<jackson.version>2.12.0</jackson.version>
@@ -37,12 +36,6 @@
 	</properties>
 
 	<dependencies>
-		<!-- CJI-lib -->
-		<dependency>
-			<groupId>com.cji</groupId>
-			<artifactId>CJI-lib</artifactId>
-			<version>${cji-lib.version}</version>
-		</dependency>
 		<!-- Java API for RESTful Web Services -->
 		<dependency>
 			<groupId>jakarta.ws.rs</groupId>

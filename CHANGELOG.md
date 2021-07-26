@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 2021/07/26: Version 1.6.0
+
+### Features
+
+* Add request filtering
+
 ## 2021/07/06: Version 1.5.0
 
 ### Features

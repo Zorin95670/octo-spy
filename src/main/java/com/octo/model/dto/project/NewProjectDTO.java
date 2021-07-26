@@ -1,6 +1,6 @@
 package com.octo.model.dto.project;
 
-import com.cji.models.common.DefaultDTO;
+import com.octo.models.common.DefaultDTO;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**

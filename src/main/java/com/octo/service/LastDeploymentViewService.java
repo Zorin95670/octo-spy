@@ -8,9 +8,9 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.cji.dao.IDAO;
-import com.cji.utils.bean.BeanMapper;
-import com.cji.utils.predicate.filter.QueryFilter;
+import com.octo.dao.IDAO;
+import com.octo.utils.bean.BeanMapper;
+import com.octo.utils.predicate.filter.QueryFilter;
 import com.octo.model.dto.deployment.LastDeploymentDTO;
 import com.octo.model.entity.LastDeploymentView;
 

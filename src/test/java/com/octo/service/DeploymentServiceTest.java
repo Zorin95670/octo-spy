@@ -19,11 +19,11 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.cji.dao.IDAO;
-import com.cji.models.common.Resource;
-import com.cji.models.error.ErrorType;
-import com.cji.models.error.GlobalException;
-import com.cji.utils.predicate.filter.QueryFilter;
+import com.octo.dao.IDAO;
+import com.octo.models.common.Resource;
+import com.octo.models.error.ErrorType;
+import com.octo.models.error.GlobalException;
+import com.octo.utils.predicate.filter.QueryFilter;
 import com.octo.model.dto.deployment.DeploymentDTO;
 import com.octo.model.dto.deployment.NewDeploymentDTO;
 import com.octo.model.dto.deployment.SearchDeploymentDTO;

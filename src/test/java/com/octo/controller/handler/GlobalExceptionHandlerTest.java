@@ -7,8 +7,8 @@ import javax.ws.rs.core.Response;
 
 import org.junit.Test;
 
-import com.cji.models.error.ErrorType;
-import com.cji.models.error.GlobalException;
+import com.octo.models.error.ErrorType;
+import com.octo.models.error.GlobalException;
 
 public class GlobalExceptionHandlerTest {
 

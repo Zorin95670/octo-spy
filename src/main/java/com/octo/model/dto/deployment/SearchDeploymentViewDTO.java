@@ -2,9 +2,9 @@ package com.octo.model.dto.deployment;
 
 import javax.ws.rs.QueryParam;
 
-import com.cji.utils.predicate.filter.FilterType;
-import com.cji.utils.predicate.filter.FilterType.Type;
-import com.cji.utils.predicate.filter.QueryFilter;
+import com.octo.utils.predicate.filter.FilterType;
+import com.octo.utils.predicate.filter.FilterType.Type;
+import com.octo.utils.predicate.filter.QueryFilter;
 import com.octo.model.entity.Environment;
 import com.octo.model.entity.Project;
 

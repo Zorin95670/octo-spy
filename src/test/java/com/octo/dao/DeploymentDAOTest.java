@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.cji.dao.IDAO;
-import com.cji.utils.predicate.filter.QueryFilter;
+import com.octo.dao.IDAO;
+import com.octo.utils.predicate.filter.QueryFilter;
 import com.octo.model.entity.Deployment;
 
 @RunWith(SpringRunner.class)

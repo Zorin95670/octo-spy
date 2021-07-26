@@ -1,7 +1,4 @@
 /**
- * All service of application.
- *
- * @author vmoittie
- *
+ * Common service.
  */
 package com.octo.service;

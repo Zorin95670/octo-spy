@@ -7,8 +7,8 @@ import javax.ws.rs.ext.ExceptionMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.cji.models.error.ErrorDTO;
-import com.cji.models.error.ErrorType;
+import com.octo.models.error.ErrorDTO;
+import com.octo.models.error.ErrorType;
 
 /**
  * Handle all uncaught exception and send appropriate response.

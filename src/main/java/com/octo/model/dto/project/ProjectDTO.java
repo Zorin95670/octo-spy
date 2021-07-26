@@ -2,7 +2,7 @@ package com.octo.model.dto.project;
 
 import java.sql.Timestamp;
 
-import com.cji.models.common.DefaultDTO;
+import com.octo.models.common.DefaultDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**

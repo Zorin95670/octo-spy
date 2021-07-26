@@ -1,6 +1,6 @@
 package com.octo.model.dto.environment;
 
-import com.cji.models.common.DefaultDTO;
+import com.octo.models.common.DefaultDTO;
 
 import io.swagger.v3.oas.annotations.Parameter;
 

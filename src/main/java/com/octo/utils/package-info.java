@@ -1,7 +1,4 @@
 /**
- * Package that contains all utility's classes.
- *
- * @author vmoittie
- *
+ * Common utils.
  */
 package com.octo.utils;

@@ -1,7 +1,4 @@
 /**
- * Package that contains all database access.
- *
- * @author vmoittie
- *
+ * Common DAO.
  */
 package com.octo.dao;

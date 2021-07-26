@@ -6,22 +6,23 @@ import static org.junit.Assert.assertNull;
 
 import java.util.Optional;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.octo.dao.IDAO;
-import com.octo.model.error.ErrorType;
-import com.octo.model.error.GlobalException;
-import com.octo.utils.predicate.filter.QueryFilter;
 import com.octo.model.dto.project.NewProjectDTO;
 import com.octo.model.dto.project.ProjectDTO;
 import com.octo.model.entity.Group;
 import com.octo.model.entity.Project;
+import com.octo.model.error.ErrorType;
+import com.octo.model.error.GlobalException;
+import com.octo.utils.predicate.filter.QueryFilter;
 
+@ExtendWith(MockitoExtension.class)
 public class ProjectServiceTest {
 
     @Mock
@@ -32,11 +33,6 @@ public class ProjectServiceTest {
 
     @InjectMocks
     ProjectService service;
-
-    @Before
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
 
     @Test
     public void testLoad() {
@@ -115,7 +111,6 @@ public class ProjectServiceTest {
 
         Mockito.when(projectDAO.save(Mockito.any())).thenReturn(new Project());
         Mockito.when(projectDAO.load(Mockito.any())).thenReturn(Optional.empty());
-        Mockito.when(groupService.create(Mockito.any())).thenReturn(new Group());
 
         GlobalException exception = null;
         try {
@@ -142,7 +137,6 @@ public class ProjectServiceTest {
 
     @Test
     public void testDelete() {
-        Mockito.when(this.projectDAO.loadById(Mockito.any())).thenReturn(new Project());
         Mockito.doNothing().when(this.projectDAO).delete(Mockito.any());
 
         GlobalException exception = null;

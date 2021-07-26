@@ -9,7 +9,7 @@ import static org.junit.Assert.assertTrue;
 import java.sql.Timestamp;
 import java.time.Instant;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class DeploymentTest {
 

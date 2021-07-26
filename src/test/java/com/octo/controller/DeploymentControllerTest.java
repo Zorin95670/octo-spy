@@ -1,7 +1,7 @@
 package com.octo.controller;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,25 +13,26 @@ import javax.ws.rs.core.Response.Status;
 import org.glassfish.jersey.internal.inject.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.octo.model.common.Resource;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.octo.model.common.Resource;
 import com.octo.model.dto.deployment.DeploymentDTO;
 import com.octo.model.dto.deployment.LastDeploymentDTO;
 import com.octo.service.DeploymentService;
 import com.octo.service.LastDeploymentViewService;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 @ContextConfiguration(locations = { "classpath:application-context.xml" })
 public class DeploymentControllerTest extends JerseyTest {
 
@@ -46,7 +47,6 @@ public class DeploymentControllerTest extends JerseyTest {
 
     @Override
     protected Application configure() {
-        MockitoAnnotations.openMocks(this);
         final ResourceConfig rc = new ResourceConfig().register(DeploymentController.class)
                 .register(new AbstractBinder() {
                     @Override
@@ -95,8 +95,8 @@ public class DeploymentControllerTest extends JerseyTest {
     @Test
     public void testGetLastDeployments() {
         List<LastDeploymentDTO> expected = new ArrayList<>();
-        Mockito.when(this.viewService.find()).thenReturn(expected);
-        final Response response = this.controller.getLastDeployments();
+        Mockito.when(this.viewService.find(Mockito.any())).thenReturn(expected);
+        final Response response = this.controller.getLastDeployments(Mockito.any());
 
         assertNotNull(response);
         assertEquals(Status.OK.getStatusCode(), response.getStatus());

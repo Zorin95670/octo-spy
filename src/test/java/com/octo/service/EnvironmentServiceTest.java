@@ -5,17 +5,18 @@ import static org.junit.Assert.assertNotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.octo.dao.IDAO;
-import com.octo.utils.predicate.filter.QueryFilter;
 import com.octo.model.entity.Environment;
+import com.octo.utils.predicate.filter.QueryFilter;
 
+@ExtendWith(MockitoExtension.class)
 public class EnvironmentServiceTest {
 
     @Mock
@@ -23,11 +24,6 @@ public class EnvironmentServiceTest {
 
     @InjectMocks
     EnvironmentService service;
-
-    @Before
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
 
     @Test
     public void testFindAll() {

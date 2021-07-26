@@ -11,22 +11,25 @@ import javax.ws.rs.core.Response;
 import org.glassfish.jersey.internal.inject.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.octo.model.dto.environment.EnvironmentDTO;
 import com.octo.service.EnvironmentService;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 @ContextConfiguration(locations = { "classpath:application-context.xml" })
 public class EnvironmentControllerTest extends JerseyTest {
 
@@ -35,10 +38,21 @@ public class EnvironmentControllerTest extends JerseyTest {
 
     @InjectMocks
     EnvironmentController controller;
+    
+    @BeforeEach
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+    }
+
+    @AfterEach
+    @Override
+    public void tearDown() throws Exception {
+        super.tearDown();
+    }
 
     @Override
     protected Application configure() {
-        MockitoAnnotations.openMocks(this);
         final ResourceConfig rc = new ResourceConfig().register(EnvironmentController.class)
                 .register(new AbstractBinder() {
                     @Override

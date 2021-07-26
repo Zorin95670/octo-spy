@@ -77,8 +77,6 @@ public class DeploymentController {
      * @param id
      *            Deployment's id.
      * @return Deployment.
-     * @throws OctoException
-     *             On all database error.
      */
     @GET
     @Path("/{id}")
@@ -93,8 +91,6 @@ public class DeploymentController {
      * @param dto
      *            Filter.
      * @return Deployments.
-     * @throws OctoException
-     *             On all database error.
      */
     @GET
     public final Response getDeployments(final @BeanParam SearchDeploymentViewDTO dto) {
@@ -113,8 +109,6 @@ public class DeploymentController {
      * @param dto
      *            Deployment DTO.
      * @return Deployment.
-     * @throws OctoException
-     *             On all database error.
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)

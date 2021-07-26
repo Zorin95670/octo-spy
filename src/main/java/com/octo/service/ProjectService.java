@@ -50,8 +50,6 @@ public class ProjectService {
      * @param id
      *            Primary key.
      * @return Project.
-     * @throws OctoException
-     *             On all database error.
      */
     public ProjectDTO load(final Long id) {
         return new BeanMapper<>(ProjectDTO.class).apply(projectDAO.loadEntityById(id));
@@ -63,8 +61,6 @@ public class ProjectService {
      * @param dto
      *            DTO to save
      * @return Project.
-     * @throws OctoException
-     *             On all database error.
      */
     public ProjectDTO save(final NewProjectDTO dto) {
         if (dto == null || StringUtils.isBlank(dto.getName())) {

@@ -52,8 +52,6 @@ public class ProjectController {
      * @param id
      *            Deployment's id.
      * @return Deployment.
-     * @throws OctoException
-     *             On all database error.
      */
     @GET
     @Path("/{id}")
@@ -68,8 +66,6 @@ public class ProjectController {
      * @param dto
      *            Project DTO.
      * @return Project.
-     * @throws OctoException
-     *             On all database error.
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)

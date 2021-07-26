@@ -293,8 +293,6 @@ public abstract class CommonDAO<T, Y extends QueryFilter> implements IDAO<T, Y> 
      * @param entity
      *            Entity to get order information.
      * @return Criteria Order.
-     * @throws GlobalException
-     *             Throw exception on bad order field.
      */
     protected Order getEntityOrder(final CriteriaBuilder builder, final Root<T> root, final Y entity) {
         try {

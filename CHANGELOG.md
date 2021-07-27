@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 2021/07/27: Version 1.7.1
+
+### Bug fixes
+
+* Add initialization script for docker
+
 ## 2021/07/26: Version 1.7.0
 
 ### Features

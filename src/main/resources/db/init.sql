@@ -1,0 +1,15 @@
+-- Create Database
+CREATE DATABASE octo_db ENCODING = 'UTF8';
+
+-- Create User harmony
+CREATE USER octo WITH ENCRYPTED PASSWORD 'password';
+
+GRANT CONNECT ON DATABASE octo_db TO octo;
+GRANT USAGE ON SCHEMA public TO octo;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO octo;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO octo;
+
+\connect octo_db
+
+--Creation
+CREATE OR REPLACE LANGUAGE plpgsql;

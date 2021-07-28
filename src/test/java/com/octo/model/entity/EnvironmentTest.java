@@ -3,12 +3,12 @@ package com.octo.model.entity;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class EnvironmentTest {
+class EnvironmentTest {
 
     @Test
-    public void testGetterSetter() {
+    void testGetterSetter() {
         Environment environment = new Environment();
 
         assertNull(environment.getId());

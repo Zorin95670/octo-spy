@@ -7,12 +7,12 @@ import static org.junit.Assert.assertNull;
 import java.sql.Timestamp;
 import java.time.Instant;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class ProjectGroupTest {
+class ProjectGroupTest {
 
     @Test
-    public void testGetterAndSetter() {
+    void testGetterAndSetter() {
         ProjectGroup entity = new ProjectGroup();
 
         assertNull(entity.getId());

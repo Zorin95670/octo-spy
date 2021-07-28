@@ -23,15 +23,18 @@
 	<tx:annotation-driven
 		transaction-manager="transactionManager" />
 
-	<bean id="dataSource"
-		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<property name="driverClassName"
-			value="org.postgresql.Driver"></property>
-		<property name="url"
-			value="jdbc:postgresql://${octo-spy.database.host:localhost}:${octo-spy.database.port:5432}/${octo-spy.database.name:octo_db}" />
-		<property name="username" value="${octo-spy.database.username:octo}" />
-		<property name="password" value="${octo-spy.database.password:password}" />
-	</bean>
+    <bean id="dataSource"
+        class="org.apache.commons.dbcp2.BasicDataSource">
+        <property name="driverClassName"
+            value="org.hsqldb.jdbcDriver"></property>
+        <property name="url" value="jdbc:hsqldb:sample" />
+        <property name="username" value="user" />
+        <property name="password" value="password" />
+        <property name="initialSize" value="10" />
+        <property name="maxTotal" value="150" />
+        <property name="maxIdle" value="30" />
+        <property name="maxWaitMillis" value="1000" />
+    </bean>
 	<bean id="transactionManager"
 		class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory"
@@ -40,7 +43,7 @@
 	<bean id="entityManagerFactory"
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="dataSource" ref="dataSource" />
-		<property name="persistenceUnitName" value="JPA-OCTO" />
+		<property name="persistenceUnitName" value="JPA-OCTO-TEST" />
 		<property name="jpaVendorAdapter">
 			<bean
 				class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />

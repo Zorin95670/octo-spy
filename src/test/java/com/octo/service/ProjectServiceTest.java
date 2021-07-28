@@ -4,28 +4,35 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.octo.dao.IDAO;
-import com.octo.model.error.ErrorType;
-import com.octo.model.error.GlobalException;
-import com.octo.utils.predicate.filter.QueryFilter;
 import com.octo.model.dto.project.NewProjectDTO;
 import com.octo.model.dto.project.ProjectDTO;
 import com.octo.model.entity.Group;
 import com.octo.model.entity.Project;
+import com.octo.model.entity.ProjectView;
+import com.octo.model.error.ErrorType;
+import com.octo.model.error.GlobalException;
+import com.octo.utils.predicate.filter.QueryFilter;
 
-public class ProjectServiceTest {
+@ExtendWith(MockitoExtension.class)
+class ProjectServiceTest {
 
     @Mock
     IDAO<Project, QueryFilter> projectDAO;
+
+    @Mock
+    IDAO<ProjectView, QueryFilter> projectViewDAO;
 
     @Mock
     IGroupService groupService;
@@ -33,19 +40,14 @@ public class ProjectServiceTest {
     @InjectMocks
     ProjectService service;
 
-    @Before
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
-
     @Test
-    public void testLoad() {
+    void testLoad() {
         Mockito.when(this.projectDAO.loadEntityById(Mockito.any())).thenReturn(new Project());
         assertNotNull(service.load(1L));
     }
 
     @Test
-    public void testSave() {
+    void testSave() {
         // Test null name
         GlobalException exception = null;
 
@@ -94,7 +96,7 @@ public class ProjectServiceTest {
     }
 
     @Test
-    public void saveMasterProject() {
+    void saveMasterProject() {
         NewProjectDTO dto = new NewProjectDTO();
         dto.setIsMaster(true);
         dto.setName("test");
@@ -107,7 +109,7 @@ public class ProjectServiceTest {
     }
 
     @Test
-    public void saveGroupProject() {
+    void saveGroupProject() {
         NewProjectDTO dto = new NewProjectDTO();
         dto.setIsMaster(false);
         dto.setName("test");
@@ -115,7 +117,6 @@ public class ProjectServiceTest {
 
         Mockito.when(projectDAO.save(Mockito.any())).thenReturn(new Project());
         Mockito.when(projectDAO.load(Mockito.any())).thenReturn(Optional.empty());
-        Mockito.when(groupService.create(Mockito.any())).thenReturn(new Group());
 
         GlobalException exception = null;
         try {
@@ -141,8 +142,7 @@ public class ProjectServiceTest {
     }
 
     @Test
-    public void testDelete() {
-        Mockito.when(this.projectDAO.loadById(Mockito.any())).thenReturn(new Project());
+    void testDelete() {
         Mockito.doNothing().when(this.projectDAO).delete(Mockito.any());
 
         GlobalException exception = null;
@@ -153,5 +153,13 @@ public class ProjectServiceTest {
         }
 
         assertNull(exception);
+    }
+
+    @Test
+    void testFindAll() {
+        List<ProjectView> expected = new ArrayList<>();
+        Mockito.when(this.projectViewDAO.find(Mockito.any(), Mockito.anyBoolean())).thenReturn(expected);
+
+        assertNotNull(this.service.findAll(null));
     }
 }

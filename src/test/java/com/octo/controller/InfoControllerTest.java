@@ -7,23 +7,37 @@ import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.octo.model.dto.common.ProjectInformation;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = { "classpath:application-context.xml" })
-public class InfoControllerTest extends JerseyTest {
+class InfoControllerTest extends JerseyTest {
 
     @Autowired
     InfoController controller;
+
+    @BeforeEach
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+    }
+
+    @AfterEach
+    @Override
+    public void tearDown() throws Exception {
+        super.tearDown();
+    }
 
     @Override
     protected Application configure() {
@@ -35,7 +49,7 @@ public class InfoControllerTest extends JerseyTest {
     }
 
     @Test
-    public void getVersionFunctionalTest() throws JsonProcessingException {
+    void getVersionFunctionalTest() throws JsonProcessingException {
         final ProjectInformation version = this.controller.getVersion();
         ObjectMapper mapper = new ObjectMapper();
 

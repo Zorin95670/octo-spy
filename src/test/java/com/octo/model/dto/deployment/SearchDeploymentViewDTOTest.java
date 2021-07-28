@@ -3,15 +3,15 @@ package com.octo.model.dto.deployment;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.octo.model.entity.Environment;
 import com.octo.model.entity.Project;
 
-public class SearchDeploymentViewDTOTest {
+class SearchDeploymentViewDTOTest {
 
     @Test
-    public void testGetterAndSetter() {
+    void testGetterAndSetter() {
         SearchDeploymentViewDTO dto = new SearchDeploymentViewDTO();
         assertNull(dto.getId());
         assertNull(dto.getEnvironment());

@@ -1,18 +1,18 @@
 package com.octo.controller.handler;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.Response;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
-public class ClientErrorHandlerTest {
+class ClientErrorHandlerTest {
 
     @Test
-    public void toResponseTest() {
+    void toResponseTest() {
         final ClientErrorHandler handler = new ClientErrorHandler();
 
         NotFoundException exception = new NotFoundException();

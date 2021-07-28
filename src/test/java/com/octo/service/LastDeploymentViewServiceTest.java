@@ -5,18 +5,23 @@ import static org.junit.Assert.assertNotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.octo.dao.IDAO;
-import com.octo.utils.predicate.filter.QueryFilter;
 import com.octo.model.entity.LastDeploymentView;
+import com.octo.utils.predicate.filter.QueryFilter;
 
-public class LastDeploymentViewServiceTest {
+@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
+@ContextConfiguration(locations = { "classpath:application-context.xml" })
+class LastDeploymentViewServiceTest {
 
     @Mock
     IDAO<LastDeploymentView, QueryFilter> lastDeploymentViewDAO;
@@ -24,16 +29,11 @@ public class LastDeploymentViewServiceTest {
     @InjectMocks
     LastDeploymentViewService service;
 
-    @Before
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
-
     @Test
-    public void testFindAll() {
+    void testFindAll() {
         List<LastDeploymentView> list = new ArrayList<>();
         Mockito.when(this.lastDeploymentViewDAO.find(Mockito.any(), Mockito.any())).thenReturn(list);
-        assertNotNull(service.find());
+        assertNotNull(service.find(null));
     }
 
 }

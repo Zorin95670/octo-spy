@@ -9,12 +9,12 @@ import static org.junit.Assert.assertTrue;
 import java.sql.Timestamp;
 import java.time.Instant;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class DeploymentTest {
+class DeploymentTest {
 
     @Test
-    public void testGetterAndSetter() {
+    void testGetterAndSetter() {
         Deployment entity = new Deployment();
 
         assertFalse(entity.isAlive());
@@ -51,7 +51,7 @@ public class DeploymentTest {
     }
 
     @Test
-    public void testPrePersist() {
+    void testPrePersist() {
         Deployment entity = new Deployment();
 
         assertFalse(entity.isAlive());

@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## 2021/07/28: Version 1.7.2
+
+### Misc.
+
+* Migrate to junit 5
+* Add missing unit tests
+* Setting up SonarCloud
+
 ## 2021/07/27: Version 1.7.1
 
 ### Bug fixes

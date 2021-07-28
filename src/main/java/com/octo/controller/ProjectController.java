@@ -71,10 +71,9 @@ public class ProjectController {
      */
     @GET
     @Path("/count")
-    public Response count(@BeanParam final CountDTO countBody,
-            @BeanParam final SearchProjectViewDTO projectsBody) {
-        LOGGER.info("Received GET request to count projects with count DTO {} and search DTO {}",
-                countBody, projectsBody);
+    public Response count(@BeanParam final CountDTO countBody, @BeanParam final SearchProjectViewDTO projectsBody) {
+        LOGGER.info("Received GET request to count projects with count DTO {} and search DTO {}", countBody,
+                projectsBody);
         CountDTO countDTO = new BeanMapper<>(CountDTO.class).apply(countBody);
         SearchProjectViewDTO entriesDTO = new BeanMapper<>(SearchProjectViewDTO.class).apply(projectsBody);
         return Response.ok(this.countService.count(ProjectView.class, countDTO, entriesDTO)).build();
@@ -96,6 +95,7 @@ public class ProjectController {
 
     /**
      * Endpoint to return all projects.
+     *
      * @return List of project name.
      */
     @GET
@@ -127,9 +127,10 @@ public class ProjectController {
      */
     @DELETE
     @Operation(summary = "Delete project in database.",
-            responses = { @ApiResponse(responseCode = "204"), @ApiResponse(responseCode = "404",
-                    content = @Content(mediaType = "application/json", schema = @Schema(allOf = { Error.class })),
-                    description = "Error on unknown project id.") })
+            responses = {@ApiResponse(responseCode = "204"),
+                    @ApiResponse(responseCode = "404",
+                            content = @Content(mediaType = "application/json", schema = @Schema(allOf = {Error.class})),
+                            description = "Error on unknown project id.")})
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/{id}")
     public Response deleteProject(@PathParam("id") final Long id) {

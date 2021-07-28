@@ -5,12 +5,12 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class NewDeploymentDTOTest {
+class NewDeploymentDTOTest {
 
     @Test
-    public void testGetterAndSetter() {
+    void testGetterAndSetter() {
         NewDeploymentDTO dto = new NewDeploymentDTO();
 
         assertFalse(dto.isAlive());

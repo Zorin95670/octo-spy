@@ -3,20 +3,25 @@ package com.octo.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.octo.dao.IDAO;
-import com.octo.utils.predicate.filter.QueryFilter;
 import com.octo.model.entity.Group;
 import com.octo.model.entity.Project;
 import com.octo.model.entity.ProjectGroup;
+import com.octo.utils.predicate.filter.QueryFilter;
 
-public class GroupServiceTest {
+@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
+@ContextConfiguration(locations = { "classpath:application-context.xml" })
+class GroupServiceTest {
 
     @Mock
     IDAO<ProjectGroup, QueryFilter> projectGroupDAO;
@@ -27,13 +32,8 @@ public class GroupServiceTest {
     @InjectMocks
     GroupService service;
 
-    @Before
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
-
     @Test
-    public void testCreate() {
+    void testCreate() {
         Group group = new Group();
         group.setId(1L);
 
@@ -44,10 +44,11 @@ public class GroupServiceTest {
     }
 
     @Test
-    public void testAddProjectToGroup() {
+    void testAddProjectToGroup() {
         Group group = new Group();
         group.setId(1L);
 
+        System.out.println(groupDAO == null);
         Mockito.when(groupDAO.loadEntityById(Mockito.any(), Mockito.any())).thenReturn(group);
         Mockito.when(projectGroupDAO.save(Mockito.any())).thenReturn(null);
 

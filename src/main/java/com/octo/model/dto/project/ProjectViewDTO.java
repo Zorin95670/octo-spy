@@ -7,7 +7,7 @@ package com.octo.model.dto.project;
  *
  */
 public class ProjectViewDTO extends ProjectDTO {
-    
+
     /**
      * Master project's name.
      */

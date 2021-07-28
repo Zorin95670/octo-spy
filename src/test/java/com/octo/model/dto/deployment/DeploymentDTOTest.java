@@ -8,15 +8,15 @@ import static org.junit.Assert.assertTrue;
 import java.sql.Timestamp;
 import java.time.Instant;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.octo.model.entity.Environment;
 import com.octo.model.entity.Project;
 
-public class DeploymentDTOTest {
+class DeploymentDTOTest {
 
     @Test
-    public void testGetterAndSetter() {
+    void testGetterAndSetter() {
         DeploymentDTO dto = new DeploymentDTO();
 
         assertFalse(dto.isAlive());

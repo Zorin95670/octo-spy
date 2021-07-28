@@ -1,19 +1,19 @@
 package com.octo.controller.handler;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import javax.ws.rs.core.Response;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.octo.model.error.ErrorType;
 import com.octo.model.error.GlobalException;
 
-public class GlobalExceptionHandlerTest {
+class GlobalExceptionHandlerTest {
 
     @Test
-    public void toResponseTest() {
+    void toResponseTest() {
         final GlobalExceptionHandler handler = new GlobalExceptionHandler();
         GlobalException exception = new GlobalException(ErrorType.WRONG_VALUE, null, null);
 

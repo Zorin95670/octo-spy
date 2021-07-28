@@ -9,21 +9,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.octo.dao.IDAO;
 import com.octo.model.common.Resource;
-import com.octo.model.error.ErrorType;
-import com.octo.model.error.GlobalException;
-import com.octo.utils.predicate.filter.QueryFilter;
 import com.octo.model.dto.deployment.DeploymentDTO;
 import com.octo.model.dto.deployment.NewDeploymentDTO;
 import com.octo.model.dto.deployment.SearchDeploymentDTO;
@@ -33,11 +29,15 @@ import com.octo.model.entity.DeploymentProgress;
 import com.octo.model.entity.DeploymentView;
 import com.octo.model.entity.Environment;
 import com.octo.model.entity.Project;
+import com.octo.model.error.ErrorType;
+import com.octo.model.error.GlobalException;
 import com.octo.utils.Configuration;
+import com.octo.utils.predicate.filter.QueryFilter;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 @ContextConfiguration(locations = { "classpath:application-context.xml" })
-public class DeploymentServiceTest {
+class DeploymentServiceTest {
 
     @Mock
     IDAO<Environment, QueryFilter> environmentDAO;
@@ -60,19 +60,14 @@ public class DeploymentServiceTest {
     @InjectMocks
     DeploymentService service;
 
-    @Before
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
-
     @Test
-    public void testLoad() {
+    void testLoad() {
         Mockito.when(this.deploymentDAO.loadEntityById(Mockito.any())).thenReturn(new Deployment());
         assertNotNull(service.load(1L));
     }
 
     @Test
-    public void testSave() {
+    void testSave() {
         // Test null environment
         GlobalException exception = null;
         NewDeploymentDTO input = new NewDeploymentDTO();
@@ -110,7 +105,6 @@ public class DeploymentServiceTest {
         // Test null version
         exception = null;
         input.setProject("");
-        Mockito.when(this.projectDAO.loadById(Mockito.anyLong())).thenReturn(null);
 
         try {
             service.save(input);
@@ -195,7 +189,6 @@ public class DeploymentServiceTest {
         Mockito.when(this.environmentDAO.load(Mockito.any())).thenReturn(Optional.of(environment));
         Mockito.when(this.projectDAO.load(Mockito.any())).thenReturn(Optional.of(project));
         Mockito.when(this.deploymentDAO.save(Mockito.any())).thenReturn(new Deployment());
-        Mockito.when(this.deploymentDAO.loadById(Mockito.any())).thenReturn(null);
         dto = null;
 
         try {
@@ -219,7 +212,7 @@ public class DeploymentServiceTest {
     }
 
     @Test
-    public void testSaveWithProgress() {
+    void testSaveWithProgress() {
         Environment environment = new Environment();
         environment.setId(1L);
         environment.setName("QA");
@@ -234,7 +227,6 @@ public class DeploymentServiceTest {
 
         Mockito.when(this.environmentDAO.load(Mockito.any())).thenReturn(Optional.of(environment));
         Mockito.when(this.projectDAO.load(Mockito.any())).thenReturn(Optional.of(project));
-        Mockito.when(this.deploymentDAO.loadById(Mockito.any())).thenReturn(deployment);
         Mockito.when(this.deploymentDAO.save(Mockito.any())).thenReturn(deployment);
         Mockito.when(this.deploymentProgressDAO.save(Mockito.any())).thenReturn(null);
         NewDeploymentDTO dto = new NewDeploymentDTO();
@@ -257,7 +249,7 @@ public class DeploymentServiceTest {
     }
 
     @Test
-    public void testDisablePreviousDeployment() {
+    void testDisablePreviousDeployment() {
         Project project = new Project();
         project.setId(1L);
 
@@ -297,7 +289,7 @@ public class DeploymentServiceTest {
     }
 
     @Test
-    public void testDelete() {
+    void testDelete() {
         Mockito.when(this.deploymentDAO.loadById(Mockito.any())).thenReturn(new Deployment());
         Mockito.doNothing().when(this.deploymentDAO).delete(Mockito.any());
 
@@ -312,7 +304,7 @@ public class DeploymentServiceTest {
     }
 
     @Test
-    public void testDeleteProgress() {
+    void testDeleteProgress() {
         Project project = new Project();
         project.setId(1L);
 
@@ -402,7 +394,7 @@ public class DeploymentServiceTest {
     }
 
     @Test
-    public void testDeleteProgressWithData() {
+    void testDeleteProgressWithData() {
         Project project = new Project();
         project.setId(1L);
 
@@ -432,13 +424,13 @@ public class DeploymentServiceTest {
     }
 
     @Test
-    public void testCount() {
+    void testCount() {
         Mockito.when(this.deploymentViewDAO.count(Mockito.any())).thenReturn(1L);
         assertEquals(Long.valueOf(1L), this.service.count(null));
     }
 
     @Test
-    public void testFind() {
+    void testFind() {
         List<DeploymentView> list = new ArrayList<DeploymentView>();
         Mockito.when(this.deploymentViewDAO.count(Mockito.any())).thenReturn(2L);
         Mockito.when(this.deploymentViewDAO.find(Mockito.any())).thenReturn(list);

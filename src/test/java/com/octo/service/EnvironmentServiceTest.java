@@ -17,7 +17,7 @@ import com.octo.model.entity.Environment;
 import com.octo.utils.predicate.filter.QueryFilter;
 
 @ExtendWith(MockitoExtension.class)
-public class EnvironmentServiceTest {
+class EnvironmentServiceTest {
 
     @Mock
     IDAO<Environment, QueryFilter> environmentDAO;
@@ -26,7 +26,7 @@ public class EnvironmentServiceTest {
     EnvironmentService service;
 
     @Test
-    public void testFindAll() {
+    void testFindAll() {
         List<Environment> list = new ArrayList<>();
         Mockito.when(this.environmentDAO.find(Mockito.any(), Mockito.any())).thenReturn(list);
         assertNotNull(service.findAll());

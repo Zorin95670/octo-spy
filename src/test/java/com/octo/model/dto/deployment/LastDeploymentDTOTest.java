@@ -10,10 +10,10 @@ import java.time.Instant;
 
 import org.junit.jupiter.api.Test;
 
-public class LastDeploymentDTOTest {
+class LastDeploymentDTOTest {
 
     @Test
-    public void testGetterAndSetter() {
+    void testGetterAndSetter() {
         Timestamp time = Timestamp.from(Instant.now());
         LastDeploymentDTO dto = new LastDeploymentDTO();
 

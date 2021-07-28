@@ -9,10 +9,10 @@ import java.time.Instant;
 
 import org.junit.jupiter.api.Test;
 
-public class ProjectTest {
+class ProjectTest {
 
     @Test
-    public void testGetterAndSetter() {
+    void testGetterAndSetter() {
         Project entity = new Project();
 
         assertNull(entity.getId());
@@ -37,7 +37,7 @@ public class ProjectTest {
     }
 
     @Test
-    public void testPrePersist() {
+    void testPrePersist() {
         Project entity = new Project();
 
         assertNull(entity.getId());

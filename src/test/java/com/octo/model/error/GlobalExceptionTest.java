@@ -9,10 +9,10 @@ import javax.ws.rs.core.Response.Status;
 
 import org.junit.jupiter.api.Test;
 
-public class GlobalExceptionTest {
+class GlobalExceptionTest {
 
     @Test
-    public void test() {
+    void test() {
         Throwable throwable = new Throwable();
         GlobalException exception = new GlobalException(ErrorType.INTERNAL_ERROR, null);
         assertTrue(exception.needToBeLogged());

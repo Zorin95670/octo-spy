@@ -9,10 +9,10 @@ import javax.ws.rs.core.Response;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
-public class ClientErrorHandlerTest {
+class ClientErrorHandlerTest {
 
     @Test
-    public void toResponseTest() {
+    void toResponseTest() {
         final ClientErrorHandler handler = new ClientErrorHandler();
 
         NotFoundException exception = new NotFoundException();

@@ -9,10 +9,10 @@ import java.lang.reflect.Constructor;
 
 import org.junit.jupiter.api.Test;
 
-public class FieldUtilsTest {
+class FieldUtilsTest {
 
     @Test
-    public void testConstructor() {
+    void testConstructor() {
 
         Exception exception = null;
         try {
@@ -27,7 +27,7 @@ public class FieldUtilsTest {
     }
 
     @Test
-    public void testClassHasField() {
+    void testClassHasField() {
         class Test {
             @SuppressWarnings("unused") // Used in tests below.
             private String test;
@@ -38,7 +38,7 @@ public class FieldUtilsTest {
     }
 
     @Test
-    public void testSuperClassHasField() {
+    void testSuperClassHasField() {
         class Test {
             @SuppressWarnings("unused") // Used in tests below.
             private String test;

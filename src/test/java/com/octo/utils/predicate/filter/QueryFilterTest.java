@@ -12,10 +12,10 @@ import com.octo.helpers.TestDTO;
 import com.octo.model.error.ErrorType;
 import com.octo.model.error.GlobalException;
 
-public class QueryFilterTest {
+class QueryFilterTest {
 
     @Test
-    public void testValidateWithBadPagination() {
+    void testValidateWithBadPagination() {
         QueryFilter filter = new QueryFilter();
         GlobalException exception = null;
         filter.setPage(-1);
@@ -30,7 +30,7 @@ public class QueryFilterTest {
     }
 
     @Test
-    public void testValidateWithBadCount() {
+    void testValidateWithBadCount() {
         QueryFilter filter = new QueryFilter();
         GlobalException exception = null;
         filter.setCount(-1);
@@ -45,7 +45,7 @@ public class QueryFilterTest {
     }
 
     @Test
-    public void testValidateSetDefaultCount() {
+    void testValidateSetDefaultCount() {
         QueryFilter filter = new QueryFilter();
 
         filter.validate(5, 10);
@@ -54,7 +54,7 @@ public class QueryFilterTest {
     }
 
     @Test
-    public void testValidateSetMaximumCount() {
+    void testValidateSetMaximumCount() {
         QueryFilter filter = new QueryFilter();
         filter.setCount(15);
 
@@ -64,7 +64,7 @@ public class QueryFilterTest {
     }
 
     @Test
-    public void testValidateWithGoodCount() {
+    void testValidateWithGoodCount() {
         QueryFilter filter = new QueryFilter();
         filter.setCount(15);
 
@@ -74,7 +74,7 @@ public class QueryFilterTest {
     }
 
     @Test
-    public void testGetSpecificFilter() {
+    void testGetSpecificFilter() {
         TestQueryFilter dto = new TestQueryFilter("test");
         assertNull(dto.getFilter(null, null));
         List<IPredicateFilter> filters = dto.getFilters(TestDTO.class);

@@ -31,7 +31,7 @@ import com.octo.service.EnvironmentService;
 @ExtendWith(SpringExtension.class)
 @ExtendWith(MockitoExtension.class)
 @ContextConfiguration(locations = { "classpath:application-context.xml" })
-public class EnvironmentControllerTest extends JerseyTest {
+class EnvironmentControllerTest extends JerseyTest {
 
     @Mock
     EnvironmentService service;
@@ -68,7 +68,7 @@ public class EnvironmentControllerTest extends JerseyTest {
     }
 
     @Test
-    public void getAllTest() throws JsonProcessingException {
+    void getAllTest() throws JsonProcessingException {
         List<EnvironmentDTO> environments = new ArrayList<>();
         environments.add(new EnvironmentDTO());
         Mockito.when(this.service.findAll()).thenReturn(environments);

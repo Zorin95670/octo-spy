@@ -13,13 +13,13 @@ import com.octo.utils.predicate.filter.QueryFilter;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = { "classpath:application-context.xml" })
-public class DeploymentProgressDAOTest {
+class DeploymentProgressDAOTest {
 
     @Autowired
     private IDAO<DeploymentProgress, QueryFilter> deploymentProgressDAO;
 
     @Test
-    public void test() {
+    void test() {
         assertEquals(DeploymentProgress.class, deploymentProgressDAO.getType());
     }
 

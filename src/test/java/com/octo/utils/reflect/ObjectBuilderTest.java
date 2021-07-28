@@ -8,10 +8,10 @@ import org.junit.jupiter.api.Test;
 import com.octo.helpers.EntityHelpers;
 import com.octo.model.error.GlobalException;
 
-public class ObjectBuilderTest {
+class ObjectBuilderTest {
 
     @Test
-    public void testSetWrongField() {
+    void testSetWrongField() {
         GlobalException exception = null;
         try {
             ObjectBuilder.init(EntityHelpers.class).setField("wrong field", null);
@@ -22,7 +22,7 @@ public class ObjectBuilderTest {
     }
 
     @Test
-    public void testSetWrongFieldValue() {
+    void testSetWrongFieldValue() {
         GlobalException exception = null;
         try {
             ObjectBuilder.init(EntityHelpers.class).setField("id", "a");
@@ -33,7 +33,7 @@ public class ObjectBuilderTest {
     }
 
     @Test
-    public void testBadConstructor() {
+    void testBadConstructor() {
         GlobalException exception = null;
         try {
             ObjectBuilder.init(EntityHelpers.class, new Class<?>[] { String.class }, new Object[] { "" });
@@ -44,7 +44,7 @@ public class ObjectBuilderTest {
     }
 
     @Test
-    public void testSetField() {
+    void testSetField() {
         final EntityHelpers entry = ObjectBuilder.init(EntityHelpers.class).setField("id", 1L).build();
 
         assertNotNull(entry);

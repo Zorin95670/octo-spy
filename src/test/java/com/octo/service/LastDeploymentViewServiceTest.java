@@ -21,7 +21,7 @@ import com.octo.utils.predicate.filter.QueryFilter;
 @ExtendWith(SpringExtension.class)
 @ExtendWith(MockitoExtension.class)
 @ContextConfiguration(locations = { "classpath:application-context.xml" })
-public class LastDeploymentViewServiceTest {
+class LastDeploymentViewServiceTest {
 
     @Mock
     IDAO<LastDeploymentView, QueryFilter> lastDeploymentViewDAO;
@@ -30,7 +30,7 @@ public class LastDeploymentViewServiceTest {
     LastDeploymentViewService service;
 
     @Test
-    public void testFindAll() {
+    void testFindAll() {
         List<LastDeploymentView> list = new ArrayList<>();
         Mockito.when(this.lastDeploymentViewDAO.find(Mockito.any(), Mockito.any())).thenReturn(list);
         assertNotNull(service.find(null));

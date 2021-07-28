@@ -7,10 +7,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-public class PredicateOperatorTest {
+class PredicateOperatorTest {
 
     @Test
-    public void constructorTest() {
+    void constructorTest() {
         assertEquals("eq", PredicateOperator.EQUALS.getValue());
         assertEquals("lt", PredicateOperator.INFERIOR.getValue());
         assertEquals("gt", PredicateOperator.SUPERIOR.getValue());
@@ -18,7 +18,7 @@ public class PredicateOperatorTest {
     }
 
     @Test
-    public void isValidTest() {
+    void isValidTest() {
         assertTrue(PredicateOperator.isValid("eq"));
         assertTrue(PredicateOperator.isValid("LT"));
         assertTrue(PredicateOperator.isValid("Gt"));
@@ -35,7 +35,7 @@ public class PredicateOperatorTest {
     }
 
     @Test
-    public void getTest() {
+    void getTest() {
         assertNull(PredicateOperator.get("bad"));
         assertEquals(PredicateOperator.EQUALS, PredicateOperator.get(PredicateOperator.EQUALS.getValue()));
     }

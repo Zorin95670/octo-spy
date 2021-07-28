@@ -27,13 +27,13 @@ import com.octo.utils.predicate.PredicateOperator;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = { "classpath:application-context.xml" })
-public class PredicateFilterTest {
+class PredicateFilterTest {
 
     @PersistenceContext
     private EntityManager entityManager;
 
     @Test
-    public void testConstructor() {
+    void testConstructor() {
         PredicateFilterFake filter = new PredicateFilterFake(null, null);
         assertNull(filter.getName());
         assertEquals(0, filter.getValues().length);
@@ -55,7 +55,7 @@ public class PredicateFilterTest {
     }
 
     @Test
-    public void testSetOperatorFromValue() {
+    void testSetOperatorFromValue() {
         PredicateFilterFake filter = new PredicateFilterFake("eq1", PredicateOperator.EQUALS.getValue());
         filter.extract();
         assertEquals(PredicateOperator.EQUALS, filter.getOperator(0));
@@ -82,7 +82,7 @@ public class PredicateFilterTest {
     }
 
     @Test
-    public void testExtract() {
+    void testExtract() {
         PredicateFilterFake filter = new PredicateFilterFake(null, null);
         assertFalse(filter.extract());
 
@@ -94,7 +94,7 @@ public class PredicateFilterTest {
     }
 
     @Test
-    public void getPredicateTest() {
+    void getPredicateTest() {
         final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
         final CriteriaQuery<EntityHelpers> query = builder.createQuery(EntityHelpers.class);
         final Root<EntityHelpers> root = query.from(EntityHelpers.class);
@@ -121,7 +121,7 @@ public class PredicateFilterTest {
     }
 
     @Test
-    public void getFieldValueTest() {
+    void getFieldValueTest() {
         final EntityTestSearch query = new EntityTestSearch();
         query.setName("test");
 

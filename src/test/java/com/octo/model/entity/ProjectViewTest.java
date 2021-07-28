@@ -8,10 +8,10 @@ import java.time.Instant;
 
 import org.junit.jupiter.api.Test;
 
-public class ProjectViewTest {
+class ProjectViewTest {
 
     @Test
-    public void testGetterAndSetter() {
+    void testGetterAndSetter() {
         ProjectView entity = new ProjectView();
 
         assertNull(entity.getMasterProject());

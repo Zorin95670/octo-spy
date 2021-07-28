@@ -5,10 +5,10 @@ import static org.junit.Assert.assertNull;
 
 import org.junit.jupiter.api.Test;
 
-public class SearchByNameDTOTest {
+class SearchByNameDTOTest {
 
     @Test
-    public void testGetterAndSetter() {
+    void testGetterAndSetter() {
         SearchByNameDTO dto = new SearchByNameDTO(null);
         assertNull(dto.getName());
 

@@ -5,10 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-public class SearchProjectViewDTOTest {
+class SearchProjectViewDTOTest {
 
     @Test
-    public void testGetterAndSetter() {
+    void testGetterAndSetter() {
         SearchProjectViewDTO dto = new SearchProjectViewDTO();
 
         assertNull(dto.getId());

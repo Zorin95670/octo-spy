@@ -28,25 +28,25 @@ import com.octo.utils.predicate.filter.QueryFilter;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = { "classpath:application-context.xml" })
 @Transactional
-public class CommonDAOTest {
+class CommonDAOTest {
 
     @Autowired
     IDAO<EntityHelpers, QueryFilter> dao;
 
     @Test
-    public void testGetType() {
+    void testGetType() {
         assertEquals(EntityHelpers.class, this.dao.getType());
     }
 
     @BeforeEach
-    public void cleanDB() {
+    void cleanDB() {
         final EntityTestSearch filter = new EntityTestSearch();
         filter.setId("not_null");
         this.dao.deleteAll(filter);
     }
 
     @Test
-    public void testSaveAndDelete() {
+    void testSaveAndDelete() {
         final EntityHelpers entityToSave = new EntityHelpers();
         entityToSave.setName("testSaveAndDelete");
 
@@ -62,7 +62,7 @@ public class CommonDAOTest {
     }
 
     @Test
-    public void testCount() {
+    void testCount() {
         Long count = this.dao.count(null);
 
         assertNotNull(count);
@@ -78,7 +78,7 @@ public class CommonDAOTest {
     }
 
     @Test
-    public void testLoadById() {
+    void testLoadById() {
         final EntityHelpers EntityTestToSave = new EntityHelpers();
         EntityTestToSave.setName("testLoadById");
 
@@ -93,7 +93,7 @@ public class CommonDAOTest {
     }
 
     @Test
-    public void testLoadEntityById() {
+    void testLoadEntityById() {
         GlobalException exception = null;
         try {
             this.dao.loadEntityById(null);
@@ -132,7 +132,7 @@ public class CommonDAOTest {
     }
 
     @Test
-    public void testLoadEntityByIdWithLock() {
+    void testLoadEntityByIdWithLock() {
         GlobalException exception = null;
         try {
             this.dao.loadEntityByIdWithLock(null);
@@ -159,7 +159,7 @@ public class CommonDAOTest {
     }
 
     @Test
-    public void testFindWithAscOrder() {
+    void testFindWithAscOrder() {
         GlobalException exception = null;
         final EntityTestSearch entity = new EntityTestSearch();
         entity.setCount(5);
@@ -194,7 +194,7 @@ public class CommonDAOTest {
     }
 
     @Test
-    public void testFindWithDescOrder() {
+    void testFindWithDescOrder() {
         GlobalException exception = null;
         final EntityTestSearch entity = new EntityTestSearch();
         entity.setCount(5);
@@ -228,7 +228,7 @@ public class CommonDAOTest {
     }
 
     @Test
-    public void testLoad() {
+    void testLoad() {
         EntityHelpers entity1 = new EntityHelpers();
         entity1.setName("testFindWithFilter");
         entity1 = this.dao.save(entity1);
@@ -245,7 +245,7 @@ public class CommonDAOTest {
     }
 
     @Test
-    public void testLoadWithNullDTO() {
+    void testLoadWithNullDTO() {
         Optional<EntityHelpers> opt = this.dao.load(null);
         assertFalse(opt.isPresent());
         opt = this.dao.loadWithLock(null);
@@ -253,7 +253,7 @@ public class CommonDAOTest {
     }
 
     @Test
-    public void testFindWithOutFilter() {
+    void testFindWithOutFilter() {
         EntityHelpers entity1 = new EntityHelpers();
         entity1.setName("testFindWithFilter");
         entity1 = this.dao.save(entity1);
@@ -266,7 +266,7 @@ public class CommonDAOTest {
     }
 
     @Test
-    public void testFindWithoutPagination() {
+    void testFindWithoutPagination() {
         final EntityTestSearch dto = new EntityTestSearch();
         Long count = this.dao.count(dto);
         dto.setCount(5);
@@ -294,7 +294,7 @@ public class CommonDAOTest {
      * Test getEntityOrder.
      */
     @Test
-    public void testGetEntityOrderBadOrder() {
+    void testGetEntityOrderBadOrder() {
         final EntityTestSearch dto = new EntityTestSearch();
         dto.setOrder("bad");
         dto.setSort("desc");
@@ -314,7 +314,7 @@ public class CommonDAOTest {
     }
 
     @Test
-    public void testGetEntityOrderBadSort() {
+    void testGetEntityOrderBadSort() {
         final EntityTestSearch entity = new EntityTestSearch();
         entity.setOrder("name");
         entity.setSort("bad");
@@ -334,7 +334,7 @@ public class CommonDAOTest {
     }
 
     @Test
-    public void testDeleteAllWithoutPredicates() {
+    void testDeleteAllWithoutPredicates() {
         GlobalException exception = null;
         try {
             this.dao.deleteAll(null);
@@ -363,7 +363,7 @@ public class CommonDAOTest {
     }
 
     @Test
-    public void testDeleteAllWithPredicates() {
+    void testDeleteAllWithPredicates() {
         EntityHelpers entity1 = new EntityHelpers();
         entity1.setName("test delete all");
         EntityHelpers entity2 = new EntityHelpers();
@@ -384,7 +384,7 @@ public class CommonDAOTest {
     }
 
     @Test
-    public void testUpdateProperty() {
+    void testUpdateProperty() {
         EntityHelpers entity = new EntityHelpers();
         entity.setName("testUpdateProperty");
         entity = this.dao.save(entity);

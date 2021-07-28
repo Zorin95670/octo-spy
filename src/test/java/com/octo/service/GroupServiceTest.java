@@ -21,7 +21,7 @@ import com.octo.utils.predicate.filter.QueryFilter;
 @ExtendWith(SpringExtension.class)
 @ExtendWith(MockitoExtension.class)
 @ContextConfiguration(locations = { "classpath:application-context.xml" })
-public class GroupServiceTest {
+class GroupServiceTest {
 
     @Mock
     IDAO<ProjectGroup, QueryFilter> projectGroupDAO;
@@ -33,7 +33,7 @@ public class GroupServiceTest {
     GroupService service;
 
     @Test
-    public void testCreate() {
+    void testCreate() {
         Group group = new Group();
         group.setId(1L);
 
@@ -44,7 +44,7 @@ public class GroupServiceTest {
     }
 
     @Test
-    public void testAddProjectToGroup() {
+    void testAddProjectToGroup() {
         Group group = new Group();
         group.setId(1L);
 

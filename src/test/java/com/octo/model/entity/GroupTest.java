@@ -9,10 +9,10 @@ import java.time.Instant;
 
 import org.junit.jupiter.api.Test;
 
-public class GroupTest {
+class GroupTest {
 
     @Test
-    public void testGetterAndSetter() {
+    void testGetterAndSetter() {
         Group entity = new Group();
 
         assertNull(entity.getId());

@@ -22,7 +22,7 @@ import com.octo.model.entity.Deployment;
 import com.octo.utils.predicate.filter.QueryFilter;
 
 @ExtendWith(MockitoExtension.class)
-public class ClientServiceTest {
+class ClientServiceTest {
 
     @Mock
     IDAO<Deployment, QueryFilter> deploymentDAO;
@@ -31,7 +31,7 @@ public class ClientServiceTest {
     ClientService service;
 
     @Test
-    public void testFindALl() {
+    void testFindALl() {
         EntityManager entityManager = Mockito.mock(EntityManager.class);
         CriteriaBuilder builder = Mockito.mock(CriteriaBuilder.class);
         CriteriaQuery<String> criteria = Mockito.mock(CriteriaQuery.class);

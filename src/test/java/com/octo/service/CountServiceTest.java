@@ -34,7 +34,7 @@ import com.octo.model.error.GlobalException;
 @ExtendWith(MockitoExtension.class)
 @ContextConfiguration(locations = { "classpath:application-context.xml" })
 @Transactional
-public class CountServiceTest {
+class CountServiceTest {
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -49,14 +49,14 @@ public class CountServiceTest {
     private EntityService testService;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         testService.save("test1");
         testService.save("test2");
         testService.save("test3");
     }
 
     @Test
-    public void countTest() {
+    void countTest() {
         Mockito.when(dao.getEntityManager()).thenReturn(entityManager);
         GlobalException exception = null;
 
@@ -126,7 +126,7 @@ public class CountServiceTest {
     }
 
     @Test
-    public void testConvertValueToObject() {
+    void testConvertValueToObject() {
         class Test {
             @SuppressWarnings("unused") // Used in tests below
             public boolean testBoolean;

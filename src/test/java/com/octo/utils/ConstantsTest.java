@@ -7,10 +7,10 @@ import java.lang.reflect.Constructor;
 
 import org.junit.jupiter.api.Test;
 
-public class ConstantsTest {
+class ConstantsTest {
 
     @Test
-    public void testConstructor() {
+    void testConstructor() {
         Exception exception = null;
         try {
             final Constructor<Constants> c = Constants.class.getDeclaredConstructor();

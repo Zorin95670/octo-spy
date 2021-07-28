@@ -26,7 +26,7 @@ import com.octo.model.error.GlobalException;
 import com.octo.utils.predicate.filter.QueryFilter;
 
 @ExtendWith(MockitoExtension.class)
-public class ProjectServiceTest {
+class ProjectServiceTest {
 
     @Mock
     IDAO<Project, QueryFilter> projectDAO;
@@ -41,13 +41,13 @@ public class ProjectServiceTest {
     ProjectService service;
 
     @Test
-    public void testLoad() {
+    void testLoad() {
         Mockito.when(this.projectDAO.loadEntityById(Mockito.any())).thenReturn(new Project());
         assertNotNull(service.load(1L));
     }
 
     @Test
-    public void testSave() {
+    void testSave() {
         // Test null name
         GlobalException exception = null;
 
@@ -96,7 +96,7 @@ public class ProjectServiceTest {
     }
 
     @Test
-    public void saveMasterProject() {
+    void saveMasterProject() {
         NewProjectDTO dto = new NewProjectDTO();
         dto.setIsMaster(true);
         dto.setName("test");
@@ -109,7 +109,7 @@ public class ProjectServiceTest {
     }
 
     @Test
-    public void saveGroupProject() {
+    void saveGroupProject() {
         NewProjectDTO dto = new NewProjectDTO();
         dto.setIsMaster(false);
         dto.setName("test");
@@ -142,7 +142,7 @@ public class ProjectServiceTest {
     }
 
     @Test
-    public void testDelete() {
+    void testDelete() {
         Mockito.doNothing().when(this.projectDAO).delete(Mockito.any());
 
         GlobalException exception = null;
@@ -156,7 +156,7 @@ public class ProjectServiceTest {
     }
 
     @Test
-    public void testFindAll() {
+    void testFindAll() {
         List<ProjectView> expected = new ArrayList<>();
         Mockito.when(this.projectViewDAO.find(Mockito.any(), Mockito.anyBoolean())).thenReturn(expected);
 

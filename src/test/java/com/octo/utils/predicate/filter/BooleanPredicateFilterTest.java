@@ -22,13 +22,13 @@ import com.octo.helpers.EntityHelpers;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = { "classpath:application-context.xml" })
-public class BooleanPredicateFilterTest {
+class BooleanPredicateFilterTest {
 
     @PersistenceContext
     private EntityManager entityManager;
 
     @Test
-    public void constructorTest() {
+    void constructorTest() {
         BooleanPredicateFilter filter = new BooleanPredicateFilter(null, null);
         filter.extract();
 
@@ -54,7 +54,7 @@ public class BooleanPredicateFilterTest {
     }
 
     @Test
-    public void getPredicateTest() {
+    void getPredicateTest() {
         final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
         final CriteriaQuery<EntityHelpers> query = builder.createQuery(EntityHelpers.class);
         final Root<EntityHelpers> root = query.from(EntityHelpers.class);

@@ -7,10 +7,10 @@ import org.junit.jupiter.api.Test;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-public class ObjectArrayToJsonConsumerTest {
+class ObjectArrayToJsonConsumerTest {
 
     @Test
-    public void acceptTest() {
+    void acceptTest() {
         ObjectNode json = null;
         Object[] array = null;
         ObjectArrayToJsonConsumer consumer = null;

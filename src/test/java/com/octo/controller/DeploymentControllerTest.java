@@ -34,7 +34,7 @@ import com.octo.service.LastDeploymentViewService;
 @ExtendWith(SpringExtension.class)
 @ExtendWith(MockitoExtension.class)
 @ContextConfiguration(locations = { "classpath:application-context.xml" })
-public class DeploymentControllerTest extends JerseyTest {
+class DeploymentControllerTest extends JerseyTest {
 
     @Mock
     DeploymentService service;
@@ -62,7 +62,7 @@ public class DeploymentControllerTest extends JerseyTest {
     }
 
     @Test
-    public void testGetDeployment() {
+    void testGetDeployment() {
         Mockito.when(this.service.load(Mockito.anyLong())).thenReturn(new DeploymentDTO());
 
         final Response response = this.controller.getDeployment(1L);
@@ -73,7 +73,7 @@ public class DeploymentControllerTest extends JerseyTest {
     }
 
     @Test
-    public void testCreateDeployment() {
+    void testCreateDeployment() {
         Mockito.when(this.service.save(Mockito.any())).thenReturn(new DeploymentDTO());
 
         final Response response = this.controller.createDeployment(null);
@@ -84,7 +84,7 @@ public class DeploymentControllerTest extends JerseyTest {
     }
 
     @Test
-    public void testDeleteDeployment() {
+    void testDeleteDeployment() {
         Mockito.doNothing().when(this.service).delete(1L);
         final Response response = this.controller.deleteDeployment(1L);
 
@@ -93,7 +93,7 @@ public class DeploymentControllerTest extends JerseyTest {
     }
 
     @Test
-    public void testGetLastDeployments() {
+    void testGetLastDeployments() {
         List<LastDeploymentDTO> expected = new ArrayList<>();
         Mockito.when(this.viewService.find(Mockito.any())).thenReturn(expected);
         final Response response = this.controller.getLastDeployments(Mockito.any());
@@ -105,7 +105,7 @@ public class DeploymentControllerTest extends JerseyTest {
     }
 
     @Test
-    public void testDeleteDeploymentProgress() {
+    void testDeleteDeploymentProgress() {
         Mockito.doNothing().when(this.service).deleteProgressDeployment(Mockito.any());
         final Response response = this.controller.deleteProgressDeployment(null);
 
@@ -114,7 +114,7 @@ public class DeploymentControllerTest extends JerseyTest {
     }
 
     @Test
-    public void testGetDeployments() throws JsonProcessingException {
+    void testGetDeployments() throws JsonProcessingException {
         Mockito.when(this.service.find(Mockito.any())).thenReturn(new Resource<>(5L, new ArrayList<>(), 0, 0));
         Response response = this.controller.getDeployments(null);
 

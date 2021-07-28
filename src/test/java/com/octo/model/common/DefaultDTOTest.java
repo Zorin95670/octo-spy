@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import com.octo.utils.json.ToJsonMapper;
 
-public class DefaultDTOTest {
+class DefaultDTOTest {
 
     class TestDTO extends DefaultDTO {
         private String name;
@@ -18,13 +18,13 @@ public class DefaultDTOTest {
             return name;
         }
 
-        public void setName(String name) {
+        void setName(String name) {
             this.name = name;
         }
     }
 
     @Test
-    public void testToString() {
+    void testToString() {
         assertEquals(new ToJsonMapper<>(false).apply(new TestDTO()), new TestDTO().toString());
         assertNotNull(new TestDTO().getFilters(null));
         assertFalse(new TestDTO().isSpecificFilter(null));

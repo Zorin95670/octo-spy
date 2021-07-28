@@ -5,10 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
 
-public class RetryExceptionTest {
+class RetryExceptionTest {
 
     @Test
-    public void test() {
+    void test() {
         RetryException exception = new RetryException("test");
         assertEquals("test", exception.getMessage());
         assertNull(exception.getCause());

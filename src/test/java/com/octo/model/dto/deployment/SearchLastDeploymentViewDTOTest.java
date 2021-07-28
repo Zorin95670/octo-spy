@@ -5,10 +5,10 @@ import static org.junit.Assert.assertNull;
 
 import org.junit.jupiter.api.Test;
 
-public class SearchLastDeploymentViewDTOTest {
+class SearchLastDeploymentViewDTOTest {
 
     @Test
-    public void testGetterAndSetter() {
+    void testGetterAndSetter() {
         SearchLastDeploymentViewDTO dto = new SearchLastDeploymentViewDTO();
         assertNull(dto.getOnMasterProject());
 

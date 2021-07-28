@@ -8,10 +8,10 @@ import java.time.Instant;
 
 import org.junit.jupiter.api.Test;
 
-public class ProjectDTOTest {
+class ProjectDTOTest {
 
     @Test
-    public void testGetterAndSetter() {
+    void testGetterAndSetter() {
         ProjectDTO dto = new ProjectDTO();
 
         assertNull(dto.getId());

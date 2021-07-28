@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class ToJsonMapperTest {
+class ToJsonMapperTest {
 
     class TestObject {
         public String name;
@@ -16,7 +16,7 @@ public class ToJsonMapperTest {
     }
 
     @Test
-    public void testNullInclude() {
+    void testNullInclude() {
         final ToJsonMapper<TestObject> mapper = new ToJsonMapper<>();
         final TestObject test = new TestObject();
         assertEquals("{\"name\":null,\"value\":null}", mapper.apply(test));
@@ -27,7 +27,7 @@ public class ToJsonMapperTest {
     }
 
     @Test
-    public void testNullNotInclude() {
+    void testNullNotInclude() {
         final ToJsonMapper<TestObject> mapper = new ToJsonMapper<>(false);
         final TestObject test = new TestObject();
         assertEquals("{}", mapper.apply(test));
@@ -37,13 +37,13 @@ public class ToJsonMapperTest {
     }
 
     @Test
-    public void testNullInput() {
+    void testNullInput() {
         final ToJsonMapper<TestObject> mapper = new ToJsonMapper<>(false);
         assertEquals("null", mapper.apply(null));
     }
 
     @Test
-    public void testSetMapper() {
+    void testSetMapper() {
         final ToJsonMapper<TestObject> mapper = new ToJsonMapper<>();
         final ObjectMapper mapperJson = new ObjectMapper();
         mapperJson.setSerializationInclusion(Include.NON_NULL);

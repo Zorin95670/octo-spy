@@ -5,10 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
 
-public class ErrorTest {
+class ErrorTest {
 
     @Test
-    public void getterSetterTest() {
+    void getterSetterTest() {
         final ErrorDTO error = new ErrorDTO();
 
         assertNull(error.getMessage());

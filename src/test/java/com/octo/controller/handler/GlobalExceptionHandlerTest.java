@@ -10,10 +10,10 @@ import org.junit.jupiter.api.Test;
 import com.octo.model.error.ErrorType;
 import com.octo.model.error.GlobalException;
 
-public class GlobalExceptionHandlerTest {
+class GlobalExceptionHandlerTest {
 
     @Test
-    public void toResponseTest() {
+    void toResponseTest() {
         final GlobalExceptionHandler handler = new GlobalExceptionHandler();
         GlobalException exception = new GlobalException(ErrorType.WRONG_VALUE, null, null);
 

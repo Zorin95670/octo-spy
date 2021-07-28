@@ -10,10 +10,10 @@ import java.time.Instant;
 
 import org.junit.jupiter.api.Test;
 
-public class LastDeploymentViewTest {
+class LastDeploymentViewTest {
 
     @Test
-    public void testGetterAndSetter() {
+    void testGetterAndSetter() {
         Timestamp time = Timestamp.from(Instant.now());
         LastDeploymentView entity = new LastDeploymentView();
 

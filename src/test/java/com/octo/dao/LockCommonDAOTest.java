@@ -16,26 +16,26 @@ import com.octo.helpers.EntityService;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = { "classpath:application-context.xml" })
-public class LockCommonDAOTest {
+class LockCommonDAOTest {
 
     @Autowired
     EntityService service;
 
     @Test
-    public void testLoadEntityByIdWithLock() {
+    void testLoadEntityByIdWithLock() {
         EntityHelpers entity = service.save();
         entity = service.loadEntityByIdWithLock(entity.getId());
         assertNotNull(entity);
     }
 
     @Test
-    public void testFindWithLock() {
+    void testFindWithLock() {
         List<EntityHelpers> list = service.findWithLock();
         assertNotNull(list);
     }
 
     @Test
-    public void testLoadWithLock() {
+    void testLoadWithLock() {
         Optional<EntityHelpers> opt = service.loadWithLock();
         assertNotNull(opt);
     }

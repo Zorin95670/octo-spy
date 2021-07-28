@@ -20,13 +20,13 @@ import com.octo.helpers.EntityTestSearch;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = { "classpath:application-context.xml" })
-public class PredicateMapperTest {
+class PredicateMapperTest {
 
     @PersistenceContext
     private EntityManager entityManager;
 
     @Test
-    public void testApply() {
+    void testApply() {
         final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
         final CriteriaQuery<EntityHelpers> query = builder.createQuery(EntityHelpers.class);
         final Root<EntityHelpers> root = query.from(EntityHelpers.class);

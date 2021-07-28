@@ -8,10 +8,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-public class JsonMergerTest {
+class JsonMergerTest {
 
     @Test
-    public void testApplyAll() {
+    void testApplyAll() {
         final JsonMerger merger = new JsonMerger();
         ObjectNode expected, source1, source2;
 

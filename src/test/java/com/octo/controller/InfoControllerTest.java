@@ -22,7 +22,7 @@ import com.octo.model.dto.common.ProjectInformation;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = { "classpath:application-context.xml" })
-public class InfoControllerTest extends JerseyTest {
+class InfoControllerTest extends JerseyTest {
 
     @Autowired
     InfoController controller;
@@ -49,7 +49,7 @@ public class InfoControllerTest extends JerseyTest {
     }
 
     @Test
-    public void getVersionFunctionalTest() throws JsonProcessingException {
+    void getVersionFunctionalTest() throws JsonProcessingException {
         final ProjectInformation version = this.controller.getVersion();
         ObjectMapper mapper = new ObjectMapper();
 

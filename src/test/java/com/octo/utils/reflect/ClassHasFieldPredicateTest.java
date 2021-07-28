@@ -5,10 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-public class ClassHasFieldPredicateTest {
+class ClassHasFieldPredicateTest {
 
     @Test
-    public void testSimpleClass() {
+    void testSimpleClass() {
         class Test {
             @SuppressWarnings("unused") // Used in tests below.
             private String test;
@@ -20,7 +20,7 @@ public class ClassHasFieldPredicateTest {
     }
 
     @Test
-    public void testClassWithSubClass() {
+    void testClassWithSubClass() {
         class Test {
             @SuppressWarnings("unused") // Used in tests below.
             private String test;

@@ -23,13 +23,13 @@ import com.octo.model.error.GlobalException;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = { "classpath:application-context.xml" })
-public class NumberPredicateFilterTest {
+class NumberPredicateFilterTest {
 
     @PersistenceContext
     private EntityManager entityManager;
 
     @Test
-    public void constructorTest() {
+    void constructorTest() {
         NumberPredicateFilter filter = new NumberPredicateFilter(null, null);
 
         assertNull(filter.getName());
@@ -44,7 +44,7 @@ public class NumberPredicateFilterTest {
     }
 
     @Test
-    public void extractTest() {
+    void extractTest() {
         NumberPredicateFilter filter = new NumberPredicateFilter(null, null);
         assertFalse(filter.extract());
 
@@ -71,7 +71,7 @@ public class NumberPredicateFilterTest {
     }
 
     @Test
-    public void testWithBadNumber() {
+    void testWithBadNumber() {
         GlobalException exception = null;
 
         try {
@@ -105,7 +105,7 @@ public class NumberPredicateFilterTest {
     }
 
     @Test
-    public void testGetPredicate() {
+    void testGetPredicate() {
         final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
         final CriteriaQuery<EntityHelpers> query = builder.createQuery(EntityHelpers.class);
         final Root<EntityHelpers> root = query.from(EntityHelpers.class);

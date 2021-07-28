@@ -37,7 +37,7 @@ import com.octo.utils.predicate.filter.QueryFilter;
 @ExtendWith(SpringExtension.class)
 @ExtendWith(MockitoExtension.class)
 @ContextConfiguration(locations = { "classpath:application-context.xml" })
-public class DeploymentServiceTest {
+class DeploymentServiceTest {
 
     @Mock
     IDAO<Environment, QueryFilter> environmentDAO;
@@ -61,13 +61,13 @@ public class DeploymentServiceTest {
     DeploymentService service;
 
     @Test
-    public void testLoad() {
+    void testLoad() {
         Mockito.when(this.deploymentDAO.loadEntityById(Mockito.any())).thenReturn(new Deployment());
         assertNotNull(service.load(1L));
     }
 
     @Test
-    public void testSave() {
+    void testSave() {
         // Test null environment
         GlobalException exception = null;
         NewDeploymentDTO input = new NewDeploymentDTO();
@@ -212,7 +212,7 @@ public class DeploymentServiceTest {
     }
 
     @Test
-    public void testSaveWithProgress() {
+    void testSaveWithProgress() {
         Environment environment = new Environment();
         environment.setId(1L);
         environment.setName("QA");
@@ -249,7 +249,7 @@ public class DeploymentServiceTest {
     }
 
     @Test
-    public void testDisablePreviousDeployment() {
+    void testDisablePreviousDeployment() {
         Project project = new Project();
         project.setId(1L);
 
@@ -289,7 +289,7 @@ public class DeploymentServiceTest {
     }
 
     @Test
-    public void testDelete() {
+    void testDelete() {
         Mockito.when(this.deploymentDAO.loadById(Mockito.any())).thenReturn(new Deployment());
         Mockito.doNothing().when(this.deploymentDAO).delete(Mockito.any());
 
@@ -304,7 +304,7 @@ public class DeploymentServiceTest {
     }
 
     @Test
-    public void testDeleteProgress() {
+    void testDeleteProgress() {
         Project project = new Project();
         project.setId(1L);
 
@@ -394,7 +394,7 @@ public class DeploymentServiceTest {
     }
 
     @Test
-    public void testDeleteProgressWithData() {
+    void testDeleteProgressWithData() {
         Project project = new Project();
         project.setId(1L);
 
@@ -424,13 +424,13 @@ public class DeploymentServiceTest {
     }
 
     @Test
-    public void testCount() {
+    void testCount() {
         Mockito.when(this.deploymentViewDAO.count(Mockito.any())).thenReturn(1L);
         assertEquals(Long.valueOf(1L), this.service.count(null));
     }
 
     @Test
-    public void testFind() {
+    void testFind() {
         List<DeploymentView> list = new ArrayList<DeploymentView>();
         Mockito.when(this.deploymentViewDAO.count(Mockito.any())).thenReturn(2L);
         Mockito.when(this.deploymentViewDAO.find(Mockito.any())).thenReturn(list);

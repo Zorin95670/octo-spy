@@ -30,7 +30,7 @@ import com.octo.service.ProjectService;
 @ExtendWith(SpringExtension.class)
 @ExtendWith(MockitoExtension.class)
 @ContextConfiguration(locations = { "classpath:application-context.xml" })
-public class ProjectControllerTest extends JerseyTest {
+class ProjectControllerTest extends JerseyTest {
 
     @Mock
     ProjectService service;
@@ -57,7 +57,7 @@ public class ProjectControllerTest extends JerseyTest {
     }
 
     @Test
-    public void testGetProject() {
+    void testGetProject() {
         Mockito.when(this.service.load(1L)).thenReturn(new ProjectDTO());
         final Response response = this.controller.getProject(1L);
 
@@ -67,7 +67,7 @@ public class ProjectControllerTest extends JerseyTest {
     }
 
     @Test
-    public void testGetProjects() {
+    void testGetProjects() {
         Mockito.when(this.service.findAll(Mockito.any())).thenReturn(new ArrayList<>());
         final Response response = this.controller.getProjects(null);
 
@@ -77,7 +77,7 @@ public class ProjectControllerTest extends JerseyTest {
     }
 
     @Test
-    public void testCount() {
+    void testCount() {
         Mockito.when(this.countService.count(Mockito.any(), Mockito.any(), Mockito.any()))
                 .thenReturn(JsonNodeFactory.instance.objectNode());
         final Response response = this.controller.count(null, null);
@@ -88,7 +88,7 @@ public class ProjectControllerTest extends JerseyTest {
     }
 
     @Test
-    public void testCreateProject() {
+    void testCreateProject() {
         Mockito.when(this.service.save(Mockito.any())).thenReturn(new ProjectDTO());
         final Response response = this.controller.createProject(new NewProjectDTO());
 
@@ -98,7 +98,7 @@ public class ProjectControllerTest extends JerseyTest {
     }
 
     @Test
-    public void testDeleteProject() {
+    void testDeleteProject() {
         Mockito.doNothing().when(this.service).delete(1L);
         final Response response = this.controller.deleteProject(1L);
 

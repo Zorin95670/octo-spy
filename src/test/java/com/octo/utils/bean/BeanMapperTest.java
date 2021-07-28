@@ -11,10 +11,10 @@ import com.octo.helpers.EntityHelpers;
 import com.octo.helpers.EntityTestSearch;
 import com.octo.model.error.GlobalException;
 
-public class BeanMapperTest {
+class BeanMapperTest {
 
     @Test
-    public void testApply() {
+    void testApply() {
         final BeanMapper<EntityHelpers, EntityTestSearch> mapper = new BeanMapper<>(EntityTestSearch.class);
 
         final EntityHelpers entity = new EntityHelpers();
@@ -28,7 +28,7 @@ public class BeanMapperTest {
     }
 
     @Test
-    public void testWithIgnoreFields() {
+    void testWithIgnoreFields() {
         final BeanMapper<EntityHelpers, EntityHelpers> mapper = new BeanMapper<>(EntityHelpers.class, "name");
 
         final EntityHelpers dto = new EntityHelpers();
@@ -43,7 +43,7 @@ public class BeanMapperTest {
     }
 
     @Test
-    public void testException() throws NoSuchFieldException, SecurityException {
+    void testException() throws NoSuchFieldException, SecurityException {
         class Source {
             @SuppressWarnings("unused")
             public String test1;

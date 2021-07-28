@@ -9,10 +9,10 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-public class RessourceTest {
+class RessourceTest {
 
     @Test
-    public void testConstructor() {
+    void testConstructor() {
         List<String> list = null;
         Resource<String> resource = new Resource<String>(0l, list, 0, 0);
 
@@ -32,7 +32,7 @@ public class RessourceTest {
     }
 
     @Test
-    public void testSetter() {
+    void testSetter() {
         List<String> list = null;
         final Resource<String> resource = new Resource<String>(0l, list, 0, 0);
 
@@ -55,7 +55,7 @@ public class RessourceTest {
     }
 
     @Test
-    public void testGetStatus() {
+    void testGetStatus() {
         List<String> list = new ArrayList<>();
 
         assertEquals(200, new Resource<String>(0l, list, 0, 0).getStatus());

@@ -8,10 +8,10 @@ import org.junit.jupiter.api.Test;
 import com.octo.model.entity.Environment;
 import com.octo.model.entity.Project;
 
-public class SearchDeploymentDTOTest {
+class SearchDeploymentDTOTest {
 
     @Test
-    public void testGetterAndSetter() {
+    void testGetterAndSetter() {
         SearchDeploymentDTO dto = new SearchDeploymentDTO();
         assertNull(dto.getId());
         assertNull(dto.getEnvironment());

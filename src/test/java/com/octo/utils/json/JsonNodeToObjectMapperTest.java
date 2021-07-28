@@ -17,10 +17,10 @@ import com.octo.helpers.TestDTO;
 import com.octo.model.error.ErrorType;
 import com.octo.model.error.GlobalException;
 
-public class JsonNodeToObjectMapperTest {
+class JsonNodeToObjectMapperTest {
 
     @Test
-    public void testSuccessMapperWithSimpleObject() throws JsonMappingException, JsonProcessingException {
+    void testSuccessMapperWithSimpleObject() throws JsonMappingException, JsonProcessingException {
         GlobalException exception = null;
         TestDTO result = null;
         try {
@@ -38,7 +38,7 @@ public class JsonNodeToObjectMapperTest {
     }
 
     @Test
-    public void testSuccessMapperWithComplexeObject() throws JsonMappingException, JsonProcessingException {
+    void testSuccessMapperWithComplexeObject() throws JsonMappingException, JsonProcessingException {
 
         final JsonNodeToObjectMapper<List<TestDTO>> mapperTest = new JsonNodeToObjectMapper(true, TestDTO.class);
         final JsonNode testNode = new ObjectMapper().readTree("[{\"name\":\"testName\", \"value\":\"testValue\"}]");
@@ -62,7 +62,7 @@ public class JsonNodeToObjectMapperTest {
     }
 
     @Test
-    public void testFailure() throws JsonMappingException, JsonProcessingException {
+    void testFailure() throws JsonMappingException, JsonProcessingException {
         GlobalException exception = null;
         try {
 
@@ -81,7 +81,7 @@ public class JsonNodeToObjectMapperTest {
     }
 
     @Test
-    public void testSetterIsList() throws JsonMappingException, JsonProcessingException {
+    void testSetterIsList() throws JsonMappingException, JsonProcessingException {
 
         final JsonNodeToObjectMapper<List<TestDTO>> mapperTest = new JsonNodeToObjectMapper(TestDTO.class);
         mapperTest.setIsList(true);
@@ -102,7 +102,7 @@ public class JsonNodeToObjectMapperTest {
     }
 
     @Test
-    public void testSetterType() throws JsonMappingException, JsonProcessingException {
+    void testSetterType() throws JsonMappingException, JsonProcessingException {
         final JsonNodeToObjectMapper<TestDTO> mapperTest = new JsonNodeToObjectMapper(String.class);
         mapperTest.setType(TestDTO.class);
         final JsonNode testNode = new ObjectMapper().readTree("{\"name\":\"testName\", \"value\":\"testValue\"}");
@@ -122,7 +122,7 @@ public class JsonNodeToObjectMapperTest {
     }
 
     @Test
-    public void testSetterMapper() throws JsonMappingException, JsonProcessingException {
+    void testSetterMapper() throws JsonMappingException, JsonProcessingException {
         final JsonNodeToObjectMapper<TestDTO> mapperTest = new JsonNodeToObjectMapper(TestDTO.class);
         mapperTest.setMapper(new ObjectMapper());
         final JsonNode testNode = new ObjectMapper().readTree("{\"name\":\"testName\", \"value\":\"testValue\"}");

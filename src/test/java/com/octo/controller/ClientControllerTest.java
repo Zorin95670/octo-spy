@@ -26,7 +26,7 @@ import com.octo.service.ClientService;
 @ExtendWith(SpringExtension.class)
 @ExtendWith(MockitoExtension.class)
 @ContextConfiguration(locations = { "classpath:application-context.xml" })
-public class ClientControllerTest extends JerseyTest {
+class ClientControllerTest extends JerseyTest {
 
     @Mock
     ClientService service;
@@ -50,7 +50,7 @@ public class ClientControllerTest extends JerseyTest {
     }
 
     @Test
-    public void testGetClients() {
+    void testGetClients() {
         Mockito.when(this.service.findAll()).thenReturn(new ArrayList<>());
         final Response response = this.controller.getClients();
 

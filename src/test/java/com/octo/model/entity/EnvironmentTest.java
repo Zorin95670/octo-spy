@@ -5,10 +5,10 @@ import static org.junit.Assert.assertNull;
 
 import org.junit.jupiter.api.Test;
 
-public class EnvironmentTest {
+class EnvironmentTest {
 
     @Test
-    public void testGetterSetter() {
+    void testGetterSetter() {
         Environment environment = new Environment();
 
         assertNull(environment.getId());

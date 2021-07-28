@@ -5,14 +5,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-public class RetryExecutorTest {
+class RetryExecutorTest {
 
     class Counter {
         public int count;
     }
 
     @Test
-    public void testRetry3TimesAndFail() throws InterruptedException {
+    void testRetry3TimesAndFail() throws InterruptedException {
         RuntimeException expected = new RuntimeException("test retry");
         Counter counter = new Counter();
 
@@ -33,7 +33,7 @@ public class RetryExecutorTest {
     }
 
     @Test
-    public void testRetry2TimesAndSuccess() throws InterruptedException {
+    void testRetry2TimesAndSuccess() throws InterruptedException {
         RuntimeException expected = new RuntimeException("test retry");
         Counter counter = new Counter();
 
@@ -50,7 +50,7 @@ public class RetryExecutorTest {
     }
 
     @Test
-    public void testRetry0TimesAndSuccess() throws InterruptedException {
+    void testRetry0TimesAndSuccess() throws InterruptedException {
         RuntimeException expected = new RuntimeException("test retry");
         Counter counter = new Counter();
 
@@ -64,7 +64,7 @@ public class RetryExecutorTest {
     }
 
     @Test
-    public void testRetryWithUnexpectedException() throws InterruptedException {
+    void testRetryWithUnexpectedException() throws InterruptedException {
         RuntimeException expected = new RuntimeException("test retry");
         RuntimeException unexpected = new RuntimeException("other exception");
         Counter counter = new Counter();

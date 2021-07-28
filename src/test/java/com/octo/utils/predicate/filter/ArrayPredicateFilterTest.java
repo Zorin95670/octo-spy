@@ -22,13 +22,13 @@ import com.octo.helpers.EntityHelpers;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = { "classpath:application-context.xml" })
-public class ArrayPredicateFilterTest {
+class ArrayPredicateFilterTest {
 
     @PersistenceContext
     private EntityManager entityManager;
 
     @Test
-    public void constructorTest() {
+    void constructorTest() {
         ArrayPredicateFilter filter = new ArrayPredicateFilter(null, null);
 
         assertNull(filter.getName());
@@ -43,7 +43,7 @@ public class ArrayPredicateFilterTest {
     }
 
     @Test
-    public void getPredicateTest() {
+    void getPredicateTest() {
         final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
         final CriteriaQuery<EntityHelpers> query = builder.createQuery(EntityHelpers.class);
         final Root<EntityHelpers> root = query.from(EntityHelpers.class);

@@ -9,10 +9,10 @@ import org.junit.jupiter.api.Test;
 
 import com.octo.helpers.EntityTestSearch;
 
-public class NullAwareBeanUtilsBeanTest {
+class NullAwareBeanUtilsBeanTest {
 
     @Test
-    public void testCopyProperty() throws IllegalAccessException, InvocationTargetException {
+    void testCopyProperty() throws IllegalAccessException, InvocationTargetException {
         NullAwareBeanUtilsBean beanUtil = new NullAwareBeanUtilsBean();
         EntityTestSearch dto = new EntityTestSearch();
 

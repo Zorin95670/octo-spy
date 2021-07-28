@@ -5,10 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
 
-public class CountDTOTest {
+class CountDTOTest {
 
     @Test
-    public void test() {
+    void test() {
         final CountDTO dto = new CountDTO();
         assertNull(dto.getField());
         assertNull(dto.getValue());

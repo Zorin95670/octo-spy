@@ -27,13 +27,13 @@ import com.octo.utils.predicate.PredicateOperator;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = { "classpath:application-context.xml" })
-public class DatePredicateFilterTest {
+class DatePredicateFilterTest {
 
     @PersistenceContext
     private EntityManager entityManager;
 
     @Test
-    public void constructorTest() {
+    void constructorTest() {
         DatePredicateFilter filter = new DatePredicateFilter(null, null);
 
         assertNull(filter.getName());
@@ -48,7 +48,7 @@ public class DatePredicateFilterTest {
     }
 
     @Test
-    public void extractTest() {
+    void extractTest() {
         assertFalse(new DatePredicateFilter(null, null).extract());
 
         GlobalException exception = null;
@@ -109,7 +109,7 @@ public class DatePredicateFilterTest {
     }
 
     @Test
-    public void getSpecificOperatorTest() {
+    void getSpecificOperatorTest() {
         GlobalException exception = null;
         try {
             new DatePredicateFilter(null, "2019-01-01 00:00:00aa2019-01-01 00:00:00").extract();
@@ -129,7 +129,7 @@ public class DatePredicateFilterTest {
     }
 
     @Test
-    public void getDateTest() {
+    void getDateTest() {
         final DatePredicateFilter filter = new DatePredicateFilter(null, null);
         GlobalException exception = null;
         try {
@@ -152,7 +152,7 @@ public class DatePredicateFilterTest {
     }
 
     @Test
-    public void getPredicateTest() {
+    void getPredicateTest() {
         final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
         final CriteriaQuery<EntityHelpers> query = builder.createQuery(EntityHelpers.class);
         final Root<EntityHelpers> root = query.from(EntityHelpers.class);

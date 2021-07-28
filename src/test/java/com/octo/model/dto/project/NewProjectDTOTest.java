@@ -7,10 +7,10 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-public class NewProjectDTOTest {
+class NewProjectDTOTest {
 
     @Test
-    public void testGetterAndSetter() {
+    void testGetterAndSetter() {
         NewProjectDTO dto = new NewProjectDTO();
 
         assertNull(dto.getName());

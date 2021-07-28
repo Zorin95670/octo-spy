@@ -11,13 +11,13 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = { "classpath:application-context.xml" })
-public class ConfigurationTest {
+class ConfigurationTest {
 
     @Autowired
     Configuration configuration;
 
     @Test
-    public void test() {
+    void test() {
         assertNotNull(this.configuration);
         assertEquals("octo-spy-test", this.configuration.getProject());
         assertEquals("test", this.configuration.getVersion());

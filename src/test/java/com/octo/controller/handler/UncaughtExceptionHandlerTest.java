@@ -8,10 +8,10 @@ import javax.ws.rs.core.Response.Status;
 
 import org.junit.jupiter.api.Test;
 
-public class UncaughtExceptionHandlerTest {
+class UncaughtExceptionHandlerTest {
 
     @Test
-    public void toResponseTest() {
+    void toResponseTest() {
         final UncaughtExceptionHandler handler = new UncaughtExceptionHandler();
         final Exception exception = new Exception("test");
 

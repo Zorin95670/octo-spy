@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -18,6 +20,7 @@ import com.octo.model.dto.project.NewProjectDTO;
 import com.octo.model.dto.project.ProjectDTO;
 import com.octo.model.entity.Group;
 import com.octo.model.entity.Project;
+import com.octo.model.entity.ProjectView;
 import com.octo.model.error.ErrorType;
 import com.octo.model.error.GlobalException;
 import com.octo.utils.predicate.filter.QueryFilter;
@@ -27,6 +30,9 @@ public class ProjectServiceTest {
 
     @Mock
     IDAO<Project, QueryFilter> projectDAO;
+
+    @Mock
+    IDAO<ProjectView, QueryFilter> projectViewDAO;
 
     @Mock
     IGroupService groupService;
@@ -147,5 +153,13 @@ public class ProjectServiceTest {
         }
 
         assertNull(exception);
+    }
+
+    @Test
+    public void testFindAll() {
+        List<ProjectView> expected = new ArrayList<>();
+        Mockito.when(this.projectViewDAO.find(Mockito.any(), Mockito.anyBoolean())).thenReturn(expected);
+
+        assertNotNull(this.service.findAll(null));
     }
 }

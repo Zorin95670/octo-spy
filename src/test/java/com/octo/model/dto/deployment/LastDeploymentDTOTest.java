@@ -25,6 +25,7 @@ public class LastDeploymentDTOTest {
         assertNull(dto.getVersion());
         assertNull(dto.getInsertDate());
         assertFalse(dto.isInProgress());
+        assertFalse(dto.getOnMasterProject());
 
         dto.setClient("client");
         dto.setEnvironment("environment");
@@ -34,6 +35,7 @@ public class LastDeploymentDTOTest {
         dto.setVersion("version");
         dto.setInsertDate(time);
         dto.setInProgress(true);
+        dto.setAlive(true);
 
         assertEquals("client", dto.getClient());
         assertEquals("environment", dto.getEnvironment());
@@ -43,6 +45,7 @@ public class LastDeploymentDTOTest {
         assertEquals("version", dto.getVersion());
         assertEquals(time, dto.getInsertDate());
         assertTrue(dto.isInProgress());
+        assertTrue(dto.getOnMasterProject());
 
         dto.setInsertDate(null);
         assertNull(dto.getInsertDate());

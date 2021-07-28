@@ -26,7 +26,7 @@ public class InfoControllerTest extends JerseyTest {
 
     @Autowired
     InfoController controller;
-    
+
     @BeforeEach
     @Override
     public void setUp() throws Exception {

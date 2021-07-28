@@ -1,6 +1,9 @@
 package com.octo.controller;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import java.util.ArrayList;
 
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Response;
@@ -18,8 +21,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.octo.model.dto.project.NewProjectDTO;
 import com.octo.model.dto.project.ProjectDTO;
+import com.octo.service.CountService;
 import com.octo.service.ProjectService;
 
 @ExtendWith(SpringExtension.class)
@@ -29,6 +34,9 @@ public class ProjectControllerTest extends JerseyTest {
 
     @Mock
     ProjectService service;
+
+    @Mock
+    CountService countService;
 
     @InjectMocks
     ProjectController controller;
@@ -52,6 +60,27 @@ public class ProjectControllerTest extends JerseyTest {
     public void testGetProject() {
         Mockito.when(this.service.load(1L)).thenReturn(new ProjectDTO());
         final Response response = this.controller.getProject(1L);
+
+        assertNotNull(response);
+        assertEquals(Status.OK.getStatusCode(), response.getStatus());
+        assertNotNull(response.getEntity());
+    }
+
+    @Test
+    public void testGetProjects() {
+        Mockito.when(this.service.findAll(Mockito.any())).thenReturn(new ArrayList<>());
+        final Response response = this.controller.getProjects(null);
+
+        assertNotNull(response);
+        assertEquals(Status.OK.getStatusCode(), response.getStatus());
+        assertNotNull(response.getEntity());
+    }
+
+    @Test
+    public void testCount() {
+        Mockito.when(this.countService.count(Mockito.any(), Mockito.any(), Mockito.any()))
+                .thenReturn(JsonNodeFactory.instance.objectNode());
+        final Response response = this.controller.count(null, null);
 
         assertNotNull(response);
         assertEquals(Status.OK.getStatusCode(), response.getStatus());

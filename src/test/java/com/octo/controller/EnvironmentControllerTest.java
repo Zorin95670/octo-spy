@@ -38,7 +38,7 @@ public class EnvironmentControllerTest extends JerseyTest {
 
     @InjectMocks
     EnvironmentController controller;
-    
+
     @BeforeEach
     @Override
     public void setUp() throws Exception {

@@ -40,6 +40,8 @@
 		<sonar.projectKey>Zorin95670_octo-spy</sonar.projectKey>
 		<sonar.organization>zorin95670</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+		<sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+		<sonar.coverage.jacoco.xmlReportPaths>${project.buildDir}/target/site/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 	</properties>
 
 	<dependencies>
@@ -259,6 +261,11 @@
 		<finalName>octo-spy</finalName>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.0.0-M5</version>
+			</plugin>
+			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>${jacoco-version}</version>
@@ -270,11 +277,35 @@
 						</goals>
 					</execution>
 					<execution>
+						<id>report</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+					<execution>
 						<id>default-report</id>
 						<phase>prepare-package</phase>
 						<goals>
 							<goal>report</goal>
 						</goals>
+					</execution>
+					<execution>
+						<id>merge</id>
+						<goals>
+							<goal>merge</goal>
+						</goals>
+						<configuration>
+							<fileSets>
+								<fileSet
+									implementation="org.apache.maven.shared.model.fileset.FileSet">
+									<directory>${project.basedir}</directory>
+									<includes>
+										<include>**/*.exec</include>
+									</includes>
+								</fileSet>
+							</fileSets>
+						</configuration>
 					</execution>
 					<execution>
 						<id>default-check</id>

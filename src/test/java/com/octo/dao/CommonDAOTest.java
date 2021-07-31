@@ -273,21 +273,21 @@ class CommonDAOTest {
         dto.setPage(0);
         List<EntityHelpers> list = this.dao.find(dto, false);
         assertNotNull(list);
-        assertEquals(new Long(count), new Long(list.size()));
+        assertEquals(Long.valueOf(count), Long.valueOf(list.size()));
 
         dto.setCount(2);
         dto.setPage(5);
         count = this.dao.count(dto);
         list = this.dao.find(dto, true);
         assertNotNull(list);
-        assertEquals(new Long(count), new Long(list.size()));
+        assertEquals(Long.valueOf(count), Long.valueOf(list.size()));
 
         dto.setCount(0);
         dto.setPage(5);
         count = this.dao.count(dto);
         list = this.dao.find(dto, false);
         assertNotNull(list);
-        assertEquals(new Long(count), new Long(list.size()));
+        assertEquals(Long.valueOf(count), Long.valueOf(list.size()));
     }
 
     /*

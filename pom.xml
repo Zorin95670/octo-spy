@@ -34,6 +34,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<replacer.version>1.5.3</replacer.version>
 		<spring.version>5.3.9</spring.version>
+		<spring.security.version>5.4.2</spring.security.version>
 		<swagger.version>2.1.5</swagger.version>
 		<swagger-ui.version>3.17.0</swagger-ui.version>
 		<!-- Sonar properties -->
@@ -83,6 +84,13 @@
 			<artifactId>spring-orm</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-core -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<version>${spring.security.version}</version>
+		</dependency>
+
 
 		<!-- Jersey -->
 		<dependency>

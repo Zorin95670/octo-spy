@@ -16,6 +16,18 @@ public final class Constants {
     }
 
     /**
+     * Default administrator login.
+     */
+    public static final String DEFAULT_ADMIN_LOGIN = "admin";
+    /**
+     * Authorization property value.
+     */
+    public static final String AUTHORIZATION_PROPERTY = "Authorization";
+    /**
+     * Authorization scheme value.
+     */
+    public static final String AUTHENTICATION_SCHEME = "Basic";
+    /**
      * Default length of string in database.
      */
     public static final int DEFAULT_SIZE_OF_STRING = 100;

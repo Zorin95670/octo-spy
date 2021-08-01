@@ -103,6 +103,13 @@ public class ProjectService {
         this.projectDAO.delete(entity);
     }
 
+    /**
+     * Get all projects.
+     *
+     * @param dto
+     *            Project filter.
+     * @return Projects
+     */
     public List<ProjectViewDTO> findAll(final SearchProjectViewDTO dto) {
         return this.projectViewDAO.find(dto, true).stream().map(new BeanMapper<>(ProjectViewDTO.class))
                 .collect(Collectors.toList());

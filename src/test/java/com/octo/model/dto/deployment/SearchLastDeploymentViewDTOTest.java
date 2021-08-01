@@ -12,7 +12,7 @@ class SearchLastDeploymentViewDTOTest {
         SearchLastDeploymentViewDTO dto = new SearchLastDeploymentViewDTO();
         assertNull(dto.getOnMasterProject());
 
-        dto.setAlive("onMasterProject");
+        dto.setOnMasterProject("onMasterProject");
 
         assertEquals("onMasterProject", dto.getOnMasterProject());
     }

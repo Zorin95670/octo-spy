@@ -14,7 +14,7 @@ class AbstractEntityTest {
     }
 
     @Test
-    public void testGetterAndSetter() {
+    void testGetterAndSetter() {
         Entity entity = new Entity();
 
         assertNull(entity.getInsertDate());

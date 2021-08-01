@@ -1,5 +1,8 @@
 package com.octo.model.entity;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -18,7 +22,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "deployment_progress")
-public class DeploymentProgress extends AbstractEntity implements IPrePersistance {
+public class DeploymentProgress extends AbstractEntity {
 
     /**
      * Primary key.
@@ -35,6 +39,14 @@ public class DeploymentProgress extends AbstractEntity implements IPrePersistanc
     @OneToOne()
     @JoinColumn(name = "dpl_id")
     private Deployment deployment;
+
+    /**
+     * Set insertDate before persist in repository.
+     */
+    @PrePersist
+    public void prePersist() {
+        this.setInsertDate(Timestamp.valueOf(LocalDateTime.now()));
+    }
 
     /**
      * Get id.

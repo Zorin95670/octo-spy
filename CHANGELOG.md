@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 2021/08/01: Version 1.8.0
+
+### Features
+
+* Add basic ACL
+* Add security alert endpoint
+
 ## 2021/07/28: Version 1.7.2
 
 ### Misc.

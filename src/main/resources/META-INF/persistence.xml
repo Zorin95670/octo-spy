@@ -13,6 +13,7 @@
 		<class>com.octo.model.entity.Group</class>
 		<class>com.octo.model.entity.ProjectGroup</class>
 		<class>com.octo.model.entity.DeploymentProgress</class>
+		<class>com.octo.model.entity.User</class>
 		<properties>
 			<property name="hibernate.dialect"
 				value="org.hibernate.dialect.PostgreSQLDialect" />

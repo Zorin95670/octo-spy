@@ -11,6 +11,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "projects")
-public class Project extends AbstractProject {
+public class Project extends AbstractProject implements IPrePersistance {
 
 }

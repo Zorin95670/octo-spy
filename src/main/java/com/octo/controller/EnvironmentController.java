@@ -2,6 +2,7 @@ package com.octo.controller;
 
 import java.util.List;
 
+import javax.annotation.security.PermitAll;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -50,6 +51,7 @@ public class EnvironmentController {
     @ApiResponse(responseCode = "200",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = EnvironmentDTO.class)),
             description = "Environment's list.")
+    @PermitAll
     public final List<EnvironmentDTO> getAll() {
         LOGGER.info("Receive GET request to get  all environment");
         return service.findAll();

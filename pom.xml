@@ -5,7 +5,7 @@
 	<groupId>com.octo</groupId>
 	<artifactId>octo-spy</artifactId>
 	<packaging>war</packaging>
-	<version>1.7.2</version>
+	<version>1.8.0</version>
 	<name>octo-spy</name>
 	<url>http://maven.apache.org</url>
 
@@ -29,11 +29,15 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven.resources.plugin>3.0.1</maven.resources.plugin>
+		<maven.pmd.plugin>3.14.0</maven.pmd.plugin>
+		<spotbugs.maven.plugin>4.3.0</spotbugs.maven.plugin>
+		<maven.checkstyle.plugin>3.1.2</maven.checkstyle.plugin>
 		<mockito.version>3.11.2</mockito.version>
 		<postgresql.version>42.2.23</postgresql.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<replacer.version>1.5.3</replacer.version>
 		<spring.version>5.3.9</spring.version>
+		<spring.security.version>5.4.2</spring.security.version>
 		<swagger.version>2.1.5</swagger.version>
 		<swagger-ui.version>3.17.0</swagger-ui.version>
 		<!-- Sonar properties -->
@@ -42,6 +46,9 @@
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 		<sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
 		<sonar.coverage.jacoco.xmlReportPaths>${project.buildDir}/target/site/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+		<sonar.java.spotbugs.reportPaths>./target/spotbugsXml.xml</sonar.java.spotbugs.reportPaths>
+		<sonar.java.pmd.reportPaths>./target/pmd.xml</sonar.java.pmd.reportPaths>
+		<sonar.java.checkstyle.reportPaths>./target/checkstyle-result.xml</sonar.java.checkstyle.reportPaths>
 	</properties>
 
 	<dependencies>
@@ -83,6 +90,13 @@
 			<artifactId>spring-orm</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-core -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<version>${spring.security.version}</version>
+		</dependency>
+
 
 		<!-- Jersey -->
 		<dependency>
@@ -408,6 +422,37 @@
 						<version>${postgresql.version}</version>
 					</dependency>
 				</dependencies>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>${maven.pmd.plugin}</version>
+			</plugin>
+			<plugin>
+				<groupId>com.github.spotbugs</groupId>
+				<artifactId>spotbugs-maven-plugin</artifactId>
+				<version>${spotbugs.maven.plugin}</version>
+				<configuration>
+					<effort>Max</effort>
+					<threshold>Low</threshold>
+					<failOnError> true </failOnError>
+					<includeFilterFile>${session.executionRootDirectory}/spotbugs-include.xml</includeFilterFile>
+					<plugins>
+						<plugin>
+							<groupId>com.h3xstream.findsecbugs</groupId>
+							<artifactId>findsecbugs-plugin</artifactId>
+							<version>LATEST</version>
+						</plugin>
+					</plugins>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>${maven.checkstyle.plugin}</version>
+				<configuration>
+					<configLocation>checkstyle.xml</configLocation>
+				</configuration>
 			</plugin>
 		</plugins>
 		<resources>

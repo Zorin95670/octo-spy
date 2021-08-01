@@ -57,11 +57,11 @@ public class NewProjectDTO extends DefaultDTO {
     /**
      * Set master of this groups.
      *
-     * @param isMaster
+     * @param state
      *            Master state.
      */
-    public void setIsMaster(boolean isMaster) {
-        this.isMaster = isMaster;
+    public void setIsMaster(final boolean state) {
+        this.isMaster = state;
     }
 
     /**
@@ -79,7 +79,7 @@ public class NewProjectDTO extends DefaultDTO {
      * @param masterName
      *            Master's project name.
      */
-    public void setMasterName(String masterName) {
+    public void setMasterName(final String masterName) {
         this.masterName = masterName;
     }
 }

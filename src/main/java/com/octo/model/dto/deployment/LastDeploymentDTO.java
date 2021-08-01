@@ -177,11 +177,11 @@ public class LastDeploymentDTO extends DefaultDTO {
     /**
      * Set deployment on master project.
      *
-     * @param onMasterProject
+     * @param alive
      *            On master project.
      */
-    public void setAlive(final boolean onMasterProject) {
-        this.onMasterProject = onMasterProject;
+    public void setAlive(final boolean alive) {
+        this.onMasterProject = alive;
     }
 
     /**

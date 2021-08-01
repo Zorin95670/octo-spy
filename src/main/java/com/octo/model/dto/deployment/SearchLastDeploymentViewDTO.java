@@ -14,7 +14,6 @@ import com.octo.utils.predicate.filter.FilterType.Type;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SearchLastDeploymentViewDTO extends SearchDeploymentViewDTO {
-
     /**
      * Is deployment on master project.
      */
@@ -37,7 +36,7 @@ public class SearchLastDeploymentViewDTO extends SearchDeploymentViewDTO {
      * @param onMasterProject
      *            On master project.
      */
-    public void setAlive(final String onMasterProject) {
+    public void setOnMasterProject(final String onMasterProject) {
         this.onMasterProject = onMasterProject;
     }
 

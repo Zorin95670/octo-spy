@@ -34,6 +34,8 @@ public class LastDeploymentViewService {
     /**
      * find last deployments.
      *
+     * @param dto
+     *            Deployment's filter.
      * @return deployments.
      */
     public List<LastDeploymentDTO> find(final SearchLastDeploymentViewDTO dto) {

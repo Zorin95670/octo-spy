@@ -34,7 +34,7 @@ public class GroupService implements IGroupService {
     private IDAO<ProjectGroup, QueryFilter> projectGroupDAO;
 
     @Override
-    public Group create(Project project) {
+    public final Group create(final Project project) {
         Group entity = new Group();
         entity.setMasterProject(project);
         entity = groupDAO.save(entity);
@@ -49,7 +49,7 @@ public class GroupService implements IGroupService {
     }
 
     @Override
-    public ProjectGroup addProjectToGroup(Project masterProject, Project project) {
+    public final ProjectGroup addProjectToGroup(final Project masterProject, final Project project) {
         Group group = groupDAO.loadEntityById(masterProject.getId(), "masterProject");
 
         ProjectGroup projectGroup = new ProjectGroup();

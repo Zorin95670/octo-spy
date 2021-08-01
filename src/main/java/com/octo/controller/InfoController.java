@@ -1,5 +1,6 @@
 package com.octo.controller;
 
+import javax.annotation.security.PermitAll;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -44,6 +45,7 @@ public class InfoController {
             content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = ProjectInformation.class)),
             description = "Project's information.")
+    @PermitAll
     public final ProjectInformation getVersion() {
         return new ProjectInformation(this.configuration.getProject(), this.configuration.getVersion(),
                 this.configuration.getEnvironment(), this.configuration.getClient());

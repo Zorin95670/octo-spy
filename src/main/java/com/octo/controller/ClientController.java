@@ -1,5 +1,6 @@
 package com.octo.controller;
 
+import javax.annotation.security.PermitAll;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -42,6 +43,7 @@ public class ClientController {
      * @return List of project name.
      */
     @GET
+    @PermitAll
     public final Response getClients() {
         LOGGER.info("Receive GET request to get all clients");
         return Response.ok(this.service.findAll()).build();

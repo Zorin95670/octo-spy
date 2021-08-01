@@ -1,5 +1,7 @@
 package com.octo.controller;
 
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -19,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 
 import com.octo.model.common.Resource;
+import com.octo.model.authentication.UserRoleType;
 import com.octo.model.dto.deployment.DeploymentDTO;
 import com.octo.model.dto.deployment.NewDeploymentDTO;
 import com.octo.model.dto.deployment.SearchDeploymentDTO;
@@ -63,10 +66,14 @@ public class DeploymentController {
     /**
      * Endpoint to return a last deployments.
      *
+     * @param dto
+     *            Deployment's filter.
+     *
      * @return Deployments.
      */
     @GET
     @Path("/last")
+    @PermitAll
     public final Response getLastDeployments(final @BeanParam SearchLastDeploymentViewDTO dto) {
         LOGGER.info("Receive GET request to get last deployment with {}", dto);
         return Response.ok(this.lastDeploymentViewService.find(dto)).build();
@@ -81,6 +88,7 @@ public class DeploymentController {
      */
     @GET
     @Path("/{id}")
+    @PermitAll
     public final Response getDeployment(@PathParam("id") final Long id) {
         LOGGER.info("Receive GET request to get deployment with id {}", id);
         return Response.ok(this.service.load(id)).build();
@@ -94,6 +102,7 @@ public class DeploymentController {
      * @return Deployments.
      */
     @GET
+    @PermitAll
     public final Response getDeployments(final @BeanParam SearchDeploymentViewDTO dto) {
         LOGGER.info("Receive GET request to get deployments with {}", dto);
         final Resource<DeploymentDTO> resources = this.service.find(dto);
@@ -113,6 +122,7 @@ public class DeploymentController {
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
+    @RolesAllowed({UserRoleType.ADMIN, UserRoleType.PROJECT_MANAGER})
     public final Response createDeployment(final NewDeploymentDTO dto) {
         LOGGER.info("Receive POST request to create deployment with dto {}", dto);
         return Response.ok(this.service.save(dto)).status(Status.CREATED).build();
@@ -127,11 +137,13 @@ public class DeploymentController {
      */
     @DELETE
     @Operation(summary = "Delete deployment in database.",
-            responses = { @ApiResponse(responseCode = "204"), @ApiResponse(responseCode = "404",
-                    content = @Content(mediaType = "application/json", schema = @Schema(allOf = { Error.class })),
-                    description = "Error on unknown deployment id.") })
+            responses = {@ApiResponse(responseCode = "204"),
+                    @ApiResponse(responseCode = "404",
+                            content = @Content(mediaType = "application/json", schema = @Schema(allOf = {Error.class})),
+                            description = "Error on unknown deployment id.")})
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/{id}")
+    @RolesAllowed({UserRoleType.ADMIN, UserRoleType.PROJECT_MANAGER})
     public Response deleteDeployment(@PathParam("id") final Long id) {
         LOGGER.info("Receive DELETE request to delete deployment with id {}", id);
         this.service.delete(id);
@@ -147,11 +159,13 @@ public class DeploymentController {
      */
     @DELETE
     @Operation(summary = "Delete progress of deployment.",
-            responses = { @ApiResponse(responseCode = "204"), @ApiResponse(responseCode = "404",
-                    content = @Content(mediaType = "application/json", schema = @Schema(allOf = { Error.class })),
-                    description = "Error on no progress to delete.") })
+            responses = {@ApiResponse(responseCode = "204"),
+                    @ApiResponse(responseCode = "404",
+                            content = @Content(mediaType = "application/json", schema = @Schema(allOf = {Error.class})),
+                            description = "Error on no progress to delete.")})
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/progress")
+    @RolesAllowed({UserRoleType.ADMIN, UserRoleType.PROJECT_MANAGER})
     public final Response deleteProgressDeployment(final SearchDeploymentDTO dto) {
         LOGGER.info("Receive DELETE request to delete progress of deployment");
         service.deleteProgressDeployment(dto);

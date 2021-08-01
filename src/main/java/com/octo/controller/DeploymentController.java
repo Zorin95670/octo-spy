@@ -20,10 +20,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 
-import com.octo.model.common.Resource;
 import com.octo.model.authentication.UserRoleType;
+import com.octo.model.common.Resource;
 import com.octo.model.dto.deployment.DeploymentDTO;
-import com.octo.model.dto.deployment.NewDeploymentDTO;
+import com.octo.model.dto.deployment.NewDeploymentRecord;
 import com.octo.model.dto.deployment.SearchDeploymentDTO;
 import com.octo.model.dto.deployment.SearchDeploymentViewDTO;
 import com.octo.model.dto.deployment.SearchLastDeploymentViewDTO;
@@ -123,7 +123,7 @@ public class DeploymentController {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @RolesAllowed({UserRoleType.ADMIN, UserRoleType.PROJECT_MANAGER})
-    public final Response createDeployment(final NewDeploymentDTO dto) {
+    public final Response createDeployment(final NewDeploymentRecord dto) {
         LOGGER.info("Receive POST request to create deployment with dto {}", dto);
         return Response.ok(this.service.save(dto)).status(Status.CREATED).build();
     }

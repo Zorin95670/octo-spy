@@ -18,7 +18,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.octo.model.dto.common.ProjectInformation;
+import com.octo.model.dto.common.ProjectInformationRecord;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = { "classpath:application-context.xml" })
@@ -50,7 +50,7 @@ class InfoControllerTest extends JerseyTest {
 
     @Test
     void getVersionFunctionalTest() throws JsonProcessingException {
-        final ProjectInformation version = this.controller.getVersion();
+        final ProjectInformationRecord version = this.controller.getVersion();
         ObjectMapper mapper = new ObjectMapper();
 
         final Response response = this.target("/info").request().get();

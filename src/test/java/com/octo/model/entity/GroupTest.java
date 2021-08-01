@@ -20,5 +20,8 @@ class GroupTest {
 
         assertEquals(Long.valueOf(1L), entity.getId());
         assertNotNull(entity.getMasterProject());
+
+        entity.prePersist();
+        assertNotNull(entity.getInsertDate());
     }
 }

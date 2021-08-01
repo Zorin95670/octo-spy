@@ -21,8 +21,8 @@ class DeploymentProgressTest {
         assertEquals(Long.valueOf(0L), entity.getId());
         assertNotNull(entity.getDeployment());
 
-        entity.setInsertDate(null);
-        entity.setUpdateDate(null);
+        entity.prePersist();
+        assertNotNull(entity.getInsertDate());
     }
 
 }

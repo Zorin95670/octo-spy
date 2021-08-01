@@ -13,7 +13,7 @@ import com.octo.dao.IDAO;
 import com.octo.model.common.Resource;
 import com.octo.model.dto.common.SearchByNameDTO;
 import com.octo.model.dto.deployment.DeploymentDTO;
-import com.octo.model.dto.deployment.NewDeploymentDTO;
+import com.octo.model.dto.deployment.NewDeploymentRecord;
 import com.octo.model.dto.deployment.SearchDeploymentDTO;
 import com.octo.model.dto.deployment.SearchDeploymentViewDTO;
 import com.octo.model.dto.deployment.SearchProgressDeploymentDTO;
@@ -89,38 +89,38 @@ public class DeploymentService {
     /**
      * Save deployment in database.
      *
-     * @param dto
-     *            DTO to save
+     * @param newDeployment
+     *            Record to save
      * @return Deployment.
      */
-    public DeploymentDTO save(final NewDeploymentDTO dto) {
-        if (dto.getEnvironment() == null) {
+    public DeploymentDTO save(final NewDeploymentRecord newDeployment) {
+        if (newDeployment.environment() == null) {
             throw new GlobalException(ErrorType.EMPTY_VALUE, Constants.FIELD_ENVIRONMENT, null);
         }
-        if (dto.getProject() == null) {
+        if (newDeployment.project() == null) {
             throw new GlobalException(ErrorType.EMPTY_VALUE, Constants.FIELD_PROJECT, null);
         }
 
-        if (dto.getClient() == null) {
+        if (newDeployment.client() == null) {
             throw new GlobalException(ErrorType.EMPTY_VALUE, "client", null);
         }
 
-        if (dto.getVersion() == null) {
+        if (newDeployment.version() == null) {
             throw new GlobalException(ErrorType.EMPTY_VALUE, "version", null);
         }
 
-        Optional<Environment> environment = this.environmentDAO.load(new SearchByNameDTO(dto.getEnvironment()));
+        Optional<Environment> environment = this.environmentDAO.load(new SearchByNameDTO(newDeployment.environment()));
         if (!environment.isPresent()) {
-            throw new GlobalException(ErrorType.ENTITY_NOT_FOUND, Constants.FIELD_ENVIRONMENT, dto.getEnvironment());
+            throw new GlobalException(ErrorType.ENTITY_NOT_FOUND, Constants.FIELD_ENVIRONMENT, newDeployment.environment());
         }
 
-        Optional<Project> project = this.projectDAO.load(new SearchByNameDTO(dto.getProject()));
+        Optional<Project> project = this.projectDAO.load(new SearchByNameDTO(newDeployment.project()));
         if (!project.isPresent()) {
-            throw new GlobalException(ErrorType.ENTITY_NOT_FOUND, Constants.FIELD_PROJECT, dto.getProject());
+            throw new GlobalException(ErrorType.ENTITY_NOT_FOUND, Constants.FIELD_PROJECT, newDeployment.project());
         }
 
         Deployment entity = new BeanMapper<>(Deployment.class, Constants.FIELD_ENVIRONMENT, Constants.FIELD_PROJECT)
-                .apply(dto);
+                .apply(newDeployment);
         entity.setEnvironment(environment.get());
         entity.setProject(project.get());
 
@@ -130,7 +130,7 @@ public class DeploymentService {
 
         entity = this.deploymentDAO.save(entity);
 
-        if (dto.isInProgress()) {
+        if (newDeployment.inProgress()) {
             DeploymentProgress progress = new DeploymentProgress();
             progress.setDeployment(entity);
             this.deploymentProgressDAO.save(progress);

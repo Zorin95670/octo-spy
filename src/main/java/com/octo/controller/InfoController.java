@@ -9,7 +9,7 @@ import javax.ws.rs.core.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import com.octo.model.dto.common.ProjectInformation;
+import com.octo.model.dto.common.ProjectInformationRecord;
 import com.octo.utils.Configuration;
 
 import io.swagger.v3.oas.annotations.media.Content;
@@ -43,11 +43,11 @@ public class InfoController {
     @GET
     @ApiResponse(responseCode = "200",
             content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = ProjectInformation.class)),
+                    schema = @Schema(implementation = ProjectInformationRecord.class)),
             description = "Project's information.")
     @PermitAll
-    public final ProjectInformation getVersion() {
-        return new ProjectInformation(this.configuration.getProject(), this.configuration.getVersion(),
+    public final ProjectInformationRecord getVersion() {
+        return new ProjectInformationRecord(this.configuration.getProject(), this.configuration.getVersion(),
                 this.configuration.getEnvironment(), this.configuration.getClient());
     }
 }

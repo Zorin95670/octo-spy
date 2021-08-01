@@ -23,5 +23,8 @@ class ProjectGroupTest {
         assertEquals(Long.valueOf(1L), entity.getId());
         assertNotNull(entity.getGroup());
         assertNotNull(entity.getProject());
+
+        entity.prePersist();
+        assertNotNull(entity.getInsertDate());
     }
 }

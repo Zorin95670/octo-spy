@@ -22,7 +22,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.octo.model.dto.project.NewProjectDTO;
+import com.octo.model.dto.project.NewProjectRecord;
 import com.octo.model.dto.project.ProjectDTO;
 import com.octo.service.CountService;
 import com.octo.service.ProjectService;
@@ -90,7 +90,7 @@ class ProjectControllerTest extends JerseyTest {
     @Test
     void testCreateProject() {
         Mockito.when(this.service.save(Mockito.any())).thenReturn(new ProjectDTO());
-        final Response response = this.controller.createProject(new NewProjectDTO());
+        final Response response = this.controller.createProject(new NewProjectRecord(null, false, null));
 
         assertNotNull(response);
         assertEquals(Status.CREATED.getStatusCode(), response.getStatus());

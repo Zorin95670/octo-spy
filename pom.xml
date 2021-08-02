@@ -38,7 +38,6 @@
 		<maven.compiler.source>16</maven.compiler.source>
 		<maven.compiler.target>16</maven.compiler.target>
 		<maven-dependency-plugin.version>3.1.1</maven-dependency-plugin.version>
-		<maven.pmd.plugin>3.14.0</maven.pmd.plugin>
 		<maven.resources.plugin>3.0.1</maven.resources.plugin>
 		<maven-war-plugin.version>3.2.2</maven-war-plugin.version>
 		<spotbugs.maven.plugin>4.3.0</spotbugs.maven.plugin>
@@ -49,7 +48,6 @@
 		<sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
 		<sonar.coverage.jacoco.xmlReportPaths>${project.buildDir}/target/site/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 		<sonar.java.spotbugs.reportPaths>./target/spotbugsXml.xml</sonar.java.spotbugs.reportPaths>
-		<sonar.java.pmd.reportPaths>./target/pmd.xml</sonar.java.pmd.reportPaths>
 		<sonar.java.checkstyle.reportPaths>./target/checkstyle-result.xml</sonar.java.checkstyle.reportPaths>
 	</properties>
 
@@ -434,11 +432,6 @@
 						<version>${postgresql.version}</version>
 					</dependency>
 				</dependencies>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-pmd-plugin</artifactId>
-				<version>${maven.pmd.plugin}</version>
 			</plugin>
 			<plugin>
 				<groupId>com.github.spotbugs</groupId>

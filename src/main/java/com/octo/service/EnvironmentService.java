@@ -1,7 +1,6 @@
 package com.octo.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -37,6 +36,6 @@ public class EnvironmentService {
      */
     public List<EnvironmentDTO> findAll() {
         return this.environmentDAO.find(null, true).stream().map(new BeanMapper<>(EnvironmentDTO.class))
-                .collect(Collectors.toList());
+                .toList();
     }
 }

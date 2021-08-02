@@ -2,7 +2,6 @@ package com.octo.service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -111,7 +110,8 @@ public class DeploymentService {
 
         Optional<Environment> environment = this.environmentDAO.load(new SearchByNameDTO(newDeployment.environment()));
         if (!environment.isPresent()) {
-            throw new GlobalException(ErrorType.ENTITY_NOT_FOUND, Constants.FIELD_ENVIRONMENT, newDeployment.environment());
+            throw new GlobalException(ErrorType.ENTITY_NOT_FOUND, Constants.FIELD_ENVIRONMENT,
+                    newDeployment.environment());
         }
 
         Optional<Project> project = this.projectDAO.load(new SearchByNameDTO(newDeployment.project()));
@@ -245,7 +245,7 @@ public class DeploymentService {
 
         final Long total = this.count(dto);
         final List<DeploymentDTO> deployments = this.deploymentViewDAO.find(dto).stream()
-                .map(new BeanMapper<>(DeploymentDTO.class)).collect(Collectors.toList());
+                .map(new BeanMapper<>(DeploymentDTO.class)).toList();
 
         return new Resource<>(total, deployments, dto.getPage(), dto.getCount());
     }

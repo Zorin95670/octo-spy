@@ -2,7 +2,6 @@ package com.octo.service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -111,6 +110,6 @@ public class ProjectService {
      */
     public List<ProjectViewDTO> findAll(final SearchProjectViewDTO dto) {
         return this.projectViewDAO.find(dto, true).stream().map(new BeanMapper<>(ProjectViewDTO.class))
-                .collect(Collectors.toList());
+                .toList();
     }
 }

@@ -32,6 +32,7 @@
 		<swagger.version>2.1.5</swagger.version>
 		<swagger-ui.version>3.17.0</swagger-ui.version>
 		<!-- Project build properties -->
+		<checkstyle.version>8.45</checkstyle.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>16</java.version>
 		<maven.checkstyle.plugin>3.1.2</maven.checkstyle.plugin>
@@ -458,6 +459,13 @@
 				<configuration>
 					<configLocation>checkstyle.xml</configLocation>
 				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>com.puppycrawl.tools</groupId>
+						<artifactId>checkstyle</artifactId>
+						<version>${checkstyle.version}</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 		</plugins>
 		<resources>

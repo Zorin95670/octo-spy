@@ -21,7 +21,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import com.octo.dao.IDAO;
 import com.octo.model.common.Resource;
 import com.octo.model.dto.deployment.DeploymentDTO;
-import com.octo.model.dto.deployment.NewDeploymentDTO;
+import com.octo.model.dto.deployment.NewDeploymentRecord;
 import com.octo.model.dto.deployment.SearchDeploymentDTO;
 import com.octo.model.dto.deployment.SearchDeploymentViewDTO;
 import com.octo.model.entity.Deployment;
@@ -70,7 +70,7 @@ class DeploymentServiceTest {
     void testSave() {
         // Test null environment
         GlobalException exception = null;
-        NewDeploymentDTO input = new NewDeploymentDTO();
+        NewDeploymentRecord input = new NewDeploymentRecord(null, null, null, null, false, false);
         Mockito.when(this.environmentDAO.load(Mockito.any())).thenReturn(Optional.empty());
         Mockito.when(this.projectDAO.load(Mockito.any())).thenReturn(Optional.empty());
 
@@ -88,7 +88,7 @@ class DeploymentServiceTest {
 
         // Test null client
         exception = null;
-        input.setEnvironment("");
+        input = new NewDeploymentRecord("", null, null, null, false, false);
 
         try {
             service.save(input);
@@ -104,7 +104,7 @@ class DeploymentServiceTest {
 
         // Test null version
         exception = null;
-        input.setProject("");
+        input = new NewDeploymentRecord("", "", null, null, false, false);
 
         try {
             service.save(input);
@@ -120,7 +120,7 @@ class DeploymentServiceTest {
 
         // Test null version
         exception = null;
-        input.setClient("");
+        input = new NewDeploymentRecord("", "", null, "", false, false);
 
         try {
             service.save(input);
@@ -136,10 +136,7 @@ class DeploymentServiceTest {
 
         // Test all good
         exception = null;
-        input.setClient("client");
-        input.setEnvironment("QA");
-        input.setVersion("version");
-        input.setProject("project");
+        input = new NewDeploymentRecord("QA", "project", "version", "client", false, false);
 
         Environment environment = new Environment();
         environment.setId(1L);
@@ -180,11 +177,7 @@ class DeploymentServiceTest {
 
         // Test all good and disable previous deployment
         exception = null;
-        input.setClient("client");
-        input.setEnvironment("QA");
-        input.setVersion("version");
-        input.setProject("project");
-        input.setAlive(true);
+        input = new NewDeploymentRecord("QA", "project", "version", "client", true, false);
 
         Mockito.when(this.environmentDAO.load(Mockito.any())).thenReturn(Optional.of(environment));
         Mockito.when(this.projectDAO.load(Mockito.any())).thenReturn(Optional.of(project));
@@ -200,7 +193,7 @@ class DeploymentServiceTest {
         assertNull(exception);
         assertNotNull(dto);
 
-        input.setAlive(false);
+        input = new NewDeploymentRecord("QA", "project", "version", "client", false, false);
         try {
             dto = service.save(input);
         } catch (GlobalException e) {
@@ -229,13 +222,7 @@ class DeploymentServiceTest {
         Mockito.when(this.projectDAO.load(Mockito.any())).thenReturn(Optional.of(project));
         Mockito.when(this.deploymentDAO.save(Mockito.any())).thenReturn(deployment);
         Mockito.when(this.deploymentProgressDAO.save(Mockito.any())).thenReturn(null);
-        NewDeploymentDTO dto = new NewDeploymentDTO();
-        dto.setClient("client");
-        dto.setEnvironment("QA");
-        dto.setVersion("version");
-        dto.setProject("project");
-        dto.setAlive(true);
-        dto.setInProgress(true);
+        NewDeploymentRecord dto = new NewDeploymentRecord("QA", "project", "version", "client", true, true);
 
         GlobalException exception = null;
         try {

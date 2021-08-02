@@ -1,5 +1,8 @@
 package com.octo.model.entity;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -20,7 +24,7 @@ import com.octo.utils.Constants;
  */
 @Entity
 @Table(name = "deployments")
-public class Deployment extends AbstractEntity implements IPrePersistance {
+public class Deployment extends AbstractEntity {
 
     /**
      * Primary key.
@@ -57,6 +61,14 @@ public class Deployment extends AbstractEntity implements IPrePersistance {
      */
     @Column(name = "alive")
     private boolean alive;
+
+    /**
+     * Set insertDate before persist in repository.
+     */
+    @PrePersist
+    public void prePersist() {
+        this.setInsertDate(Timestamp.valueOf(LocalDateTime.now()));
+    }
 
     /**
      * Get id.

@@ -16,7 +16,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.octo.dao.IDAO;
-import com.octo.model.dto.project.NewProjectDTO;
+import com.octo.model.dto.project.NewProjectRecord;
 import com.octo.model.dto.project.ProjectDTO;
 import com.octo.model.entity.Group;
 import com.octo.model.entity.Project;
@@ -64,7 +64,7 @@ class ProjectServiceTest {
         assertNull(exception.getError().getValue());
 
         exception = null;
-        NewProjectDTO input = new NewProjectDTO();
+        NewProjectRecord input = new NewProjectRecord(null, false, null);
 
         try {
             service.save(input);
@@ -80,7 +80,7 @@ class ProjectServiceTest {
 
         // Test all good
         exception = null;
-        input.setName("Project test");
+        input = new NewProjectRecord("Project test", false, null);
 
         Mockito.when(this.projectDAO.save(Mockito.any())).thenReturn(new Project());
         ProjectDTO dto = null;
@@ -97,9 +97,7 @@ class ProjectServiceTest {
 
     @Test
     void saveMasterProject() {
-        NewProjectDTO dto = new NewProjectDTO();
-        dto.setIsMaster(true);
-        dto.setName("test");
+        NewProjectRecord dto = new NewProjectRecord("test", true, null);
 
         Mockito.when(projectDAO.save(Mockito.any())).thenReturn(new Project());
         Mockito.when(groupService.create(Mockito.any())).thenReturn(new Group());
@@ -110,10 +108,7 @@ class ProjectServiceTest {
 
     @Test
     void saveGroupProject() {
-        NewProjectDTO dto = new NewProjectDTO();
-        dto.setIsMaster(false);
-        dto.setName("test");
-        dto.setMasterName("master");
+        NewProjectRecord dto = new NewProjectRecord("test", false, "master");
 
         Mockito.when(projectDAO.save(Mockito.any())).thenReturn(new Project());
         Mockito.when(projectDAO.load(Mockito.any())).thenReturn(Optional.empty());

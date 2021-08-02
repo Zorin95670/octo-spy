@@ -1,5 +1,3 @@
-CREATE EXTENSION IF NOT EXISTS pgcrypto;
-
 CREATE TABLE IF NOT EXISTS users (
   usr_id              SERIAL PRIMARY KEY,
   authentication_type VARCHAR(100) NOT NULL,
@@ -25,7 +23,7 @@ COMMENT ON COLUMN users.insert_date         IS 'Creation date of this row.';
 COMMENT ON COLUMN users.update_date         IS 'Last update date of this row.';
 
 INSERT INTO users
-	(login, firstname, lastname, password, active, authentication_type, email) 
+	(login, firstname, lastname, password, active, authentication_type, email)
 VALUES
 	('admin', 'Administrator', NULL, crypt('admin', gen_salt('bf')), TRUE, 'LOCAL', 'no-reply@change.it');
-	
+

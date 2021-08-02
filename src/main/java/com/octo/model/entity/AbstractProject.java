@@ -1,10 +1,14 @@
 package com.octo.model.entity;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
 import javax.persistence.SequenceGenerator;
 
 import com.octo.utils.Constants;
@@ -16,7 +20,7 @@ import com.octo.utils.Constants;
  *
  */
 @MappedSuperclass
-public abstract class AbstractProject extends AbstractEntity implements IPrePersistance {
+public abstract class AbstractProject extends AbstractEntity {
 
     /**
      * Primary key.
@@ -31,6 +35,14 @@ public abstract class AbstractProject extends AbstractEntity implements IPrePers
      */
     @Column(name = "name", nullable = false, length = Constants.DEFAULT_SIZE_OF_STRING)
     private String name;
+
+    /**
+     * Set insertDate before persist in repository.
+     */
+    @PrePersist
+    public void prePersist() {
+        this.setInsertDate(Timestamp.valueOf(LocalDateTime.now()));
+    }
 
     /**
      * Get primary key value.

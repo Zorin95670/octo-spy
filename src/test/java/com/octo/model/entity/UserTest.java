@@ -2,6 +2,7 @@ package com.octo.model.entity;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -39,6 +40,9 @@ class UserTest {
         assertEquals("lastname", user.getLastname());
         assertEquals("email", user.getEmail());
         assertTrue(user.isActive());
+
+        user.prePersist();
+        assertNotNull(user.getInsertDate());
     }
 
 }

@@ -3,7 +3,6 @@ package com.octo.utils.predicate.filter;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import javax.persistence.criteria.CommonAbstractCriteria;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -90,11 +89,11 @@ public class NumberPredicateFilter extends PredicateFilter {
 
         if (this.getValues().length == allNotEquals) {
             return builder.not(root.get(this.getName())
-                    .in(Arrays.stream(this.getValues()).map(Long::parseLong).collect(Collectors.toList())));
+                    .in(Arrays.stream(this.getValues()).map(Long::parseLong).toList()));
         }
         if (this.getValues().length == allEquals) {
             return root.get(this.getName())
-                    .in(Arrays.stream(this.getValues()).map(Long::parseLong).collect(Collectors.toList()));
+                    .in(Arrays.stream(this.getValues()).map(Long::parseLong).toList());
         }
         Predicate[] predicates = new Predicate[this.getValues().length];
         for (int index = 0; index < getValues().length; index++) {

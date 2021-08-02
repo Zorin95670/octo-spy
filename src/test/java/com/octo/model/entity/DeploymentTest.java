@@ -34,5 +34,8 @@ class DeploymentTest {
         assertNotNull(entity.getProject());
         assertEquals("version", entity.getVersion());
         assertEquals("client", entity.getClient());
+
+        entity.prePersist();
+        assertNotNull(entity.getInsertDate());
     }
 }

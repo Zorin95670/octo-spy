@@ -1,7 +1,6 @@
 package com.octo.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -41,6 +40,6 @@ public class LastDeploymentViewService {
     public List<LastDeploymentDTO> find(final SearchLastDeploymentViewDTO dto) {
         List<LastDeploymentView> entities = this.lastDeploymentViewDAO.find(dto, true);
 
-        return entities.stream().map(new BeanMapper<>(LastDeploymentDTO.class)).collect(Collectors.toList());
+        return entities.stream().map(new BeanMapper<>(LastDeploymentDTO.class)).toList();
     }
 }

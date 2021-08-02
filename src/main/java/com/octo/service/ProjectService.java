@@ -2,7 +2,6 @@ package com.octo.service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -12,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.octo.dao.IDAO;
 import com.octo.model.dto.common.SearchByNameDTO;
-import com.octo.model.dto.project.NewProjectDTO;
+import com.octo.model.dto.project.NewProjectRecord;
 import com.octo.model.dto.project.ProjectDTO;
 import com.octo.model.dto.project.ProjectViewDTO;
 import com.octo.model.dto.project.SearchProjectViewDTO;
@@ -70,21 +69,20 @@ public class ProjectService {
      *            DTO to save
      * @return Project.
      */
-    public ProjectDTO save(final NewProjectDTO dto) {
-        if (dto == null || StringUtils.isBlank(dto.getName())) {
+    public ProjectDTO save(final NewProjectRecord dto) {
+        if (dto == null || StringUtils.isBlank(dto.name())) {
             throw new GlobalException(ErrorType.EMPTY_VALUE, "name", null);
         }
 
         Project entity = new BeanMapper<>(Project.class).apply(dto);
-
         entity = this.projectDAO.save(entity);
 
-        if (dto.getIsMaster()) {
+        if (dto.isMaster()) {
             groupService.create(entity);
-        } else if (StringUtils.isNotBlank(dto.getMasterName())) {
-            Optional<Project> masterProject = this.projectDAO.load(new SearchByNameDTO(dto.getMasterName()));
+        } else if (StringUtils.isNotBlank(dto.masterName())) {
+            Optional<Project> masterProject = this.projectDAO.load(new SearchByNameDTO(dto.masterName()));
             if (!masterProject.isPresent()) {
-                throw new GlobalException(ErrorType.ENTITY_NOT_FOUND, Constants.FIELD_PROJECT, dto.getMasterName());
+                throw new GlobalException(ErrorType.ENTITY_NOT_FOUND, Constants.FIELD_PROJECT, dto.masterName());
             }
             groupService.addProjectToGroup(masterProject.get(), entity);
         }
@@ -112,6 +110,6 @@ public class ProjectService {
      */
     public List<ProjectViewDTO> findAll(final SearchProjectViewDTO dto) {
         return this.projectViewDAO.find(dto, true).stream().map(new BeanMapper<>(ProjectViewDTO.class))
-                .collect(Collectors.toList());
+                .toList();
     }
 }

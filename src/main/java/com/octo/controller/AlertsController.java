@@ -15,7 +15,7 @@ import org.springframework.stereotype.Controller;
 
 import com.octo.model.authentication.UserRoleType;
 import com.octo.model.common.Resource;
-import com.octo.model.dto.alert.AlertDTO;
+import com.octo.model.dto.alert.AlertRecord;
 import com.octo.service.UserService;
 
 import io.swagger.v3.oas.annotations.servers.Server;
@@ -43,28 +43,21 @@ public class AlertsController {
     @GET
     @RolesAllowed(UserRoleType.ADMIN)
     public final Response getAlerts() {
-        List<AlertDTO> alerts = new ArrayList<>();
+        List<AlertRecord> alerts = new ArrayList<>();
 
         if (!service.isSecureAdministrator()) {
-            AlertDTO alert = new AlertDTO();
-            alert.setSeverity("warning");
-            alert.setType("security");
-            alert.setMessage("Administrator's password is not secure, please change it.");
-            alerts.add(alert);
+            alerts.add(new AlertRecord("warning", "security",
+                    "Administrator's password is not secure, please change it."));
         }
 
         if (!service.isValidAdministratorEmail()) {
-            AlertDTO alert = new AlertDTO();
-            alert.setSeverity("critical");
-            alert.setType("security");
-            alert.setMessage("Administrator's email is not set, please change it.");
-            alerts.add(alert);
+            alerts.add(new AlertRecord("critical", "security", "Administrator's email is not set, please change it."));
         }
 
         if (alerts.isEmpty()) {
             return Response.noContent().build();
         }
-        return Response.ok(new Resource<AlertDTO>(Long.valueOf(alerts.size()), alerts, 0, alerts.size())).build();
+        return Response.ok(new Resource<>(Long.valueOf(alerts.size()), alerts, 0, alerts.size())).build();
     }
 
 }

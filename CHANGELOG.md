@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2021/08/02: Version 1.9.0
+
+* Migrate to java 16
+
 ## 2021/08/01: Version 1.8.0
 
 ### Features

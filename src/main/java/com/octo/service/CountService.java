@@ -4,7 +4,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -171,7 +170,7 @@ public class CountService {
                     this.convertValueToObject(clazz, dto.getField(), dto.getValue())));
         } else {
             predicates.add(root.get(dto.getField()).in(Arrays.stream(dto.getValue().split(","))
-                    .map(v -> this.convertValueToObject(clazz, dto.getField(), v)).collect(Collectors.toList())));
+                    .map(v -> this.convertValueToObject(clazz, dto.getField(), v)).toList()));
         }
 
         criteria.where(predicates.toArray(new Predicate[predicates.size()]));

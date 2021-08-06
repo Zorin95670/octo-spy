@@ -31,6 +31,7 @@
 		<spring.security.version>5.4.2</spring.security.version>
 		<swagger.version>2.1.5</swagger.version>
 		<swagger-ui.version>3.17.0</swagger-ui.version>
+		<validator.version>1.7</validator.version>
 		<!-- Project build properties -->
 		<checkstyle.version>8.45</checkstyle.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -208,6 +209,11 @@
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils</artifactId>
 			<version>${beanutils.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-validator</groupId>
+			<artifactId>commons-validator</artifactId>
+			<version>${validator.version}</version>
 		</dependency>
 
 		<!-- Logger -->

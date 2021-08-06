@@ -3,6 +3,9 @@ package com.octo.controller;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -19,7 +22,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.octo.service.UserService;
+import com.octo.model.dto.alert.AlertRecord;
+import com.octo.service.AlertService;
 
 @ExtendWith(SpringExtension.class)
 @ExtendWith(MockitoExtension.class)
@@ -27,7 +31,7 @@ import com.octo.service.UserService;
 class AlertControllerTest extends JerseyTest {
 
     @Mock
-    UserService service;
+    AlertService service;
 
     @InjectMocks
     AlertsController controller;
@@ -49,15 +53,15 @@ class AlertControllerTest extends JerseyTest {
 
     @Test
     void testGetClients() {
-        Mockito.when(this.service.isSecureAdministrator()).thenReturn(true);
-        Mockito.when(this.service.isValidAdministratorEmail()).thenReturn(true);
+        final List<AlertRecord> alerts = new ArrayList<>();
+        Mockito.when(this.service.getAlerts()).thenReturn(alerts);
         Response response = this.controller.getAlerts();
 
         assertNotNull(response);
         assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
 
-        Mockito.when(this.service.isSecureAdministrator()).thenReturn(false);
-        Mockito.when(this.service.isValidAdministratorEmail()).thenReturn(false);
+        alerts.add(new AlertRecord(null, null, null));
+        Mockito.when(this.service.getAlerts()).thenReturn(alerts);
         response = this.controller.getAlerts();
 
         assertNotNull(response);

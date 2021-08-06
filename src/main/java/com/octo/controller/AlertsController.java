@@ -1,6 +1,5 @@
 package com.octo.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.security.RolesAllowed;
@@ -16,7 +15,7 @@ import org.springframework.stereotype.Controller;
 import com.octo.model.authentication.UserRoleType;
 import com.octo.model.common.Resource;
 import com.octo.model.dto.alert.AlertRecord;
-import com.octo.service.UserService;
+import com.octo.service.AlertService;
 
 import io.swagger.v3.oas.annotations.servers.Server;
 
@@ -33,7 +32,7 @@ public class AlertsController {
      * User service.
      */
     @Autowired
-    private UserService service;
+    private AlertService service;
 
     /**
      * Get all applications alerts.
@@ -43,20 +42,12 @@ public class AlertsController {
     @GET
     @RolesAllowed(UserRoleType.ADMIN)
     public final Response getAlerts() {
-        List<AlertRecord> alerts = new ArrayList<>();
-
-        if (!service.isSecureAdministrator()) {
-            alerts.add(new AlertRecord("warning", "security",
-                    "Administrator's password is not secure, please change it."));
-        }
-
-        if (!service.isValidAdministratorEmail()) {
-            alerts.add(new AlertRecord("critical", "security", "Administrator's email is not set, please change it."));
-        }
+        List<AlertRecord> alerts = service.getAlerts();
 
         if (alerts.isEmpty()) {
             return Response.noContent().build();
         }
+
         return Response.ok(new Resource<>(Long.valueOf(alerts.size()), alerts, 0, alerts.size())).build();
     }
 

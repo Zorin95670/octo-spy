@@ -16,6 +16,14 @@ public final class Constants {
     }
 
     /**
+     * Minimum database version.
+     */
+    public static final int DATABASE_VERSION_MINIMUM = 12;
+    /**
+     * Maximum database version.
+     */
+    public static final int DATABASE_VERSION_MAXIMUM = 12;
+    /**
      * Default administrator login.
      */
     public static final String DEFAULT_ADMIN_LOGIN = "admin";

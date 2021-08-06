@@ -16,6 +16,23 @@ public final class Constants {
     }
 
     /**
+     * Minimum password length.
+     */
+    public static final int MINIMUM_PASSWORD_LENGTH = 8;
+
+    /**
+     * Maximum password length.
+     */
+    public static final int MAXMUM_PASSWORD_LENGTH = 50;
+    /**
+     * Minimum database version.
+     */
+    public static final int DATABASE_VERSION_MINIMUM = 12;
+    /**
+     * Maximum database version.
+     */
+    public static final int DATABASE_VERSION_MAXIMUM = 12;
+    /**
      * Default administrator login.
      */
     public static final String DEFAULT_ADMIN_LOGIN = "admin";

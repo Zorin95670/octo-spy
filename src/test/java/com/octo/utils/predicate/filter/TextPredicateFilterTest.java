@@ -91,5 +91,12 @@ class TextPredicateFilterTest {
         assertEquals(PredicateOperator.LIKE, filter.getOperator(0));
         assertTrue(filter.getIsNotOperator(0));
         assertEquals("test", filter.getValue(0));
+
+        filter = new TextPredicateFilter("name", "not_lkt*es*t");
+        assertTrue(filter.extract());
+        assertNotNull(filter.getPredicate(builder, root, null));
+        assertEquals(PredicateOperator.LIKE, filter.getOperator(0));
+        assertTrue(filter.getIsNotOperator(0));
+        assertEquals("t%es%t", filter.getValue(0));
     }
 }

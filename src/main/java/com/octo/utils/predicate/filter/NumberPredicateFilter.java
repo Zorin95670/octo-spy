@@ -88,12 +88,11 @@ public class NumberPredicateFilter extends PredicateFilter {
         }
 
         if (this.getValues().length == allNotEquals) {
-            return builder.not(root.get(this.getName())
-                    .in(Arrays.stream(this.getValues()).map(Long::parseLong).toList()));
+            return builder
+                    .not(root.get(this.getName()).in(Arrays.stream(this.getValues()).map(Long::parseLong).toList()));
         }
         if (this.getValues().length == allEquals) {
-            return root.get(this.getName())
-                    .in(Arrays.stream(this.getValues()).map(Long::parseLong).toList());
+            return root.get(this.getName()).in(Arrays.stream(this.getValues()).map(Long::parseLong).toList());
         }
         Predicate[] predicates = new Predicate[this.getValues().length];
         for (int index = 0; index < getValues().length; index++) {

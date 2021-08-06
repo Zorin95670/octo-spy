@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.nio.CharBuffer;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.postgresql.util.Base64;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -38,6 +40,37 @@ class UserServiceTest {
     UserService service;
 
     @Test
+    void testUpdateDefaultAdminitratorPasswordWithBadLength() {
+        String tooShortPassword = CharBuffer.allocate(7).toString().replace('\0', 'a');
+        String tooLongPassword = CharBuffer.allocate(51).toString().replace('\0', 'a');
+
+        GlobalException exception = null;
+        try {
+            service.updateDefaultAdminitratorPassword("");
+        } catch (GlobalException e) {
+            exception = e;
+        }
+        assertNotNull(exception);
+
+        exception = null;
+        try {
+            String encodedPassword = Base64.encodeBytes(tooShortPassword.getBytes());
+            service.updateDefaultAdminitratorPassword(encodedPassword);
+        } catch (GlobalException e) {
+            exception = e;
+        }
+        assertNotNull(exception);
+        exception = null;
+        try {
+            String encodedPassword = Base64.encodeBytes(tooLongPassword.getBytes());
+            service.updateDefaultAdminitratorPassword(encodedPassword);
+        } catch (GlobalException e) {
+            exception = e;
+        }
+        assertNotNull(exception);
+    }
+
+    @Test
     void testUpdateDefaultAdminitratorPassword() {
         Mockito.when(passwordEncoder.encode(Mockito.any())).thenReturn(null);
         Mockito.when(userDAO.save(Mockito.any())).thenReturn(null);
@@ -45,7 +78,7 @@ class UserServiceTest {
 
         GlobalException exception = null;
         try {
-            service.updateDefaultAdminitratorPassword("password");
+            service.updateDefaultAdminitratorPassword("password1234");
         } catch (GlobalException e) {
             exception = e;
         }
@@ -55,7 +88,37 @@ class UserServiceTest {
 
         exception = null;
         try {
-            service.updateDefaultAdminitratorPassword("password");
+            service.updateDefaultAdminitratorPassword("password1234");
+        } catch (GlobalException e) {
+            exception = e;
+        }
+        assertNull(exception);
+    }
+
+    @Test
+    void testUpdateDefaultAdminitratorEmail() {
+        GlobalException exception = null;
+        try {
+            service.updateDefaultAdminitratorEmail("bad email");
+        } catch (GlobalException e) {
+            exception = e;
+        }
+        assertNotNull(exception);
+        Mockito.when(userDAO.save(Mockito.any())).thenReturn(null);
+        Mockito.when(userDAO.loadWithLock(Mockito.any())).thenReturn(Optional.empty());
+        String validEmail = "testemail@test.com";
+        exception = null;
+        try {
+            service.updateDefaultAdminitratorEmail(validEmail);
+        } catch (GlobalException e) {
+            exception = e;
+        }
+        assertNotNull(exception);
+
+        Mockito.when(userDAO.loadWithLock(Mockito.any())).thenReturn(Optional.of(new User()));
+        exception = null;
+        try {
+            service.updateDefaultAdminitratorEmail(validEmail);
         } catch (GlobalException e) {
             exception = e;
         }
@@ -79,52 +142,6 @@ class UserServiceTest {
 
         Mockito.when(passwordEncoder.matches(Mockito.any(), Mockito.any())).thenReturn(true);
         assertTrue(service.isDefaultAdminitratorAllowed("password"));
-    }
-
-    @Test
-    void testIsSecureAdministrator() {
-        Mockito.when(userDAO.load(Mockito.any())).thenReturn(Optional.empty());
-        assertTrue(service.isSecureAdministrator());
-
-        User user = new User();
-        user.setActive(false);
-        Mockito.when(userDAO.load(Mockito.any())).thenReturn(Optional.of(user));
-        assertTrue(service.isSecureAdministrator());
-
-        Mockito.when(passwordEncoder.matches(Mockito.any(), Mockito.any())).thenReturn(true);
-        assertTrue(service.isSecureAdministrator());
-
-        user.setActive(true);
-        Mockito.when(userDAO.load(Mockito.any())).thenReturn(Optional.of(user));
-        Mockito.when(passwordEncoder.matches(Mockito.any(), Mockito.any())).thenReturn(false);
-        assertTrue(service.isSecureAdministrator());
-
-        Mockito.when(passwordEncoder.matches(Mockito.any(), Mockito.any())).thenReturn(true);
-        assertFalse(service.isSecureAdministrator());
-    }
-
-    @Test
-    void testIsValidAdministratorEmail() {
-        Mockito.when(userDAO.load(Mockito.any())).thenReturn(Optional.empty());
-        assertTrue(service.isValidAdministratorEmail());
-
-        User user = new User();
-        user.setActive(false);
-        Mockito.when(userDAO.load(Mockito.any())).thenReturn(Optional.of(user));
-        assertTrue(service.isValidAdministratorEmail());
-
-        user.setEmail("test");
-        Mockito.when(userDAO.load(Mockito.any())).thenReturn(Optional.of(user));
-        assertTrue(service.isValidAdministratorEmail());
-
-        user.setActive(true);
-        Mockito.when(userDAO.load(Mockito.any())).thenReturn(Optional.of(user));
-        assertTrue(service.isValidAdministratorEmail());
-
-        user.setEmail("no-reply@change.it");
-        Mockito.when(userDAO.load(Mockito.any())).thenReturn(Optional.of(user));
-        assertFalse(service.isValidAdministratorEmail());
-
     }
 
     @Test

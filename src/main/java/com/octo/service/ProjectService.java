@@ -109,7 +109,6 @@ public class ProjectService {
      * @return Projects
      */
     public List<ProjectViewDTO> findAll(final SearchProjectViewDTO dto) {
-        return this.projectViewDAO.find(dto, true).stream().map(new BeanMapper<>(ProjectViewDTO.class))
-                .toList();
+        return this.projectViewDAO.find(dto, true).stream().map(new BeanMapper<>(ProjectViewDTO.class)).toList();
     }
 }

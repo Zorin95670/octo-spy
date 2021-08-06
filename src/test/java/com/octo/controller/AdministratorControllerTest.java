@@ -3,9 +3,6 @@ package com.octo.controller;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -22,28 +19,28 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.octo.model.dto.alert.AlertRecord;
-import com.octo.service.AlertService;
+import com.octo.service.UserService;
 
 @ExtendWith(SpringExtension.class)
 @ExtendWith(MockitoExtension.class)
 @ContextConfiguration(locations = { "classpath:application-context.xml" })
-class AlertControllerTest extends JerseyTest {
+class AdministratorControllerTest extends JerseyTest {
 
     @Mock
-    AlertService service;
+    UserService service;
 
     @InjectMocks
-    AlertsController controller;
+    AdministratorController controller;
 
     @Override
     protected Application configure() {
-        final ResourceConfig rc = new ResourceConfig().register(AlertsController.class).register(new AbstractBinder() {
-            @Override
-            protected void configure() {
-                this.bind(AlertControllerTest.this.controller).to(AlertsController.class);
-            }
-        });
+        final ResourceConfig rc = new ResourceConfig().register(AdministratorController.class)
+                .register(new AbstractBinder() {
+                    @Override
+                    protected void configure() {
+                        this.bind(AdministratorControllerTest.this.controller).to(AdministratorController.class);
+                    }
+                });
         ;
 
         rc.property("contextConfigLocation", "classpath:application-context.xml");
@@ -52,20 +49,20 @@ class AlertControllerTest extends JerseyTest {
     }
 
     @Test
-    void testGetClients() {
-        final List<AlertRecord> alerts = new ArrayList<>();
-        Mockito.when(this.service.getAlerts()).thenReturn(alerts);
-        Response response = this.controller.getAlerts();
+    void testUpdatePassword() {
+        Mockito.doNothing().when(service).updateDefaultAdminitratorPassword(Mockito.anyString());
+        Response response = this.controller.updatePassword("test");
 
         assertNotNull(response);
         assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
+    }
 
-        alerts.add(new AlertRecord(null, null, null));
-        Mockito.when(this.service.getAlerts()).thenReturn(alerts);
-        response = this.controller.getAlerts();
+    @Test
+    void testUpdateEmail() {
+        Mockito.doNothing().when(service).updateDefaultAdminitratorEmail(Mockito.anyString());
+        Response response = this.controller.updateEmail("test");
 
         assertNotNull(response);
-        assertEquals(Status.OK.getStatusCode(), response.getStatus());
-
+        assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
     }
 }

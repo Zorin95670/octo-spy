@@ -1,5 +1,7 @@
 package com.octo.utils.predicate.filter;
 
+import java.util.regex.Pattern;
+
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
@@ -15,6 +17,11 @@ import com.octo.utils.predicate.PredicateOperator;
  *
  */
 public class TextPredicateFilter extends PredicateFilter {
+
+    /**
+     * Pattern to find "*" in text.
+     */
+    private static final Pattern PATTERN_STAR = Pattern.compile("\\*");
 
     /**
      * Create text filter with field name and default type filter as "text".
@@ -38,6 +45,7 @@ public class TextPredicateFilter extends PredicateFilter {
         String value = this.getValue(index);
         if (StringUtils.startsWithIgnoreCase(value, PredicateOperator.LIKE.getValue())) {
             this.setValue(index, value.substring(PredicateOperator.LIKE.getValue().length()));
+            this.setValue(index, PATTERN_STAR.matcher(this.getValue(index)).replaceAll("%"));
             return PredicateOperator.LIKE;
         }
         return PredicateOperator.EQUALS;

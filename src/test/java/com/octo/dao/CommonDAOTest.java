@@ -188,7 +188,6 @@ class CommonDAOTest {
         assertNotNull(list);
         assertFalse(list.isEmpty());
 
-        System.out.println(list.stream().map(EntityHelpers::getId).toArray());
         assertArrayEquals(expected.stream().map(EntityHelpers::getId).sorted().toArray(),
                 list.stream().map(EntityHelpers::getId).toArray());
     }

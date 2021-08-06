@@ -35,7 +35,6 @@ public class EnvironmentService {
      * @return List of environment.
      */
     public List<EnvironmentDTO> findAll() {
-        return this.environmentDAO.find(null, true).stream().map(new BeanMapper<>(EnvironmentDTO.class))
-                .toList();
+        return this.environmentDAO.find(null, true).stream().map(new BeanMapper<>(EnvironmentDTO.class)).toList();
     }
 }

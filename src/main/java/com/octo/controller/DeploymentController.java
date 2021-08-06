@@ -122,7 +122,7 @@ public class DeploymentController {
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    @RolesAllowed({UserRoleType.ADMIN, UserRoleType.PROJECT_MANAGER})
+    @RolesAllowed({ UserRoleType.ADMIN, UserRoleType.PROJECT_MANAGER })
     public final Response createDeployment(final NewDeploymentRecord dto) {
         LOGGER.info("Receive POST request to create deployment with dto {}", dto);
         return Response.ok(this.service.save(dto)).status(Status.CREATED).build();
@@ -137,13 +137,12 @@ public class DeploymentController {
      */
     @DELETE
     @Operation(summary = "Delete deployment in database.",
-            responses = {@ApiResponse(responseCode = "204"),
-                    @ApiResponse(responseCode = "404",
-                            content = @Content(mediaType = "application/json", schema = @Schema(allOf = {Error.class})),
-                            description = "Error on unknown deployment id.")})
+            responses = { @ApiResponse(responseCode = "204"), @ApiResponse(responseCode = "404",
+                    content = @Content(mediaType = "application/json", schema = @Schema(allOf = { Error.class })),
+                    description = "Error on unknown deployment id.") })
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/{id}")
-    @RolesAllowed({UserRoleType.ADMIN, UserRoleType.PROJECT_MANAGER})
+    @RolesAllowed({ UserRoleType.ADMIN, UserRoleType.PROJECT_MANAGER })
     public Response deleteDeployment(@PathParam("id") final Long id) {
         LOGGER.info("Receive DELETE request to delete deployment with id {}", id);
         this.service.delete(id);
@@ -159,13 +158,12 @@ public class DeploymentController {
      */
     @DELETE
     @Operation(summary = "Delete progress of deployment.",
-            responses = {@ApiResponse(responseCode = "204"),
-                    @ApiResponse(responseCode = "404",
-                            content = @Content(mediaType = "application/json", schema = @Schema(allOf = {Error.class})),
-                            description = "Error on no progress to delete.")})
+            responses = { @ApiResponse(responseCode = "204"), @ApiResponse(responseCode = "404",
+                    content = @Content(mediaType = "application/json", schema = @Schema(allOf = { Error.class })),
+                    description = "Error on no progress to delete.") })
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/progress")
-    @RolesAllowed({UserRoleType.ADMIN, UserRoleType.PROJECT_MANAGER})
+    @RolesAllowed({ UserRoleType.ADMIN, UserRoleType.PROJECT_MANAGER })
     public final Response deleteProgressDeployment(final SearchDeploymentDTO dto) {
         LOGGER.info("Receive DELETE request to delete progress of deployment");
         service.deleteProgressDeployment(dto);

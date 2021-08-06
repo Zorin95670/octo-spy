@@ -48,7 +48,6 @@ class GroupServiceTest {
         Group group = new Group();
         group.setId(1L);
 
-        System.out.println(groupDAO == null);
         Mockito.when(groupDAO.loadEntityById(Mockito.any(), Mockito.any())).thenReturn(group);
         Mockito.when(projectGroupDAO.save(Mockito.any())).thenReturn(null);
 

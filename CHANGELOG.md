@@ -1,6 +1,15 @@
 # CHANGELOG
 
+## 2021/08/02: Version 1.10.0
+
+### Features
+
+* Add alert for database compatibility
+* Add adminstrator email/password management
+
 ## 2021/08/02: Version 1.9.0
+
+### Features
 
 * Migrate to java 16
 

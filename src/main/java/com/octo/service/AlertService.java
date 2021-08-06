@@ -28,6 +28,11 @@ import com.octo.utils.predicate.filter.QueryFilter;
 public class AlertService {
 
     /**
+     * Pattern to extract first number.
+     */
+    private static final Pattern EXTRACT_FIRST_NUMBER = Pattern.compile("([a-zA-Z ]*)([0-9]+)(.*)");
+
+    /**
      * User DAO.
      */
     @Autowired
@@ -111,8 +116,7 @@ public class AlertService {
     public void setIsValidDatabaseVersionAlert(final List<AlertRecord> alerts) {
         String version = this.informationDAO.loadById(1L).getVersion();
 
-        Pattern pattern = Pattern.compile("([a-zA-Z ]*)([0-9]+)(.*)");
-        Matcher matcher = pattern.matcher(version);
+        Matcher matcher = EXTRACT_FIRST_NUMBER.matcher(version);
         if (!matcher.find()) {
             return;
         }

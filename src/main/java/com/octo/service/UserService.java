@@ -1,11 +1,14 @@
 package com.octo.service;
 
+import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -43,19 +46,50 @@ public class UserService {
     /**
      * Update administrator password.
      *
-     * @param password
-     *            Password.
+     * @param encodedPassword
+     *            Base64 encoded password.
      */
-    public void updateDefaultAdminitratorPassword(final String password) {
+    public void updateDefaultAdminitratorPassword(final String encodedPassword) {
+        if (StringUtils.isBlank(encodedPassword)) {
+            throw new GlobalException(ErrorType.EMPTY_VALUE, "password");
+        }
+        String password = new String(Base64.getDecoder().decode(encodedPassword.getBytes()));
+        if (StringUtils.length(password) < Constants.MINIMUM_PASSWORD_LENGTH
+                || StringUtils.length(password) > Constants.MAXMUM_PASSWORD_LENGTH) {
+            throw new GlobalException(ErrorType.WRONG_VALUE, "Password length.");
+        }
         SearchUserDTO filter = new SearchUserDTO();
         filter.setLogin(Constants.DEFAULT_ADMIN_LOGIN);
         Optional<User> opt = userDAO.loadWithLock(filter);
-        if (!opt.isPresent()) {
+        if (opt.isEmpty()) {
             throw new GlobalException(ErrorType.INTERNAL_ERROR, "No default admin account.");
         }
         User user = opt.get();
 
         user.setPassword(passwordEncoder.encode(password));
+
+        userDAO.save(user);
+    }
+
+    /**
+     * Update administrator email.
+     *
+     * @param email
+     *            Email.
+     */
+    public void updateDefaultAdminitratorEmail(final String email) {
+        if (!EmailValidator.getInstance().isValid(email)) {
+            throw new GlobalException(ErrorType.WRONG_VALUE, "Email.");
+        }
+        SearchUserDTO filter = new SearchUserDTO();
+        filter.setLogin(Constants.DEFAULT_ADMIN_LOGIN);
+        Optional<User> opt = userDAO.loadWithLock(filter);
+        if (opt.isEmpty()) {
+            throw new GlobalException(ErrorType.INTERNAL_ERROR, "No default admin account.");
+        }
+        User user = opt.get();
+
+        user.setEmail(email);
 
         userDAO.save(user);
     }
@@ -77,40 +111,6 @@ public class UserService {
         User user = opt.get();
 
         return user.isActive() && passwordEncoder.matches(password, user.getPassword());
-    }
-
-    /**
-     * Indicate if active default administrator has not the default password.
-     *
-     * @return True if default password not match current administrator
-     *         password.
-     */
-    public boolean isSecureAdministrator() {
-        SearchUserDTO filter = new SearchUserDTO();
-        filter.setLogin(Constants.DEFAULT_ADMIN_LOGIN);
-        Optional<User> opt = userDAO.load(filter);
-        if (!opt.isPresent()) {
-            return true;
-        }
-        User user = opt.get();
-
-        return !user.isActive() || !passwordEncoder.matches(Constants.DEFAULT_ADMIN_LOGIN, user.getPassword());
-    }
-
-    /**
-     * Indicate if administrator email is different than the default.
-     *
-     * @return True if administrator has not the default email.
-     */
-    public boolean isValidAdministratorEmail() {
-        SearchUserDTO filter = new SearchUserDTO();
-        filter.setLogin(Constants.DEFAULT_ADMIN_LOGIN);
-        Optional<User> opt = userDAO.load(filter);
-        if (!opt.isPresent()) {
-            return true;
-        }
-        User user = opt.get();
-        return !user.isActive() || !"no-reply@change.it".equals(user.getEmail());
     }
 
     /**
@@ -140,7 +140,7 @@ public class UserService {
      */
     public List<String> getUserRoles(final String login) {
         if (Constants.DEFAULT_ADMIN_LOGIN.equals(login)) {
-            return Collections.singletonList(UserRoleType.ADMIN);
+            return List.of(UserRoleType.ADMIN);
         }
         return Collections.emptyList();
     }

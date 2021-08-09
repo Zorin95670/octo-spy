@@ -105,4 +105,13 @@ class ProjectControllerTest extends JerseyTest {
         assertNotNull(response);
         assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
     }
+
+    @Test
+    void testUpdateProject() {
+        Mockito.doNothing().when(this.service).update(Mockito.anyLong(), Mockito.any());
+        final Response response = this.controller.updateProject(1L, new NewProjectRecord("test", "1,1,1", false, null));
+
+        assertNotNull(response);
+        assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
+    }
 }

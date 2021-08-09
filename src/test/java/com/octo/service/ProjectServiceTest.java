@@ -157,4 +157,29 @@ class ProjectServiceTest {
 
         assertNotNull(this.service.findAll(null));
     }
+
+    @Test
+    void testUpdate() {
+        Mockito.when(this.projectDAO.loadEntityById(Mockito.any())).thenReturn(null);
+        Mockito.when(this.projectDAO.save(Mockito.any())).thenReturn(new Project());
+
+        GlobalException exception = null;
+        try {
+            this.service.update(1L, new NewProjectRecord("test", "1,1,1", false, null));
+        } catch (GlobalException e) {
+            exception = e;
+        }
+
+        assertNotNull(exception);
+
+        Mockito.when(this.projectDAO.loadEntityById(Mockito.any())).thenReturn(new Project());
+        exception = null;
+        try {
+            this.service.update(1L, new NewProjectRecord("test", "1,1,1", false, null));
+        } catch (GlobalException e) {
+            exception = e;
+        }
+
+        assertNull(exception);
+    }
 }

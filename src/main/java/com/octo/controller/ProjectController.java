@@ -6,6 +6,7 @@ import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.PATCH;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -82,7 +83,7 @@ public class ProjectController {
     }
 
     /**
-     * Endpoint to return a specific project.
+     * Get specific project.
      *
      * @param id
      *            Deployment's id.
@@ -94,6 +95,24 @@ public class ProjectController {
     public final Response getProject(@PathParam("id") final Long id) {
         LOGGER.info("Receive GET request to get project with id {}", id);
         return Response.ok(this.service.load(id)).build();
+    }
+
+    /**
+     * Update a specific project.
+     *
+     * @param id
+     *            Project's id.
+     * @param project
+     *            Project's record.
+     * @return Deployment.
+     */
+    @PATCH
+    @Path("/{id}")
+    @PermitAll
+    public final Response updateProject(@PathParam("id") final Long id, final NewProjectRecord project) {
+        LOGGER.info("Receive PATCH request to update project with id {} and record {}", id, project);
+        this.service.update(id, project);
+        return Response.noContent().build();
     }
 
     /**

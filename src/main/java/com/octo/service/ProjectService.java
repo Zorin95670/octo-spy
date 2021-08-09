@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ import com.octo.model.error.ErrorType;
 import com.octo.model.error.GlobalException;
 import com.octo.utils.Constants;
 import com.octo.utils.bean.BeanMapper;
+import com.octo.utils.bean.NullAwareBeanUtilsBean;
 import com.octo.utils.predicate.filter.QueryFilter;
 
 /**
@@ -110,5 +112,25 @@ public class ProjectService {
      */
     public List<ProjectViewDTO> findAll(final SearchProjectViewDTO dto) {
         return this.projectViewDAO.find(dto, true).stream().map(new BeanMapper<>(ProjectViewDTO.class)).toList();
+    }
+
+    /**
+     * Update project information.
+     *
+     * @param id
+     *            Project's id.
+     * @param projectRecord
+     *            Project's information.
+     */
+    public void update(final Long id, final NewProjectRecord projectRecord) {
+        Project project = this.projectDAO.loadEntityById(id);
+        BeanUtilsBean merger = new NullAwareBeanUtilsBean("isMaster", "masterName");
+        try {
+            merger.copyProperties(project, new BeanMapper<>(ProjectDTO.class).apply(projectRecord));
+        } catch (final Exception e) {
+            throw new GlobalException(e, ErrorType.INTERNAL_ERROR, null);
+        }
+
+        this.projectDAO.save(project);
     }
 }

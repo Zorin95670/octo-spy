@@ -2,15 +2,17 @@ DROP VIEW IF EXISTS last_deployments_view;
 
 CREATE VIEW last_deployments_view AS
 SELECT
-    deployments.dpl_id                      AS "dpl_id",
-    projects.name                           AS "project",
-    master_project.name                     AS "master_project",
-    projects.pro_id = master_project.pro_id AS "on_master_project",
-    environments.name                       AS "environment",
-    deployments.version                     AS "version",
-    deployments.client                      AS "client",
-    deployments.insert_date                 AS "insert_date",
-    deployment_progress.dpg_id IS NOT NULL  AS "in_progress"
+    deployments.dpl_id                             AS "dpl_id",
+    projects.name                                  AS "project",
+    COALESCE(projects.color, master_project.color) AS "color",
+    master_project.name                            AS "master_project",
+    master_project.color                           AS "master_project_color",
+    projects.pro_id = master_project.pro_id        AS "on_master_project",
+    environments.name                              AS "environment",
+    deployments.version                            AS "version",
+    deployments.client                             AS "client",
+    deployments.insert_date                        AS "insert_date",
+    deployment_progress.dpg_id IS NOT NULL         AS "in_progress"
 FROM
     projects
 LEFT OUTER JOIN (

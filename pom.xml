@@ -432,6 +432,7 @@
 					<locations>
 						<location>classpath:/db/migration</location>
 					</locations>
+					<outOfOrder>true</outOfOrder>
 				</configuration>
 				<dependencies>
 					<dependency>

@@ -14,13 +14,16 @@ class SearchProjectViewDTOTest {
         assertNull(dto.getId());
         assertNull(dto.getName());
         assertNull(dto.getMasterProject());
+        assertNull(dto.getIsMaster());
 
         dto.setId("id");
         dto.setName("name");
         dto.setMasterProject("masterProject");
+        dto.setIsMaster("isMaster");
 
         assertEquals("id", dto.getId());
         assertEquals("name", dto.getName());
         assertEquals("masterProject", dto.getMasterProject());
+        assertEquals("isMaster", dto.getIsMaster());
     }
 }

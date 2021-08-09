@@ -16,6 +16,11 @@ import com.octo.utils.Constants;
 @Table(name = "projects_view")
 public class ProjectView extends AbstractProject {
     /**
+     * Is master's project.
+     */
+    @Column(name = "is_master", nullable = false, length = Constants.DEFAULT_SIZE_OF_STRING)
+    private boolean isMaster;
+    /**
      * Master project's name.
      */
     @Column(name = "master_project", nullable = false, length = Constants.DEFAULT_SIZE_OF_STRING)
@@ -26,6 +31,24 @@ public class ProjectView extends AbstractProject {
     @Column(name = "master_project_color", nullable = false, length = Constants.DEFAULT_SIZE_OF_STRING)
     private String masterProjectColor;
 
+    /**
+     * Indicate if project is a master project.
+     *
+     * @return Boolean.
+     */
+    public boolean getIsMaster() {
+        return isMaster;
+    }
+
+    /**
+     * Set if project is master.
+     *
+     * @param isMaster
+     *            Boolean.
+     */
+    public void setIsMaster(final boolean isMaster) {
+        this.isMaster = isMaster;
+    }
     /**
      * Get master project's name.
      *

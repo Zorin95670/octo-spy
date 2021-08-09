@@ -90,7 +90,7 @@ class ProjectControllerTest extends JerseyTest {
     @Test
     void testCreateProject() {
         Mockito.when(this.service.save(Mockito.any())).thenReturn(new ProjectDTO());
-        final Response response = this.controller.createProject(new NewProjectRecord(null, false, null));
+        final Response response = this.controller.createProject(new NewProjectRecord(null, null, false, null));
 
         assertNotNull(response);
         assertEquals(Status.CREATED.getStatusCode(), response.getStatus());

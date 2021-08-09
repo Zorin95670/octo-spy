@@ -16,10 +16,15 @@ import com.octo.utils.Constants;
 @Table(name = "projects_view")
 public class ProjectView extends AbstractProject {
     /**
-     * Project's name.
+     * Master project's name.
      */
     @Column(name = "master_project", nullable = false, length = Constants.DEFAULT_SIZE_OF_STRING)
     private String masterProject;
+    /**
+     * Master project's color.
+     */
+    @Column(name = "master_project_color", nullable = false, length = Constants.DEFAULT_SIZE_OF_STRING)
+    private String masterProjectColor;
 
     /**
      * Get master project's name.
@@ -38,6 +43,25 @@ public class ProjectView extends AbstractProject {
      */
     public void setMasterProject(final String masterProject) {
         this.masterProject = masterProject;
+    }
+
+    /**
+     * Get master project's color.
+     *
+     * @return Master project's color.
+     */
+    public String getMasterProjectColor() {
+        return masterProjectColor;
+    }
+
+    /**
+     * Set master project's color.
+     *
+     * @param masterProjectColor
+     *            Master project's color.
+     */
+    public void setMasterProjectColor(final String masterProjectColor) {
+        this.masterProjectColor = masterProjectColor;
     }
 
 }

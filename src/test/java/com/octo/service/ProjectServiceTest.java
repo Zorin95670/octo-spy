@@ -64,7 +64,7 @@ class ProjectServiceTest {
         assertNull(exception.getError().getValue());
 
         exception = null;
-        NewProjectRecord input = new NewProjectRecord(null, false, null);
+        NewProjectRecord input = new NewProjectRecord(null, null, false, null);
 
         try {
             service.save(input);
@@ -80,7 +80,7 @@ class ProjectServiceTest {
 
         // Test all good
         exception = null;
-        input = new NewProjectRecord("Project test", false, null);
+        input = new NewProjectRecord("Project test", null, false, null);
 
         Mockito.when(this.projectDAO.save(Mockito.any())).thenReturn(new Project());
         ProjectDTO dto = null;
@@ -97,7 +97,7 @@ class ProjectServiceTest {
 
     @Test
     void saveMasterProject() {
-        NewProjectRecord dto = new NewProjectRecord("test", true, null);
+        NewProjectRecord dto = new NewProjectRecord("test", null, true, null);
 
         Mockito.when(projectDAO.save(Mockito.any())).thenReturn(new Project());
         Mockito.when(groupService.create(Mockito.any())).thenReturn(new Group());
@@ -108,7 +108,7 @@ class ProjectServiceTest {
 
     @Test
     void saveGroupProject() {
-        NewProjectRecord dto = new NewProjectRecord("test", false, "master");
+        NewProjectRecord dto = new NewProjectRecord("test", null, false, "master");
 
         Mockito.when(projectDAO.save(Mockito.any())).thenReturn(new Project());
         Mockito.when(projectDAO.load(Mockito.any())).thenReturn(Optional.empty());

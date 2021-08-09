@@ -12,9 +12,12 @@ class ProjectViewDTOTest {
         ProjectViewDTO dto = new ProjectViewDTO();
 
         assertNull(dto.getMasterProject());
+        assertNull(dto.getColor());
 
         dto.setMasterProject("masterProject");
+        dto.setColor("color");
 
         assertEquals("masterProject", dto.getMasterProject());
+        assertEquals("color", dto.getColor());
     }
 }

@@ -24,9 +24,17 @@ public class DeploymentDTO extends AbstractDateDTO {
      */
     private String project;
     /**
+     * Deployment's project color.
+     */
+    private String color;
+    /**
      * Deployment's master project name.
      */
     private String masterProject;
+    /**
+     * Deployment's master project color.
+     */
+    private String masterProjectColor;
     /**
      * Deployed version.
      */
@@ -130,6 +138,25 @@ public class DeploymentDTO extends AbstractDateDTO {
     }
 
     /**
+     * Get project's color.
+     *
+     * @return Project's color.
+     */
+    public String getColor() {
+        return color;
+    }
+
+    /**
+     * Set project's color.
+     *
+     * @param color
+     *            Project's color.
+     */
+    public void setColor(final String color) {
+        this.color = color;
+    }
+
+    /**
      * Get master project's name.
      *
      * @return Master project's name.
@@ -162,6 +189,25 @@ public class DeploymentDTO extends AbstractDateDTO {
         }
 
         this.setMasterProject(name);
+    }
+
+    /**
+     * Get master project's color.
+     *
+     * @return Master project's color.
+     */
+    public String getMasterProjectColor() {
+        return masterProjectColor;
+    }
+
+    /**
+     * Set master project's color.
+     *
+     * @param masterProjectColor
+     *            Master project's color.
+     */
+    public void setMasterProjectColor(final String masterProjectColor) {
+        this.masterProjectColor = masterProjectColor;
     }
 
     /**

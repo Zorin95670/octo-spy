@@ -23,6 +23,7 @@ class DeploymentDTOTest {
         assertNull(dto.getClient());
         assertNull(dto.getEnvironment());
         assertNull(dto.getProject());
+        assertNull(dto.getProjectId());
         assertNull(dto.getMasterProject());
         assertNull(dto.getMasterProjectColor());
         assertNull(dto.getColor());
@@ -35,6 +36,7 @@ class DeploymentDTOTest {
         dto.setClient("client");
         dto.setEnvironment("environment");
         dto.setProject("project");
+        dto.setProjectId(4L);
         dto.setMasterProject("master");
         dto.setMasterProjectColor("masterProjectColor");
         dto.setColor("color");
@@ -46,6 +48,7 @@ class DeploymentDTOTest {
         assertTrue(dto.isAlive());
         assertEquals("client", dto.getClient());
         assertEquals(Long.valueOf(1L), dto.getId());
+        assertEquals(Long.valueOf(4L), dto.getProjectId());
         assertEquals(Timestamp.from(Instant.ofEpochMilli(1L)), dto.getInsertDate());
         assertEquals(Timestamp.from(Instant.ofEpochMilli(2L)), dto.getUpdateDate());
         assertEquals("environment", dto.getEnvironment());

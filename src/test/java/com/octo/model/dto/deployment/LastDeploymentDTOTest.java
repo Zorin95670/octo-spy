@@ -21,6 +21,7 @@ class LastDeploymentDTOTest {
         assertNull(dto.getEnvironment());
         assertNull(dto.getId());
         assertNull(dto.getProject());
+        assertNull(dto.getProjectId());
         assertNull(dto.getMasterProject());
         assertNull(dto.getMasterProjectColor());
         assertNull(dto.getVersion());
@@ -33,6 +34,7 @@ class LastDeploymentDTOTest {
         dto.setEnvironment("environment");
         dto.setId(1L);
         dto.setProject("project");
+        dto.setProjectId(2l);
         dto.setMasterProject("master");
         dto.setMasterProjectColor("masterProjectColor");
         dto.setVersion("version");
@@ -45,6 +47,7 @@ class LastDeploymentDTOTest {
         assertEquals("environment", dto.getEnvironment());
         assertEquals(Long.valueOf(1L), dto.getId());
         assertEquals("project", dto.getProject());
+        assertEquals(Long.valueOf(2L), dto.getProjectId());
         assertEquals("master", dto.getMasterProject());
         assertEquals("masterProjectColor", dto.getMasterProjectColor());
         assertEquals("version", dto.getVersion());

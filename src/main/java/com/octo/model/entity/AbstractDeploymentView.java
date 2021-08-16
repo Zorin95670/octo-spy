@@ -22,6 +22,11 @@ public abstract class AbstractDeploymentView {
     @Column(name = "dpl_id", insertable = false, updatable = false, nullable = false)
     private Long id;
     /**
+     * Index of project.
+     */
+    @Column(name = "pro_id", insertable = false, updatable = false, nullable = false)
+    private Long projectId;
+    /**
      * Deployment's environment.
      */
     @Column(name = "environment", insertable = false, updatable = false)
@@ -84,6 +89,25 @@ public abstract class AbstractDeploymentView {
      */
     public void setId(final Long id) {
         this.id = id;
+    }
+
+    /**
+     * Get project id.
+     *
+     * @return Project id.
+     */
+    public Long getProjectId() {
+        return projectId;
+    }
+
+    /**
+     * Set project id.
+     *
+     * @param projectId
+     *            Project id.
+     */
+    public void setProjectId(final Long projectId) {
+        this.projectId = projectId;
     }
 
     /**

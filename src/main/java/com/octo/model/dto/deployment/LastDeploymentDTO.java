@@ -17,6 +17,10 @@ public class LastDeploymentDTO extends DefaultDTO {
      */
     private Long id;
     /**
+     * Index of project.
+     */
+    private Long projectId;
+    /**
      * Deployment's environment name.
      */
     private String environment;
@@ -77,6 +81,26 @@ public class LastDeploymentDTO extends DefaultDTO {
     public void setId(final Long id) {
         this.id = id;
     }
+
+    /**
+     * Get project id.
+     *
+     * @return Project id.
+     */
+    public Long getProjectId() {
+        return projectId;
+    }
+
+    /**
+     * Set project id.
+     *
+     * @param projectId
+     *            Project id.
+     */
+    public void setProjectId(final Long projectId) {
+        this.projectId = projectId;
+    }
+
 
     /**
      * Get environment's name.

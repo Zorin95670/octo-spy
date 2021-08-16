@@ -3,6 +3,7 @@ DROP VIEW IF EXISTS deployments_view;
 CREATE VIEW deployments_view AS
 SELECT
     deployments.dpl_id                             AS "dpl_id",
+    deployments.pro_id                             AS "pro_id",
     projects.name                                  AS "project",
     COALESCE(projects.color, master_project.color) AS "color",
     master_project.name                            AS "master_project",

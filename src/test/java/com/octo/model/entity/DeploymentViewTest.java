@@ -21,6 +21,7 @@ class DeploymentViewTest {
         assertNull(entity.getEnvironment());
         assertNull(entity.getId());
         assertNull(entity.getProject());
+        assertNull(entity.getProjectId());
         assertNull(entity.getMasterProject());
         assertNull(entity.getMasterProjectColor());
         assertNull(entity.getVersion());
@@ -32,6 +33,7 @@ class DeploymentViewTest {
         entity.setClient("client");
         entity.setEnvironment("environment");
         entity.setId(1L);
+        entity.setProjectId(2L);
         entity.setProject("project");
         entity.setMasterProject("master");
         entity.setMasterProjectColor("masterProjectColor");
@@ -44,6 +46,7 @@ class DeploymentViewTest {
         assertEquals("client", entity.getClient());
         assertEquals("environment", entity.getEnvironment());
         assertEquals(Long.valueOf(1L), entity.getId());
+        assertEquals(Long.valueOf(2L), entity.getProjectId());
         assertEquals("project", entity.getProject());
         assertEquals("master", entity.getMasterProject());
         assertEquals("masterProjectColor", entity.getMasterProjectColor());

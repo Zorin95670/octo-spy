@@ -27,7 +27,7 @@ import com.octo.service.AlertService;
 
 @ExtendWith(SpringExtension.class)
 @ExtendWith(MockitoExtension.class)
-@ContextConfiguration(locations = { "classpath:application-context.xml" })
+@ContextConfiguration(locations = {"classpath:application-context.xml"})
 class AlertControllerTest extends JerseyTest {
 
     @Mock
@@ -43,8 +43,7 @@ class AlertControllerTest extends JerseyTest {
             protected void configure() {
                 this.bind(AlertControllerTest.this.controller).to(AlertsController.class);
             }
-        });
-        ;
+        });;
 
         rc.property("contextConfigLocation", "classpath:application-context.xml");
 

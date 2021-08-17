@@ -101,8 +101,9 @@ public abstract class CommonDAO<T, Y extends QueryFilter> implements IDAO<T, Y> 
     }
 
     /**
-     * Method used to prevent code duplication when loading an entity by its ID, with or without an optimistic lock.
-     * Throws exception when entity doesn't exist.
+     * Method used to prevent code duplication when loading an entity by its ID,
+     * with or without an optimistic lock. Throws exception when entity doesn't
+     * exist.
      *
      * @param id
      *            Id of entity.

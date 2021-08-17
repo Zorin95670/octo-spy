@@ -62,8 +62,8 @@ public class Resource<T> {
     }
 
     /**
-     * Get total of resource. Total is independent of size of list. It assume that this total is equals or superior of
-     * list's size.
+     * Get total of resource. Total is independent of size of list. It assume
+     * that this total is equals or superior of list's size.
      *
      * @return Total of resource.
      */

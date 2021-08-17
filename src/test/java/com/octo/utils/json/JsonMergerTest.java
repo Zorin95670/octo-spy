@@ -43,7 +43,7 @@ class JsonMergerTest {
 
         assertEquals(JsonNodeFactory.instance.objectNode(), merger.applyAll(null, null));
         assertEquals(JsonNodeFactory.instance.objectNode(), merger.apply(null));
-        assertEquals(JsonNodeFactory.instance.objectNode(), merger.apply(new JsonNode[] { null }));
+        assertEquals(JsonNodeFactory.instance.objectNode(), merger.apply(new JsonNode[]{null}));
     }
 
 }

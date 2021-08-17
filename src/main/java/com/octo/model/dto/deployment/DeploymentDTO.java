@@ -90,7 +90,6 @@ public class DeploymentDTO extends AbstractDateDTO {
         this.projectId = projectId;
     }
 
-
     /**
      * Get environment's name.
      *

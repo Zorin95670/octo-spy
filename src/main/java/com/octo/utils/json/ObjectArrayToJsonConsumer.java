@@ -5,7 +5,8 @@ import java.util.function.Consumer;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
- * Receive an array with 2 elements, the first element is the name of JSON attribute and the second is the value.
+ * Receive an array with 2 elements, the first element is the name of JSON
+ * attribute and the second is the value.
  *
  * @author Vincent Moittié
  *

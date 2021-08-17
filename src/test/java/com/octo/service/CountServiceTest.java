@@ -32,7 +32,7 @@ import com.octo.model.error.GlobalException;
 
 @ExtendWith(SpringExtension.class)
 @ExtendWith(MockitoExtension.class)
-@ContextConfiguration(locations = { "classpath:application-context.xml" })
+@ContextConfiguration(locations = {"classpath:application-context.xml"})
 @Transactional
 class CountServiceTest {
 

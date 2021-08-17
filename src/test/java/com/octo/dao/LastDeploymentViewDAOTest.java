@@ -12,7 +12,7 @@ import com.octo.model.entity.LastDeploymentView;
 import com.octo.utils.predicate.filter.QueryFilter;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(locations = { "classpath:application-context.xml" })
+@ContextConfiguration(locations = {"classpath:application-context.xml"})
 class LastDeploymentViewDAOTest {
 
     @Autowired

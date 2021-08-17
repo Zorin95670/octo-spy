@@ -19,7 +19,7 @@ import com.octo.helpers.EntityHelpers;
 import com.octo.helpers.EntityTestSearch;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(locations = { "classpath:application-context.xml" })
+@ContextConfiguration(locations = {"classpath:application-context.xml"})
 class PredicateMapperTest {
 
     @PersistenceContext

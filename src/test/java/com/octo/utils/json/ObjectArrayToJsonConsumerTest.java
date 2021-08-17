@@ -18,7 +18,7 @@ class ObjectArrayToJsonConsumerTest {
         // Test default null name
         json = JsonNodeFactory.instance.objectNode();
         consumer = new ObjectArrayToJsonConsumer(json);
-        array = new Object[] { null, "0" };
+        array = new Object[]{null, "0"};
         consumer.accept(array);
 
         assertEquals("{\"null\":0}", json.toString());
@@ -26,7 +26,7 @@ class ObjectArrayToJsonConsumerTest {
         // Test default name as "test"
         json = JsonNodeFactory.instance.objectNode();
         consumer = new ObjectArrayToJsonConsumer(json, "test");
-        array = new Object[] { null, "0" };
+        array = new Object[]{null, "0"};
         consumer.accept(array);
 
         assertEquals("{\"test\":0}", json.toString());
@@ -34,7 +34,7 @@ class ObjectArrayToJsonConsumerTest {
         // Test good value
         json = JsonNodeFactory.instance.objectNode();
         consumer = new ObjectArrayToJsonConsumer(json, "test");
-        array = new Object[] { "name", "0" };
+        array = new Object[]{"name", "0"};
         consumer.accept(array);
 
         assertEquals("{\"name\":0}", json.toString());

@@ -43,8 +43,9 @@ public class RetryExecutor<T> {
     private final UUID identifier = UUID.randomUUID();
 
     /**
-     * Construct RetryExecutor with <b>configuration</b> and <b>exception</b>. <b>Configuration</b> provides delay
-     * between each retries in milliseconds. When the retry limit is reached, provided <b>exception</b> is thrown.
+     * Construct RetryExecutor with <b>configuration</b> and <b>exception</b>.
+     * <b>Configuration</b> provides delay between each retries in milliseconds.
+     * When the retry limit is reached, provided <b>exception</b> is thrown.
      *
      * @param maxTry
      *            Maximum number of retries.
@@ -61,8 +62,9 @@ public class RetryExecutor<T> {
     }
 
     /**
-     * Perform the action and if the action does not throw a RetryException, return the result provided by the action.
-     * Else, if the action throws a RetryException, it performs a retry.
+     * Perform the action and if the action does not throw a RetryException,
+     * return the result provided by the action. Else, if the action throws a
+     * RetryException, it performs a retry.
      *
      * @param action
      *            Action to perform.

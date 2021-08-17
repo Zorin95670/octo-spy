@@ -101,7 +101,6 @@ public class LastDeploymentDTO extends DefaultDTO {
         this.projectId = projectId;
     }
 
-
     /**
      * Get environment's name.
      *

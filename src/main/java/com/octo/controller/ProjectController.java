@@ -131,7 +131,7 @@ public class ProjectController {
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    @RolesAllowed({ UserRoleType.ADMIN, UserRoleType.PROJECT_MANAGER })
+    @RolesAllowed({UserRoleType.ADMIN, UserRoleType.PROJECT_MANAGER})
     public final Response createProject(final NewProjectRecord dto) {
         LOGGER.info("Receive POST request to create project with dto {}", dto);
         return Response.ok(this.service.save(dto)).status(Status.CREATED).build();
@@ -147,7 +147,7 @@ public class ProjectController {
     @DELETE
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/{id}")
-    @RolesAllowed({ UserRoleType.ADMIN, UserRoleType.PROJECT_MANAGER })
+    @RolesAllowed({UserRoleType.ADMIN, UserRoleType.PROJECT_MANAGER})
     public Response deleteProject(@PathParam("id") final Long id) {
         LOGGER.info("Receive DELETE request to delete project with id {}", id);
         this.service.delete(id);

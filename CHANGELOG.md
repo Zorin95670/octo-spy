@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 2021/08/02: Version 1.11.0
+
+### Features
+
+* Add endpoint to update project color and name
+* Add attribut isMaster/projectId in models
+
 ## 2021/08/02: Version 1.10.0
 
 ### Features

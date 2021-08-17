@@ -2,8 +2,6 @@ package com.octo.model.dto.environment;
 
 import com.octo.model.common.DefaultDTO;
 
-import io.swagger.v3.oas.annotations.Parameter;
-
 /**
  * Default Environment DTO.
  *
@@ -15,12 +13,10 @@ public class EnvironmentDTO extends DefaultDTO {
     /**
      * Primary key.
      */
-    @Parameter(description = "Environment's id.")
     private Long id;
     /**
      * Environment's name.
      */
-    @Parameter(description = "Environment's name.")
     private String name;
 
     /**

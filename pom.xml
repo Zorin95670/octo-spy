@@ -24,13 +24,12 @@
 		<jersey.version>2.34</jersey.version>
 		<junit.version>5.7.0</junit.version>
 		<logback.version>1.2.3</logback.version>
+		<lang.version>3.12.0</lang.version>
 		<mockito.version>3.11.2</mockito.version>
 		<postgresql.version>42.2.23</postgresql.version>
 		<replacer.version>1.5.3</replacer.version>
 		<spring.version>5.3.9</spring.version>
 		<spring.security.version>5.4.2</spring.security.version>
-		<swagger.version>2.1.5</swagger.version>
-		<swagger-ui.version>3.17.0</swagger-ui.version>
 		<validator.version>1.7</validator.version>
 		<!-- Project build properties -->
 		<checkstyle.version>8.45</checkstyle.version>
@@ -41,7 +40,7 @@
 		<maven.compiler.target>16</maven.compiler.target>
 		<maven-dependency-plugin.version>3.1.1</maven-dependency-plugin.version>
 		<maven.resources.plugin>3.0.1</maven.resources.plugin>
-		<maven-war-plugin.version>3.2.2</maven-war-plugin.version>
+		<maven-war-plugin.version>3.3.1</maven-war-plugin.version>
 		<spotbugs.maven.plugin>4.3.0</spotbugs.maven.plugin>
 		<!-- Sonar properties -->
 		<sonar.projectVersion>1.10.0</sonar.projectVersion>
@@ -187,24 +186,12 @@
 			<version>${java.persistence}</version>
 		</dependency>
 
-		<!-- swagger -->
-		<dependency>
-			<groupId>io.swagger.core.v3</groupId>
-			<artifactId>swagger-jaxrs2</artifactId>
-			<version>${swagger.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>io.swagger.core.v3</groupId>
-			<artifactId>swagger-jaxrs2-servlet-initializer</artifactId>
-			<version>${swagger.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>io.swagger.core.v3</groupId>
-			<artifactId>swagger-annotations</artifactId>
-			<version>${swagger.version}</version>
-		</dependency>
-
 		<!-- Apache -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>${lang.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils</artifactId>
@@ -284,6 +271,11 @@
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>3.3.1</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.8.1</version>
 				<configuration>
@@ -360,70 +352,6 @@
 				<artifactId>maven-resources-plugin</artifactId>
 				<version>${maven.resources.plugin}</version>
 			</plugin>
-			<plugin>
-				<!-- Download Swagger UI webjar. -->
-				<artifactId>maven-dependency-plugin</artifactId>
-				<version>${maven-dependency-plugin.version}</version>
-				<executions>
-					<execution>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>unpack</goal>
-						</goals>
-						<configuration>
-							<artifactItems>
-								<artifactItem>
-									<groupId>org.webjars</groupId>
-									<artifactId>swagger-ui</artifactId>
-									<version>${swagger-ui.version}</version>
-								</artifactItem>
-							</artifactItems>
-							<outputDirectory>${project.build.directory}/swagger-ui</outputDirectory>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<!-- Add Swagger UI resources to the war file. -->
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<version>${maven-war-plugin.version}</version>
-				<configuration>
-					<webResources combine.children="append">
-						<resource>
-							<directory>${project.build.directory}/swagger-ui/META-INF/resources/webjars/swagger-ui/${swagger-ui.version}</directory>
-							<includes>
-								<include>**/*.*</include>
-							</includes>
-							<targetPath>docs</targetPath>
-						</resource>
-					</webResources>
-				</configuration>
-			</plugin>
-			<plugin>
-				<!-- Replace the OpenAPI specification example URL with the local one. -->
-				<groupId>com.google.code.maven-replacer-plugin</groupId>
-				<artifactId>replacer</artifactId>
-				<version>${replacer.version}</version>
-				<executions>
-					<execution>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>replace</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<file>${project.build.directory}/swagger-ui/META-INF/resources/webjars/swagger-ui/${swagger-ui.version}/index.html</file>
-					<replacements>
-						<replacement>
-							<token>http://petstore.swagger.io/v2/swagger.json</token>
-							<value>/octo-spy/openapi/openapi.json</value>
-						</replacement>
-					</replacements>
-				</configuration>
-			</plugin>
-
 			<plugin>
 				<groupId>org.flywaydb</groupId>
 				<artifactId>flyway-maven-plugin</artifactId>

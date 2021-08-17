@@ -18,15 +18,12 @@ import com.octo.model.entity.User;
 import com.octo.service.UserService;
 import com.octo.utils.http.UserMapper;
 
-import io.swagger.v3.oas.annotations.servers.Server;
-
 /**
  * User controller.
  */
 @Path("/users")
 @Produces(MediaType.APPLICATION_JSON)
 @Controller
-@Server(url = "/octo-spy/api")
 public class UserController {
 
     /**

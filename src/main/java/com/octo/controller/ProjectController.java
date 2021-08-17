@@ -29,12 +29,6 @@ import com.octo.service.CountService;
 import com.octo.service.ProjectService;
 import com.octo.utils.bean.BeanMapper;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.servers.Server;
-
 /**
  * Project controller.
  *
@@ -44,7 +38,6 @@ import io.swagger.v3.oas.annotations.servers.Server;
 @Path("/project")
 @Produces(MediaType.APPLICATION_JSON)
 @Controller
-@Server(url = "/octo-spy/api")
 public class ProjectController {
 
     /** Logger. **/
@@ -152,10 +145,6 @@ public class ProjectController {
      * @return No content.
      */
     @DELETE
-    @Operation(summary = "Delete project in database.",
-            responses = { @ApiResponse(responseCode = "204"), @ApiResponse(responseCode = "404",
-                    content = @Content(mediaType = "application/json", schema = @Schema(allOf = { Error.class })),
-                    description = "Error on unknown project id.") })
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/{id}")
     @RolesAllowed({ UserRoleType.ADMIN, UserRoleType.PROJECT_MANAGER })

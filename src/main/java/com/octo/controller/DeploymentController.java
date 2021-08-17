@@ -30,12 +30,6 @@ import com.octo.model.dto.deployment.SearchLastDeploymentViewDTO;
 import com.octo.service.DeploymentService;
 import com.octo.service.LastDeploymentViewService;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.servers.Server;
-
 /**
  * Deployment controller.
  *
@@ -45,7 +39,6 @@ import io.swagger.v3.oas.annotations.servers.Server;
 @Path("/deployment")
 @Produces(MediaType.APPLICATION_JSON)
 @Controller
-@Server(url = "/octo-spy/api")
 public class DeploymentController {
 
     /** Logger. **/
@@ -136,10 +129,6 @@ public class DeploymentController {
      * @return No content.
      */
     @DELETE
-    @Operation(summary = "Delete deployment in database.",
-            responses = { @ApiResponse(responseCode = "204"), @ApiResponse(responseCode = "404",
-                    content = @Content(mediaType = "application/json", schema = @Schema(allOf = { Error.class })),
-                    description = "Error on unknown deployment id.") })
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/{id}")
     @RolesAllowed({ UserRoleType.ADMIN, UserRoleType.PROJECT_MANAGER })
@@ -157,10 +146,6 @@ public class DeploymentController {
      * @return No content or error.
      */
     @DELETE
-    @Operation(summary = "Delete progress of deployment.",
-            responses = { @ApiResponse(responseCode = "204"), @ApiResponse(responseCode = "404",
-                    content = @Content(mediaType = "application/json", schema = @Schema(allOf = { Error.class })),
-                    description = "Error on no progress to delete.") })
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/progress")
     @RolesAllowed({ UserRoleType.ADMIN, UserRoleType.PROJECT_MANAGER })

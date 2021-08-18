@@ -21,7 +21,7 @@ import com.octo.helpers.EntityHelpers;
 import com.octo.utils.predicate.PredicateOperator;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(locations = { "classpath:application-context.xml" })
+@ContextConfiguration(locations = {"classpath:application-context.xml"})
 class TextPredicateFilterTest {
 
     @PersistenceContext

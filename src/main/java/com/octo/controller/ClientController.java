@@ -14,8 +14,6 @@ import org.springframework.stereotype.Controller;
 
 import com.octo.service.ClientService;
 
-import io.swagger.v3.oas.annotations.servers.Server;
-
 /**
  * Client controller.
  *
@@ -25,7 +23,6 @@ import io.swagger.v3.oas.annotations.servers.Server;
 @Path("/client")
 @Produces(MediaType.APPLICATION_JSON)
 @Controller
-@Server(url = "/octo-spy/api")
 public class ClientController {
 
     /** Logger. **/

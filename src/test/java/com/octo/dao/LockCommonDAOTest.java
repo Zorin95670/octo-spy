@@ -15,7 +15,7 @@ import com.octo.helpers.EntityHelpers;
 import com.octo.helpers.EntityService;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(locations = { "classpath:application-context.xml" })
+@ContextConfiguration(locations = {"classpath:application-context.xml"})
 class LockCommonDAOTest {
 
     @Autowired

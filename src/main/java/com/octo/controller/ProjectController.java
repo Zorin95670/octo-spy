@@ -6,6 +6,7 @@ import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.PATCH;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -28,12 +29,6 @@ import com.octo.service.CountService;
 import com.octo.service.ProjectService;
 import com.octo.utils.bean.BeanMapper;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.servers.Server;
-
 /**
  * Project controller.
  *
@@ -43,7 +38,6 @@ import io.swagger.v3.oas.annotations.servers.Server;
 @Path("/project")
 @Produces(MediaType.APPLICATION_JSON)
 @Controller
-@Server(url = "/octo-spy/api")
 public class ProjectController {
 
     /** Logger. **/
@@ -82,7 +76,7 @@ public class ProjectController {
     }
 
     /**
-     * Endpoint to return a specific project.
+     * Get specific project.
      *
      * @param id
      *            Deployment's id.
@@ -94,6 +88,24 @@ public class ProjectController {
     public final Response getProject(@PathParam("id") final Long id) {
         LOGGER.info("Receive GET request to get project with id {}", id);
         return Response.ok(this.service.load(id)).build();
+    }
+
+    /**
+     * Update a specific project.
+     *
+     * @param id
+     *            Project's id.
+     * @param project
+     *            Project's record.
+     * @return Deployment.
+     */
+    @PATCH
+    @Path("/{id}")
+    @PermitAll
+    public final Response updateProject(@PathParam("id") final Long id, final NewProjectRecord project) {
+        LOGGER.info("Receive PATCH request to update project with id {} and record {}", id, project);
+        this.service.update(id, project);
+        return Response.noContent().build();
     }
 
     /**
@@ -119,7 +131,7 @@ public class ProjectController {
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    @RolesAllowed({ UserRoleType.ADMIN, UserRoleType.PROJECT_MANAGER })
+    @RolesAllowed({UserRoleType.ADMIN, UserRoleType.PROJECT_MANAGER})
     public final Response createProject(final NewProjectRecord dto) {
         LOGGER.info("Receive POST request to create project with dto {}", dto);
         return Response.ok(this.service.save(dto)).status(Status.CREATED).build();
@@ -133,13 +145,9 @@ public class ProjectController {
      * @return No content.
      */
     @DELETE
-    @Operation(summary = "Delete project in database.",
-            responses = { @ApiResponse(responseCode = "204"), @ApiResponse(responseCode = "404",
-                    content = @Content(mediaType = "application/json", schema = @Schema(allOf = { Error.class })),
-                    description = "Error on unknown project id.") })
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/{id}")
-    @RolesAllowed({ UserRoleType.ADMIN, UserRoleType.PROJECT_MANAGER })
+    @RolesAllowed({UserRoleType.ADMIN, UserRoleType.PROJECT_MANAGER})
     public Response deleteProject(@PathParam("id") final Long id) {
         LOGGER.info("Receive DELETE request to delete project with id {}", id);
         this.service.delete(id);

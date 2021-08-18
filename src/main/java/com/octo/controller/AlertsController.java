@@ -17,15 +17,12 @@ import com.octo.model.common.Resource;
 import com.octo.model.dto.alert.AlertRecord;
 import com.octo.service.AlertService;
 
-import io.swagger.v3.oas.annotations.servers.Server;
-
 /**
  * Alerts controller.
  */
 @Path("/alerts")
 @Produces(MediaType.APPLICATION_JSON)
 @Controller
-@Server(url = "/octo-spy/api")
 public class AlertsController {
 
     /**

@@ -54,7 +54,8 @@ public class BeanMapper<T, Y> implements Function<T, Y> {
      * @param clazz
      *            Class of object to return.
      * @param ignoreFields
-     *            Array of property names to ignore when conversion. Can be null.
+     *            Array of property names to ignore when conversion. Can be
+     *            null.
      */
     public BeanMapper(final Class<Y> clazz, final String... ignoreFields) {
         this.clazz = clazz;
@@ -74,7 +75,8 @@ public class BeanMapper<T, Y> implements Function<T, Y> {
 
         fieldsDest.stream().forEach(fieldDest -> {
             final Optional<Field> opt = fieldsSource.stream()
-                    // Take only not synthetic and not ignored field, map source in destination field
+                    // Take only not synthetic and not ignored field, map source
+                    // in destination field
                     .filter(fieldSource -> !fieldSource.isSynthetic()
                             && !listOfIgnoredFields.contains(fieldSource.getName())
                             && fieldSource.getName().equals(fieldDest.getName()))

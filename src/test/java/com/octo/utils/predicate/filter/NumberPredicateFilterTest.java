@@ -22,7 +22,7 @@ import com.octo.model.error.ErrorType;
 import com.octo.model.error.GlobalException;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(locations = { "classpath:application-context.xml" })
+@ContextConfiguration(locations = {"classpath:application-context.xml"})
 class NumberPredicateFilterTest {
 
     @PersistenceContext

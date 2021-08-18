@@ -15,6 +15,10 @@ public class ProjectDTO extends AbstractDateDTO {
      * Project's name.
      */
     private String name;
+    /**
+     * Deployment's project color.
+     */
+    private String color;
 
     /**
      * Get primary key value.
@@ -52,5 +56,24 @@ public class ProjectDTO extends AbstractDateDTO {
      */
     public void setName(final String name) {
         this.name = name;
+    }
+
+    /**
+     * Get project's color.
+     *
+     * @return Project's color.
+     */
+    public String getColor() {
+        return color;
+    }
+
+    /**
+     * Set project's color.
+     *
+     * @param color
+     *            Project's color.
+     */
+    public void setColor(final String color) {
+        this.color = color;
     }
 }

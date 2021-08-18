@@ -16,6 +16,7 @@ class SearchDeploymentViewDTOTest {
         assertNull(dto.getId());
         assertNull(dto.getEnvironment());
         assertNull(dto.getProject());
+        assertNull(dto.getProjectId());
         assertNull(dto.getMasterProject());
         assertNull(dto.getClient());
         assertNull(dto.getVersion());
@@ -25,6 +26,7 @@ class SearchDeploymentViewDTOTest {
         Environment environment = new Environment();
         environment.setName("environment");
         Project project = new Project();
+        project.setId(1L);
         project.setName("project");
         Project master = new Project();
         master.setName("master");
@@ -40,6 +42,7 @@ class SearchDeploymentViewDTOTest {
         assertEquals("id", dto.getId());
         assertEquals("environment", dto.getEnvironment());
         assertEquals("project", dto.getProject());
+        assertEquals("1", dto.getProjectId());
         assertEquals("master", dto.getMasterProject());
         assertEquals("client", dto.getClient());
         assertEquals("version", dto.getVersion());
@@ -55,5 +58,6 @@ class SearchDeploymentViewDTOTest {
         assertNull(dto.getEnvironment());
         assertNull(dto.getProject());
         assertNull(dto.getMasterProject());
+        assertNull(dto.getProjectId());
     }
 }

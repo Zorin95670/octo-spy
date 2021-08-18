@@ -2,11 +2,14 @@ DROP VIEW IF EXISTS projects_view;
 
 CREATE VIEW projects_view AS
 SELECT
-  projects.pro_id      AS "pro_id",
-  projects.name        AS "name",
-  master_project.name  AS "master_project",
-  projects.insert_date AS "insert_date",
-  projects.update_date AS "update_date"
+  projects.pro_id                                AS "pro_id",
+  projects.name                                  AS "name",
+  COALESCE(projects.color, master_project.color) AS "color",
+  project_groups.grp_id = projects.pro_id        AS "is_master",
+  master_project.name                            AS "master_project",
+  master_project.color                           AS "master_project_color",
+  projects.insert_date                           AS "insert_date",
+  projects.update_date                           AS "update_date"
 FROM
 	projects
 LEFT OUTER JOIN

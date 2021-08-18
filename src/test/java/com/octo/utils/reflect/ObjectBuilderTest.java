@@ -36,7 +36,7 @@ class ObjectBuilderTest {
     void testBadConstructor() {
         GlobalException exception = null;
         try {
-            ObjectBuilder.init(EntityHelpers.class, new Class<?>[] { String.class }, new Object[] { "" });
+            ObjectBuilder.init(EntityHelpers.class, new Class<?>[]{String.class}, new Object[]{""});
         } catch (final GlobalException e) {
             exception = e;
         }

@@ -33,7 +33,7 @@ import com.octo.service.LastDeploymentViewService;
 
 @ExtendWith(SpringExtension.class)
 @ExtendWith(MockitoExtension.class)
-@ContextConfiguration(locations = { "classpath:application-context.xml" })
+@ContextConfiguration(locations = {"classpath:application-context.xml"})
 class DeploymentControllerTest extends JerseyTest {
 
     @Mock
@@ -53,8 +53,7 @@ class DeploymentControllerTest extends JerseyTest {
                     protected void configure() {
                         this.bind(DeploymentControllerTest.this.controller).to(DeploymentController.class);
                     }
-                });
-        ;
+                });;
 
         rc.property("contextConfigLocation", "classpath:application-context.xml");
 

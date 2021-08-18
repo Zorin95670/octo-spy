@@ -28,6 +28,12 @@ public class SearchProjectViewDTO extends QueryFilter {
     @FilterType(type = Type.TEXT)
     private String name;
     /**
+     * Project's name.
+     */
+    @QueryParam("isMaster")
+    @FilterType(type = Type.BOOLEAN)
+    private String isMaster;
+    /**
      * Master project's name.
      */
     @QueryParam("masterProject")
@@ -70,6 +76,25 @@ public class SearchProjectViewDTO extends QueryFilter {
      */
     public void setName(final String name) {
         this.name = name;
+    }
+
+    /**
+     * Get project is master.
+     *
+     * @return Project is master.
+     */
+    public String getIsMaster() {
+        return isMaster;
+    }
+
+    /**
+     * Set project is master.
+     *
+     * @param isMaster
+     *            Project is master.
+     */
+    public void setIsMaster(final String isMaster) {
+        this.isMaster = isMaster;
     }
 
     /**

@@ -15,6 +15,7 @@ class AbstractProjectTest {
         Entity entity = new Entity();
 
         assertNull(entity.getInsertDate());
+        assertNull(entity.getColor());
 
         entity.prePersist();
         assertNotNull(entity.getInsertDate());

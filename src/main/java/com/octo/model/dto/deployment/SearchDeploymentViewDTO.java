@@ -22,6 +22,12 @@ public class SearchDeploymentViewDTO extends QueryFilter {
     @QueryParam("id")
     private String id;
     /**
+     * Index of project.
+     */
+    @FilterType(type = Type.NUMBER)
+    @QueryParam("projectId")
+    private String projectId;
+    /**
      * Deployment's environment name.
      */
     @FilterType(type = Type.TEXT)
@@ -81,6 +87,25 @@ public class SearchDeploymentViewDTO extends QueryFilter {
      */
     public void setId(final String id) {
         this.id = id;
+    }
+
+    /**
+     * Get project id.
+     *
+     * @return Id.
+     */
+    public String getProjectId() {
+        return projectId;
+    }
+
+    /**
+     * Set project id.
+     *
+     * @param projectId
+     *            Id.
+     */
+    public void setProjectId(final String projectId) {
+        this.projectId = projectId;
     }
 
     /**
@@ -144,13 +169,15 @@ public class SearchDeploymentViewDTO extends QueryFilter {
      *            Project entity.
      */
     public void setProject(final Project entity) {
-        String name = null;
-
+        String projectName = null;
+        String projectId = null;
         if (entity != null) {
-            name = entity.getName();
+            projectName = entity.getName();
+            projectId = Long.toString(entity.getId());
         }
 
-        this.setProject(name);
+        this.setProject(projectName);
+        this.setProjectId(projectId);
     }
 
     /**

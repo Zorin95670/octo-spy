@@ -12,11 +12,6 @@ import org.springframework.stereotype.Controller;
 import com.octo.model.dto.common.ProjectInformationRecord;
 import com.octo.utils.Configuration;
 
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.servers.Server;
-
 /**
  * Controller to manage project version.
  *
@@ -26,7 +21,6 @@ import io.swagger.v3.oas.annotations.servers.Server;
 @Path("/info")
 @Produces(MediaType.APPLICATION_JSON)
 @Controller
-@Server(url = "/octo-spy/api")
 public class InfoController {
 
     /**
@@ -41,10 +35,6 @@ public class InfoController {
      * @return Project version.
      */
     @GET
-    @ApiResponse(responseCode = "200",
-            content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = ProjectInformationRecord.class)),
-            description = "Project's information.")
     @PermitAll
     public final ProjectInformationRecord getVersion() {
         return new ProjectInformationRecord(this.configuration.getProject(), this.configuration.getVersion(),

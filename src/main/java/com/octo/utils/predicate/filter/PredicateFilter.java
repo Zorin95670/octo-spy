@@ -256,7 +256,8 @@ public abstract class PredicateFilter implements IPredicateFilter {
     }
 
     /**
-     * If field value is null return false, otherwise set field value in value and return true.
+     * If field value is null return false, otherwise set field value in value
+     * and return true.
      */
     @Override
     public boolean extract() {
@@ -285,8 +286,8 @@ public abstract class PredicateFilter implements IPredicateFilter {
     }
 
     /**
-     * Return default predicate. This method call getPredicate with Expression. Override it, to use your wanted
-     * expression.
+     * Return default predicate. This method call getPredicate with Expression.
+     * Override it, to use your wanted expression.
      */
     @Override
     public <T, Y> Predicate getPredicate(final int index, final CriteriaBuilder builder, final From<T, Y> root) {
@@ -298,7 +299,8 @@ public abstract class PredicateFilter implements IPredicateFilter {
     }
 
     /**
-     * Indicate if your predicate filter is specific. Used with 'getSpecificOperator'.
+     * Indicate if your predicate filter is specific. Used with
+     * 'getSpecificOperator'.
      */
     @Override
     public boolean isSpecificOperator() {

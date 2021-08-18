@@ -18,16 +18,19 @@ class ProjectDTOTest {
         assertNull(dto.getInsertDate());
         assertNull(dto.getUpdateDate());
         assertNull(dto.getName());
+        assertNull(dto.getColor());
 
         dto.setId(1L);
         dto.setInsertDate(Timestamp.from(Instant.ofEpochMilli(1L)));
         dto.setUpdateDate(Timestamp.from(Instant.ofEpochMilli(2L)));
         dto.setName("name");
+        dto.setColor("color");
 
         assertEquals(Long.valueOf(1L), dto.getId());
         assertEquals(Timestamp.from(Instant.ofEpochMilli(1L)), dto.getInsertDate());
         assertEquals(Timestamp.from(Instant.ofEpochMilli(2L)), dto.getUpdateDate());
         assertEquals("name", dto.getName());
+        assertEquals("color", dto.getColor());
 
         dto.setInsertDate(null);
         dto.setUpdateDate(null);

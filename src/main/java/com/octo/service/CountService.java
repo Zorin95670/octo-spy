@@ -179,7 +179,8 @@ public class CountService {
     }
 
     /**
-     * Convert String value to object. If field type in class is a boolean,convert value in boolean then in object.
+     * Convert String value to object. If field type in class is a
+     * boolean,convert value in boolean then in object.
      *
      * @param clazz
      *            Class to check type of field.

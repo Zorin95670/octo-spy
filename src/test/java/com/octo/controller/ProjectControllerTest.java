@@ -29,7 +29,7 @@ import com.octo.service.ProjectService;
 
 @ExtendWith(SpringExtension.class)
 @ExtendWith(MockitoExtension.class)
-@ContextConfiguration(locations = { "classpath:application-context.xml" })
+@ContextConfiguration(locations = {"classpath:application-context.xml"})
 class ProjectControllerTest extends JerseyTest {
 
     @Mock
@@ -48,8 +48,7 @@ class ProjectControllerTest extends JerseyTest {
             protected void configure() {
                 this.bind(ProjectControllerTest.this.controller).to(ProjectController.class);
             }
-        });
-        ;
+        });;
 
         rc.property("contextConfigLocation", "classpath:application-context.xml");
 
@@ -90,7 +89,7 @@ class ProjectControllerTest extends JerseyTest {
     @Test
     void testCreateProject() {
         Mockito.when(this.service.save(Mockito.any())).thenReturn(new ProjectDTO());
-        final Response response = this.controller.createProject(new NewProjectRecord(null, false, null));
+        final Response response = this.controller.createProject(new NewProjectRecord(null, null, false, null));
 
         assertNotNull(response);
         assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
@@ -101,6 +100,15 @@ class ProjectControllerTest extends JerseyTest {
     void testDeleteProject() {
         Mockito.doNothing().when(this.service).delete(1L);
         final Response response = this.controller.deleteProject(1L);
+
+        assertNotNull(response);
+        assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
+    }
+
+    @Test
+    void testUpdateProject() {
+        Mockito.doNothing().when(this.service).update(Mockito.anyLong(), Mockito.any());
+        final Response response = this.controller.updateProject(1L, new NewProjectRecord("test", "1,1,1", false, null));
 
         assertNotNull(response);
         assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());

@@ -22,6 +22,11 @@ public abstract class AbstractDeploymentView {
     @Column(name = "dpl_id", insertable = false, updatable = false, nullable = false)
     private Long id;
     /**
+     * Index of project.
+     */
+    @Column(name = "pro_id", insertable = false, updatable = false, nullable = false)
+    private Long projectId;
+    /**
      * Deployment's environment.
      */
     @Column(name = "environment", insertable = false, updatable = false)
@@ -32,10 +37,20 @@ public abstract class AbstractDeploymentView {
     @Column(name = "project", insertable = false, updatable = false)
     private String project;
     /**
+     * Deployment's project color.
+     */
+    @Column(name = "color", insertable = false, updatable = false)
+    private String color;
+    /**
      * Deployment's master project.
      */
     @Column(name = "master_project", insertable = false, updatable = false)
     private String masterProject;
+    /**
+     * Deployment's master project color.
+     */
+    @Column(name = "master_project_color", insertable = false, updatable = false)
+    private String masterProjectColor;
     /**
      * Deployed version.
      */
@@ -77,6 +92,25 @@ public abstract class AbstractDeploymentView {
     }
 
     /**
+     * Get project id.
+     *
+     * @return Project id.
+     */
+    public Long getProjectId() {
+        return projectId;
+    }
+
+    /**
+     * Set project id.
+     *
+     * @param projectId
+     *            Project id.
+     */
+    public void setProjectId(final Long projectId) {
+        this.projectId = projectId;
+    }
+
+    /**
      * Get environment name.
      *
      * @return Environment name.
@@ -115,6 +149,25 @@ public abstract class AbstractDeploymentView {
     }
 
     /**
+     * Get project's color.
+     *
+     * @return Project's color.
+     */
+    public String getColor() {
+        return color;
+    }
+
+    /**
+     * Set project's color.
+     *
+     * @param color
+     *            Project's color.
+     */
+    public void setColor(final String color) {
+        this.color = color;
+    }
+
+    /**
      * Get master project name.
      *
      * @return Master project name.
@@ -131,6 +184,25 @@ public abstract class AbstractDeploymentView {
      */
     public void setMasterProject(final String masterProject) {
         this.masterProject = masterProject;
+    }
+
+    /**
+     * Get master project's color.
+     *
+     * @return Master project's color.
+     */
+    public String getMasterProjectColor() {
+        return masterProjectColor;
+    }
+
+    /**
+     * Set master project's color.
+     *
+     * @param masterProjectColor
+     *            Master project's color.
+     */
+    public void setMasterProjectColor(final String masterProjectColor) {
+        this.masterProjectColor = masterProjectColor;
     }
 
     /**

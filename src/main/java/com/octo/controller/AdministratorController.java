@@ -13,15 +13,12 @@ import org.springframework.stereotype.Controller;
 import com.octo.model.authentication.UserRoleType;
 import com.octo.service.UserService;
 
-import io.swagger.v3.oas.annotations.servers.Server;
-
 /**
  * User controller.
  */
 @Path("/administrator")
 @Produces(MediaType.APPLICATION_JSON)
 @Controller
-@Server(url = "/octo-spy/api")
 public class AdministratorController {
 
     /**

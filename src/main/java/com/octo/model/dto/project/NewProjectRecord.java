@@ -6,7 +6,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  * Record to create project.
  *
  * @param name
- *            Projet name.
+ *            Project name.
+ * @param color
+ *            Project color.
  * @param isMaster
  *            Indicate if project is a master project.
  * @param masterName
@@ -15,6 +17,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  *
  */
 @JsonIgnoreProperties
-public record NewProjectRecord(String name, boolean isMaster, String masterName) {
+public record NewProjectRecord(String name, String color, boolean isMaster, String masterName) {
 
 }

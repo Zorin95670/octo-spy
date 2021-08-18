@@ -37,7 +37,8 @@ public class JsonNodeToObjectMapper<T> implements Function<JsonNode, T> {
     private boolean isList;
 
     /**
-     * Constructor. This constructor set the value of isList to false, by default.
+     * Constructor. This constructor set the value of isList to false, by
+     * default.
      *
      * @param type
      *            The type of the class to map.

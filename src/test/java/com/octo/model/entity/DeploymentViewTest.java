@@ -21,8 +21,11 @@ class DeploymentViewTest {
         assertNull(entity.getEnvironment());
         assertNull(entity.getId());
         assertNull(entity.getProject());
+        assertNull(entity.getProjectId());
         assertNull(entity.getMasterProject());
+        assertNull(entity.getMasterProjectColor());
         assertNull(entity.getVersion());
+        assertNull(entity.getColor());
         assertNull(entity.getInsertDate());
         assertFalse(entity.isInProgress());
         assertFalse(entity.isAlive());
@@ -30,9 +33,12 @@ class DeploymentViewTest {
         entity.setClient("client");
         entity.setEnvironment("environment");
         entity.setId(1L);
+        entity.setProjectId(2L);
         entity.setProject("project");
         entity.setMasterProject("master");
+        entity.setMasterProjectColor("masterProjectColor");
         entity.setVersion("version");
+        entity.setColor("color");
         entity.setInsertDate(time);
         entity.setInProgress(true);
         entity.setAlive(true);
@@ -40,9 +46,12 @@ class DeploymentViewTest {
         assertEquals("client", entity.getClient());
         assertEquals("environment", entity.getEnvironment());
         assertEquals(Long.valueOf(1L), entity.getId());
+        assertEquals(Long.valueOf(2L), entity.getProjectId());
         assertEquals("project", entity.getProject());
         assertEquals("master", entity.getMasterProject());
+        assertEquals("masterProjectColor", entity.getMasterProjectColor());
         assertEquals("version", entity.getVersion());
+        assertEquals("color", entity.getColor());
         assertEquals(time, entity.getInsertDate());
         assertTrue(entity.isInProgress());
         assertTrue(entity.isAlive());

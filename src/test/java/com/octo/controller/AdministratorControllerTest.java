@@ -23,7 +23,7 @@ import com.octo.service.UserService;
 
 @ExtendWith(SpringExtension.class)
 @ExtendWith(MockitoExtension.class)
-@ContextConfiguration(locations = { "classpath:application-context.xml" })
+@ContextConfiguration(locations = {"classpath:application-context.xml"})
 class AdministratorControllerTest extends JerseyTest {
 
     @Mock
@@ -40,8 +40,7 @@ class AdministratorControllerTest extends JerseyTest {
                     protected void configure() {
                         this.bind(AdministratorControllerTest.this.controller).to(AdministratorController.class);
                     }
-                });
-        ;
+                });;
 
         rc.property("contextConfigLocation", "classpath:application-context.xml");
 

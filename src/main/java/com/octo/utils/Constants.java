@@ -31,7 +31,7 @@ public final class Constants {
     /**
      * Maximum database version.
      */
-    public static final int DATABASE_VERSION_MAXIMUM = 12;
+    public static final int DATABASE_VERSION_MAXIMUM = 13;
     /**
      * Default administrator login.
      */

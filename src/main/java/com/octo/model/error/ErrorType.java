@@ -12,7 +12,7 @@ public enum ErrorType {
     /**
      * Error to call when authorization request is bad.
      */
-    AUTHORIZATION_ERROR("Authentication error.", Status.BAD_REQUEST),
+    AUTHORIZATION_ERROR("Authentication error.", Status.UNAUTHORIZED),
     /**
      * Error to call when user has bad authentication token.
      */

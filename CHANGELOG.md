@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 2021/09/06: Version 1.11.1
+
+### Bug fixes
+
+* Change authentication error status
+* Set maximum database version to 13
+
 ## 2021/08/02: Version 1.11.0
 
 ### Features

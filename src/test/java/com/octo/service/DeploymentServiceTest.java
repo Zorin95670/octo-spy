@@ -218,6 +218,7 @@ class DeploymentServiceTest {
         deployment.setEnvironment(environment);
         deployment.setProject(project);
 
+        Mockito.when(this.deploymentProgressDAO.callUpdateProcedure(Mockito.any(), Mockito.any())).thenReturn(0);
         Mockito.when(this.environmentDAO.load(Mockito.any())).thenReturn(Optional.of(environment));
         Mockito.when(this.projectDAO.load(Mockito.any())).thenReturn(Optional.of(project));
         Mockito.when(this.deploymentDAO.save(Mockito.any())).thenReturn(deployment);

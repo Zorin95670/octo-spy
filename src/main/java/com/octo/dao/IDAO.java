@@ -242,4 +242,14 @@ public interface IDAO<T, Y extends QueryFilter> {
      * @return The number of entities updated.
      */
     int updateProperty(Y filter, String name, Object value, PredicateMapper<T, QueryFilter> mapper);
+    /**
+     * Execute update procedure.
+     *
+     * @param procedure
+     *            Procedure name.
+     * @param parameters
+     *            Parameters of procedure.
+     * @return The number of entities updated.
+     */
+    int callUpdateProcedure(String procedure, ProcedureParameter... parameters);
 }

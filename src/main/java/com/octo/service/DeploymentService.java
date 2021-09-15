@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.octo.dao.IDAO;
+import com.octo.dao.ProcedureParameter;
 import com.octo.model.common.Resource;
 import com.octo.model.dto.common.SearchByNameDTO;
 import com.octo.model.dto.deployment.DeploymentDTO;
@@ -131,12 +132,14 @@ public class DeploymentService {
         entity = this.deploymentDAO.save(entity);
 
         if (newDeployment.inProgress()) {
+            this.deleteAllProgress(entity);
+
             DeploymentProgress progress = new DeploymentProgress();
             progress.setDeployment(entity);
             this.deploymentProgressDAO.save(progress);
         }
 
-        return new BeanMapper<>(DeploymentDTO.class).apply(entity);
+        return new BeanMapper<>(DeploymentDTO.class).apply(this.deploymentViewDAO.loadById(entity.getId()));
     }
 
     /**
@@ -182,25 +185,15 @@ public class DeploymentService {
      * @param dto
      *            Filter.
      */
-    public void deleteProgressDeployment(final SearchDeploymentDTO dto) {
+    public void deleteProgressDeployment(final SearchDeploymentViewDTO dto) {
         if (dto.getEnvironment() == null) {
             throw new GlobalException(ErrorType.EMPTY_VALUE, Constants.FIELD_ENVIRONMENT);
-        }
-        Optional<Environment> environment = this.environmentDAO.load(new SearchByNameDTO(dto.getEnvironment()));
-        if (!environment.isPresent()) {
-            throw new GlobalException(ErrorType.ENTITY_NOT_FOUND, Constants.FIELD_ENVIRONMENT);
         }
         if (dto.getProject() == null) {
             throw new GlobalException(ErrorType.EMPTY_VALUE, Constants.FIELD_PROJECT);
         }
-        Optional<Project> project = this.projectDAO.load(new SearchByNameDTO(dto.getProject()));
-        if (!project.isPresent()) {
-            throw new GlobalException(ErrorType.ENTITY_NOT_FOUND, Constants.FIELD_PROJECT);
-        }
 
-        dto.setEnvironment(environment.get().getId().toString());
-        dto.setProject(project.get().getId().toString());
-        Optional<Deployment> deployment = this.deploymentDAO.load(dto);
+        Optional<DeploymentView> deployment = this.deploymentViewDAO.load(dto);
         if (!deployment.isPresent()) {
             throw new GlobalException(ErrorType.ENTITY_NOT_FOUND, "deployment");
         }
@@ -212,6 +205,20 @@ public class DeploymentService {
             throw new GlobalException(ErrorType.ENTITY_NOT_FOUND, "deploymentProgress");
         }
         this.deploymentProgressDAO.delete(progress.get());
+    }
+
+    /**
+     * Delete all progress from an deployment with same project, environment and
+     * client.
+     *
+     * @param deployment
+     *            Deployment to identify progress.
+     */
+    public void deleteAllProgress(final Deployment deployment) {
+        this.deploymentProgressDAO.callUpdateProcedure("delete_all_progress",
+                new ProcedureParameter("_project", deployment.getProject().getName()),
+                new ProcedureParameter("_environment", deployment.getEnvironment().getName()),
+                new ProcedureParameter("_client", deployment.getClient()));
     }
 
     /**

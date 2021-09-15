@@ -1,3 +1,6 @@
+-- Ensure repeatable migration is really repeated on every start
+-- ${flyway:timestamp}
+
 DROP VIEW IF EXISTS projects_view;
 
 CREATE VIEW projects_view AS

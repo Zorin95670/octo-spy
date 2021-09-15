@@ -1,3 +1,6 @@
+-- Ensure repeatable migration is really repeated on every start
+-- ${flyway:timestamp}
+
 DROP VIEW IF EXISTS last_deployments_view;
 
 CREATE VIEW last_deployments_view AS

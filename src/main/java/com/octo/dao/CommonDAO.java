@@ -1,11 +1,14 @@
 package com.octo.dao;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
@@ -326,5 +329,31 @@ public abstract class CommonDAO<T, Y extends QueryFilter> implements IDAO<T, Y> 
     protected Expression<String> getOrderExpression(final CriteriaBuilder builder, final Root<T> root,
             final String order) {
         return root.get(order);
+    }
+
+    /**
+     * Generate procedure query from parameters.
+     *
+     * @param procedure
+     *            Procedure name.
+     * @param parameters
+     *            Parameters
+     * @return Procedure query.
+     */
+    private Query generateProcedure(final String procedure, final ProcedureParameter... parameters) {
+        String sql = String.format("CALL %s(%s)", procedure,
+                Arrays.stream(parameters).map(p -> ":" + p.name()).collect(Collectors.joining(",")));
+
+        final Query query = this.getEntityManager().createNativeQuery(sql);
+        Arrays.stream(parameters).forEach(parameter -> query.setParameter(parameter.name(), parameter.value()));
+
+        return query;
+    }
+
+    @Override
+    public final int callUpdateProcedure(final String procedure, final ProcedureParameter... parameters) {
+        Query query = this.generateProcedure(procedure, parameters);
+
+        return query.executeUpdate();
     }
 }

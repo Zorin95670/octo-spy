@@ -185,25 +185,15 @@ public class DeploymentService {
      * @param dto
      *            Filter.
      */
-    public void deleteProgressDeployment(final SearchDeploymentDTO dto) {
+    public void deleteProgressDeployment(final SearchDeploymentViewDTO dto) {
         if (dto.getEnvironment() == null) {
             throw new GlobalException(ErrorType.EMPTY_VALUE, Constants.FIELD_ENVIRONMENT);
-        }
-        Optional<Environment> environment = this.environmentDAO.load(new SearchByNameDTO(dto.getEnvironment()));
-        if (!environment.isPresent()) {
-            throw new GlobalException(ErrorType.ENTITY_NOT_FOUND, Constants.FIELD_ENVIRONMENT);
         }
         if (dto.getProject() == null) {
             throw new GlobalException(ErrorType.EMPTY_VALUE, Constants.FIELD_PROJECT);
         }
-        Optional<Project> project = this.projectDAO.load(new SearchByNameDTO(dto.getProject()));
-        if (!project.isPresent()) {
-            throw new GlobalException(ErrorType.ENTITY_NOT_FOUND, Constants.FIELD_PROJECT);
-        }
 
-        dto.setEnvironment(environment.get().getId().toString());
-        dto.setProject(project.get().getId().toString());
-        Optional<Deployment> deployment = this.deploymentDAO.load(dto);
+        Optional<DeploymentView> deployment = this.deploymentViewDAO.load(dto);
         if (!deployment.isPresent()) {
             throw new GlobalException(ErrorType.ENTITY_NOT_FOUND, "deployment");
         }

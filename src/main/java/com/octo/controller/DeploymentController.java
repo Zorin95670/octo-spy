@@ -24,7 +24,6 @@ import com.octo.model.authentication.UserRoleType;
 import com.octo.model.common.Resource;
 import com.octo.model.dto.deployment.DeploymentDTO;
 import com.octo.model.dto.deployment.NewDeploymentRecord;
-import com.octo.model.dto.deployment.SearchDeploymentDTO;
 import com.octo.model.dto.deployment.SearchDeploymentViewDTO;
 import com.octo.model.dto.deployment.SearchLastDeploymentViewDTO;
 import com.octo.service.DeploymentService;
@@ -149,7 +148,7 @@ public class DeploymentController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/progress")
     @RolesAllowed({UserRoleType.ADMIN, UserRoleType.PROJECT_MANAGER})
-    public final Response deleteProgressDeployment(final SearchDeploymentDTO dto) {
+    public final Response deleteProgressDeployment(final SearchDeploymentViewDTO dto) {
         LOGGER.info("Receive DELETE request to delete progress of deployment");
         service.deleteProgressDeployment(dto);
         return Response.noContent().build();

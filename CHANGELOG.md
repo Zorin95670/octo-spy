@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 2021/09/15: Version 1.11.2
+
+### Bug fixes
+
+* Delete all same progress when save new progress
+
 ## 2021/09/06: Version 1.11.1
 
 ### Bug fixes

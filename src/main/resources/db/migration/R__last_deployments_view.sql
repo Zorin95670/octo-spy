@@ -62,4 +62,6 @@ ON
 LEFT OUTER JOIN
 	projects master_project
 ON
-    groups.pro_id = master_project.pro_id;
+    groups.pro_id = master_project.pro_id
+WHERE
+    deployments.dpl_id IS NOT NULL;

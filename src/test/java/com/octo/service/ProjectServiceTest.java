@@ -17,8 +17,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.octo.dao.IDAO;
 import com.octo.model.dto.project.NewProjectRecord;
-import com.octo.model.dto.project.ProjectDTO;
-import com.octo.model.entity.Group;
 import com.octo.model.entity.Project;
 import com.octo.model.entity.ProjectView;
 import com.octo.model.error.ErrorType;
@@ -47,93 +45,109 @@ class ProjectServiceTest {
     }
 
     @Test
-    void testSave() {
-        // Test null name
+    void testSaveGenerateException() {
         GlobalException exception = null;
-
         try {
-            service.save(null);
+            this.service.save(null);
         } catch (GlobalException e) {
             exception = e;
         }
-
         assertNotNull(exception);
-        assertNotNull(exception.getError());
-        assertEquals(ErrorType.EMPTY_VALUE.getMessage(), exception.getError().getMessage());
-        assertEquals("name", exception.getError().getField());
-        assertNull(exception.getError().getValue());
+        assertEquals(exception.getError().getMessage(), ErrorType.EMPTY_VALUE.getMessage());
 
         exception = null;
-        NewProjectRecord input = new NewProjectRecord(null, null, false, null);
-
         try {
-            service.save(input);
+            this.service.save(new NewProjectRecord(null, null, false, null));
         } catch (GlobalException e) {
             exception = e;
         }
-
         assertNotNull(exception);
-        assertNotNull(exception.getError());
-        assertEquals(ErrorType.EMPTY_VALUE.getMessage(), exception.getError().getMessage());
-        assertEquals("name", exception.getError().getField());
-        assertNull(exception.getError().getValue());
+        assertEquals(exception.getError().getMessage(), ErrorType.EMPTY_VALUE.getMessage());
+    }
 
-        // Test all good
-        exception = null;
-        input = new NewProjectRecord("Project test", null, false, null);
+    @Test
+    void testSaveDuplicateMasterProject() {
+        Mockito.when(this.projectViewDAO.load(Mockito.any())).thenReturn(Optional.of(new ProjectView()));
 
+        GlobalException exception = null;
+        try {
+            this.service.save(new NewProjectRecord("test", null, true, null));
+        } catch (GlobalException e) {
+            exception = e;
+        }
+        assertNotNull(exception);
+        assertEquals(exception.getError().getMessage(), ErrorType.WRONG_VALUE.getMessage());
+    }
+
+    @Test
+    void testsaveMasterProject() {
+        Mockito.when(this.projectViewDAO.load(Mockito.any())).thenReturn(Optional.empty());
         Mockito.when(this.projectDAO.save(Mockito.any())).thenReturn(new Project());
-        ProjectDTO dto = null;
-
-        try {
-            dto = service.save(input);
-        } catch (GlobalException e) {
-            exception = e;
-        }
-
-        assertNull(exception);
-        assertNotNull(dto);
-    }
-
-    @Test
-    void saveMasterProject() {
-        NewProjectRecord dto = new NewProjectRecord("test", null, true, null);
-
-        Mockito.when(projectDAO.save(Mockito.any())).thenReturn(new Project());
-        Mockito.when(groupService.create(Mockito.any())).thenReturn(new Group());
-
-        assertNotNull(service.save(dto));
-        Mockito.verify(groupService).create(Mockito.any());
-    }
-
-    @Test
-    void saveGroupProject() {
-        NewProjectRecord dto = new NewProjectRecord("test", null, false, "master");
-
-        Mockito.when(projectDAO.save(Mockito.any())).thenReturn(new Project());
-        Mockito.when(projectDAO.load(Mockito.any())).thenReturn(Optional.empty());
+        Mockito.when(this.groupService.create(Mockito.any())).thenReturn(null);
 
         GlobalException exception = null;
         try {
-            service.save(dto);
+            this.service.save(new NewProjectRecord("test", null, true, null));
+        } catch (GlobalException e) {
+            exception = e;
+        }
+        assertNull(exception);
+    }
+
+    @Test
+    void testSaveSubProjectWithEmptyMasterProject() {
+        GlobalException exception = null;
+        try {
+            this.service.save(new NewProjectRecord("test", null, false, null));
         } catch (GlobalException e) {
             exception = e;
         }
         assertNotNull(exception);
-        assertNotNull(exception.getError());
-        assertEquals(ErrorType.ENTITY_NOT_FOUND.getMessage(), exception.getError().getMessage());
-        assertEquals("project", exception.getError().getField());
-        assertEquals("master", exception.getError().getValue());
+        assertEquals(exception.getError().getMessage(), ErrorType.EMPTY_VALUE.getMessage());
+    }
 
-        Mockito.when(projectDAO.load(Mockito.any())).thenReturn(Optional.of(new Project()));
-        exception = null;
+    @Test
+    void testSaveDuplicateSubProject() {
+        Mockito.when(this.projectViewDAO.load(Mockito.any())).thenReturn(Optional.of(new ProjectView()));
+
+        GlobalException exception = null;
         try {
-            service.save(dto);
+            this.service.save(new NewProjectRecord("test", null, false, "master"));
+        } catch (GlobalException e) {
+            exception = e;
+        }
+        assertNotNull(exception);
+        assertEquals(exception.getError().getMessage(), ErrorType.WRONG_VALUE.getMessage());
+    }
+
+    @Test
+    void testSaveSubProjectWithUnknowMasterProject() {
+        Mockito.when(this.projectViewDAO.load(Mockito.any())).thenReturn(Optional.empty());
+        GlobalException exception = null;
+        try {
+            this.service.save(new NewProjectRecord("test", null, false, "master"));
+        } catch (GlobalException e) {
+            exception = e;
+        }
+        assertNotNull(exception);
+        assertEquals(exception.getError().getMessage(), ErrorType.ENTITY_NOT_FOUND.getMessage());
+    }
+
+    @Test
+    void testSaveSubProject() {
+        ProjectView master = new ProjectView();
+        master.setId(1L);
+        Mockito.when(this.projectViewDAO.load(Mockito.any())).thenReturn(Optional.empty(), Optional.of(master));
+        Mockito.when(this.projectDAO.save(Mockito.any())).thenReturn(new Project());
+        Mockito.when(this.groupService.addProjectToGroup(Mockito.anyLong(), Mockito.any())).thenReturn(null);
+
+        GlobalException exception = null;
+        try {
+            this.service.save(new NewProjectRecord("test", null, false, "master"));
         } catch (GlobalException e) {
             exception = e;
         }
         assertNull(exception);
-        Mockito.verify(groupService).addProjectToGroup(Mockito.any(), Mockito.any());
     }
 
     @Test

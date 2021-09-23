@@ -38,7 +38,11 @@ public @interface FilterType {
         /**
          * Array.
          */
-        ARRAY
+        ARRAY,
+        /**
+         * Token.
+         */
+        TOKEN,
     }
 
     /**

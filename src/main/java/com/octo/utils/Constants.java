@@ -14,7 +14,14 @@ public final class Constants {
     private Constants() {
         throw new UnsupportedOperationException();
     }
-
+    /**
+     * Token length.
+     */
+    public static final int TOKEN_LENGHT = 50;
+    /**
+     * Special accepted characters for token generation.
+     */
+    public static final String SPECIAL_CHARACTERS = "_-,;?!.%=^";
     /**
      * Minimum password length.
      */
@@ -41,9 +48,13 @@ public final class Constants {
      */
     public static final String AUTHORIZATION_PROPERTY = "Authorization";
     /**
-     * Authorization scheme value.
+     * Authorization basic scheme value.
      */
-    public static final String AUTHENTICATION_SCHEME = "Basic";
+    public static final String AUTHENTICATION_BASIC_SCHEME = "Basic";
+    /**
+     * Authorization token scheme value.
+     */
+    public static final String AUTHENTICATION_TOKEN_SCHEME = "Token";
     /**
      * Default length of string in database.
      */

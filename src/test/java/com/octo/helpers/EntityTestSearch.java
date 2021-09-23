@@ -16,6 +16,8 @@ public class EntityTestSearch extends QueryFilter {
     private String array;
     @FilterType(type = FilterType.Type.TEXT)
     private String name;
+    @FilterType(type = FilterType.Type.TOKEN)
+    private String token;
 
     public String getId() {
         return id;
@@ -55,5 +57,13 @@ public class EntityTestSearch extends QueryFilter {
 
     public void setArray(String array) {
         this.array = array;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

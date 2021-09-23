@@ -24,6 +24,9 @@ public class EntityHelpers {
     private boolean alive;
     @Column(name = "array")
     private String array;
+    @Column(name = "token")
+    private String token;
+
     @Column(name = "update_date")
     @Version
     private Timestamp updateDate;
@@ -73,5 +76,13 @@ public class EntityHelpers {
 
     public void setArray(String array) {
         this.array = array;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

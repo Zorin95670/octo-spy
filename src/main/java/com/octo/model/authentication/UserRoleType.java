@@ -16,11 +16,16 @@ public final class UserRoleType {
     }
 
     /**
-     * Used for route with only valid connection with no roles.
+     * Used for route that permit token authentication. Need to be explicit.
+     */
+    public static final String TOKEN = "TOKEN";
+    /**
+     * Used for route with only valid connection with no roles. By default token
+     * are not allowed.
      */
     public static final String ALL = "ALL";
     /**
-     * Authorizations.
+     * Authorizations. By default token are not allowed.
      * <p>
      * <b>Deployment:</b>
      * </p>
@@ -46,7 +51,8 @@ public final class UserRoleType {
      */
     public static final String ADMIN = "ADMIN";
     /**
-     * Only for authorized project, authorizations.
+     * Only for authorized project, authorizations.By default token are not
+     * allowed.
      * <p>
      * <b>Deployment:</b>
      * </p>

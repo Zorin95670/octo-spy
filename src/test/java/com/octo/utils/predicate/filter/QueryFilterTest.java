@@ -1,5 +1,6 @@
 package com.octo.utils.predicate.filter;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -8,6 +9,8 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import com.octo.helpers.EntityHelpers;
+import com.octo.helpers.EntityTestSearch;
 import com.octo.helpers.TestDTO;
 import com.octo.model.error.ErrorType;
 import com.octo.model.error.GlobalException;
@@ -79,6 +82,28 @@ class QueryFilterTest {
         assertNull(dto.getFilter(null, null));
         List<IPredicateFilter> filters = dto.getFilters(TestDTO.class);
         assertNotNull(filters);
+    }
+
+    @Test
+    void testGetFiltersWithAllType() {
+        EntityTestSearch filter = new EntityTestSearch();
+        filter.setAlive("true");
+        filter.setArray("test");
+        filter.setId("1");
+        filter.setName("test");
+        filter.setToken("token");
+        filter.setUpdateDate("null");
+
+        List<IPredicateFilter> filters = filter.getFilters(EntityHelpers.class);
+        assertNotNull(filters);
+        assertEquals(6, filters.size());
+
+        assertTrue(filters.stream().anyMatch((predicate) -> predicate.getClass().equals(TextPredicateFilter.class)));
+        assertTrue(filters.stream().anyMatch((predicate) -> predicate.getClass().equals(DatePredicateFilter.class)));
+        assertTrue(filters.stream().anyMatch((predicate) -> predicate.getClass().equals(NumberPredicateFilter.class)));
+        assertTrue(filters.stream().anyMatch((predicate) -> predicate.getClass().equals(TokenPredicateFilter.class)));
+        assertTrue(filters.stream().anyMatch((predicate) -> predicate.getClass().equals(ArrayPredicateFilter.class)));
+        assertTrue(filters.stream().anyMatch((predicate) -> predicate.getClass().equals(BooleanPredicateFilter.class)));
     }
 
     class TestQueryFilter extends QueryFilter {

@@ -56,13 +56,13 @@ public class ProjectController {
     private CountService countService;
 
     /**
-     * Count field of entry for restricted value.
+     * Count field of project for restricted value.
      *
      * @param countBody
      *            CountDTO
      * @param projectsBody
      *            Project's filter.
-     * @return Resource to contains entries and total of this.
+     * @return Resource to contains projects and total of this.
      */
     @GET
     @PermitAll
@@ -71,8 +71,8 @@ public class ProjectController {
         LOGGER.info("Received GET request to count projects with count DTO {} and search DTO {}", countBody,
                 projectsBody);
         CountDTO countDTO = new BeanMapper<>(CountDTO.class).apply(countBody);
-        SearchProjectViewDTO entriesDTO = new BeanMapper<>(SearchProjectViewDTO.class).apply(projectsBody);
-        return Response.ok(this.countService.count(ProjectView.class, countDTO, entriesDTO)).build();
+        SearchProjectViewDTO dto = new BeanMapper<>(SearchProjectViewDTO.class).apply(projectsBody);
+        return Response.ok(this.countService.count(ProjectView.class, countDTO, dto)).build();
     }
 
     /**

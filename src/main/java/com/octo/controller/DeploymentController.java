@@ -22,12 +22,16 @@ import org.springframework.stereotype.Controller;
 
 import com.octo.model.authentication.UserRoleType;
 import com.octo.model.common.Resource;
+import com.octo.model.dto.count.CountDTO;
 import com.octo.model.dto.deployment.DeploymentDTO;
 import com.octo.model.dto.deployment.NewDeploymentRecord;
 import com.octo.model.dto.deployment.SearchDeploymentViewDTO;
 import com.octo.model.dto.deployment.SearchLastDeploymentViewDTO;
+import com.octo.model.entity.DeploymentView;
+import com.octo.service.CountService;
 import com.octo.service.DeploymentService;
 import com.octo.service.LastDeploymentViewService;
+import com.octo.utils.bean.BeanMapper;
 
 /**
  * Deployment controller.
@@ -54,6 +58,33 @@ public class DeploymentController {
      */
     @Autowired
     private LastDeploymentViewService lastDeploymentViewService;
+
+    /**
+     * Service to manage count.
+     */
+    @Autowired
+    private CountService countService;
+
+    /**
+     * Count field of deployments for restricted value.
+     *
+     * @param countBody
+     *            CountDTO
+     * @param deploymentDTO
+     *            deployment's filter.
+     * @return Resource to contains deployments and total of this.
+     */
+    @GET
+    @PermitAll
+    @Path("/count")
+    public Response count(@BeanParam final CountDTO countBody,
+            @BeanParam final SearchLastDeploymentViewDTO deploymentDTO) {
+        LOGGER.info("Received GET request to count deployments with count DTO {} and search DTO {}", countBody,
+                deploymentDTO);
+        CountDTO countDTO = new BeanMapper<>(CountDTO.class).apply(countBody);
+        SearchLastDeploymentViewDTO dto = new BeanMapper<>(SearchLastDeploymentViewDTO.class).apply(deploymentDTO);
+        return Response.ok(this.countService.count(DeploymentView.class, countDTO, dto)).build();
+    }
 
     /**
      * Endpoint to return a last deployments.

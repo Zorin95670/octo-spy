@@ -1,14 +1,19 @@
 package com.octo.service;
 
+import java.util.Optional;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.octo.dao.IDAO;
+import com.octo.model.dto.group.SearchGroupDTO;
 import com.octo.model.entity.Group;
 import com.octo.model.entity.Project;
 import com.octo.model.entity.ProjectGroup;
+import com.octo.model.error.ErrorType;
+import com.octo.model.error.GlobalException;
 import com.octo.utils.predicate.filter.QueryFilter;
 
 /**
@@ -49,11 +54,18 @@ public class GroupService implements IGroupService {
     }
 
     @Override
-    public final ProjectGroup addProjectToGroup(final Project masterProject, final Project project) {
-        Group group = groupDAO.loadEntityById(masterProject.getId(), "masterProject");
+    public final ProjectGroup addProjectToGroup(final Long masterProjectId, final Project project) {
+        SearchGroupDTO groupFilter = new SearchGroupDTO();
+        groupFilter.setMasterProject(masterProjectId.toString());
+
+        Optional<Group> group = groupDAO.load(groupFilter);
+
+        if (group.isEmpty()) {
+            throw new GlobalException(ErrorType.ENTITY_NOT_FOUND, "group");
+        }
 
         ProjectGroup projectGroup = new ProjectGroup();
-        projectGroup.setGroup(group);
+        projectGroup.setGroup(group.get());
         projectGroup.setProject(project);
 
         return projectGroupDAO.save(projectGroup);

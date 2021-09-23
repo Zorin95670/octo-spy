@@ -1,6 +1,9 @@
 # Created by https://www.gitignore.io/api/java,maven,eclipse
 # Edit at https://www.gitignore.io/?templates=java,maven,eclipse
 
+# Intellij
+.idea/
+
 ### Eclipse ###
 .metadata
 bin/

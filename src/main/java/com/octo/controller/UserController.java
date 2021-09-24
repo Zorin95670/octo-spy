@@ -15,6 +15,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -36,6 +38,9 @@ import com.octo.utils.http.UserMapper;
 @Controller
 public class UserController {
 
+    /** Logger. **/
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
+
     /**
      * User service.
      */
@@ -54,6 +59,7 @@ public class UserController {
     @RolesAllowed(UserRoleType.ALL)
     public final Response getMyInformations(@Context final ContainerRequestContext requestContext) {
         User user = new UserMapper().apply(requestContext);
+        LOGGER.info("Received GET request to retrieve user information of {}.", user.getLogin());
         FullUserDTO fullUser = new FullUserDTO();
         fullUser.setUser(service.getUser(user.getLogin()));
         fullUser.setRoles(service.getUserRoles(user.getLogin()));
@@ -72,6 +78,7 @@ public class UserController {
     @RolesAllowed(UserRoleType.ADMIN)
     public final Response getToken(@Context final ContainerRequestContext requestContext) {
         User user = new UserMapper().apply(requestContext);
+        LOGGER.info("Received GET request to retrieve user tokens of {}.", user.getLogin());
         ArrayNode tokens = JsonNodeFactory.instance.arrayNode();
         service.getUserToken(user.getLogin()).forEach(tokens::add);
         return Response.ok(tokens).build();
@@ -94,6 +101,7 @@ public class UserController {
     public final Response createToken(@Context final ContainerRequestContext requestContext, final String body)
             throws NoSuchAlgorithmException {
         User user = new UserMapper().apply(requestContext);
+        LOGGER.info("Received POST request to create user token {} for {}.", body, user.getLogin());
         ObjectNode token = JsonNodeFactory.instance.objectNode();
         token.put("token", service.createToken(user.getLogin(), body));
         return Response.ok(token).status(Status.CREATED).build();
@@ -114,6 +122,7 @@ public class UserController {
     public final Response deleteToken(@Context final ContainerRequestContext requestContext,
             final @BeanParam SearchUserTokenDTO dto) {
         User user = new UserMapper().apply(requestContext);
+        LOGGER.info("Received DELETE request to delete user token for {}, with {}.", user.getLogin(), dto);
         service.deleteToken(user.getLogin(), dto);
         return Response.noContent().build();
     }

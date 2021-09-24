@@ -9,6 +9,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -25,6 +27,9 @@ import com.octo.service.AlertService;
 @Controller
 public class AlertsController {
 
+    /** Logger. **/
+    private static final Logger LOGGER = LoggerFactory.getLogger(AlertsController.class);
+
     /**
      * User service.
      */
@@ -39,6 +44,7 @@ public class AlertsController {
     @GET
     @RolesAllowed(UserRoleType.ADMIN)
     public final Response getAlerts() {
+        LOGGER.info("Receive GET request to get all alerts.");
         List<AlertRecord> alerts = service.getAlerts();
 
         if (alerts.isEmpty()) {

@@ -56,7 +56,7 @@ public class UserController {
      */
     @GET
     @Path("/me")
-    @RolesAllowed(UserRoleType.ALL)
+    @RolesAllowed({UserRoleType.ALL, UserRoleType.TOKEN})
     public final Response getMyInformations(@Context final ContainerRequestContext requestContext) {
         User user = new UserMapper().apply(requestContext);
         LOGGER.info("Received GET request to retrieve user information of {}.", user.getLogin());

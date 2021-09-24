@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.octo.dao.IDAO;
-import com.octo.model.dto.common.SearchByNameDTO;
 import com.octo.model.dto.project.NewProjectRecord;
 import com.octo.model.dto.project.ProjectDTO;
 import com.octo.model.dto.project.ProjectViewDTO;
@@ -76,20 +75,70 @@ public class ProjectService {
             throw new GlobalException(ErrorType.EMPTY_VALUE, "name", null);
         }
 
-        Project entity = new BeanMapper<>(Project.class).apply(dto);
-        entity = this.projectDAO.save(entity);
+        Project entity = null;
 
         if (dto.isMaster()) {
-            groupService.create(entity);
-        } else if (StringUtils.isNotBlank(dto.masterName())) {
-            Optional<Project> masterProject = this.projectDAO.load(new SearchByNameDTO(dto.masterName()));
-            if (!masterProject.isPresent()) {
-                throw new GlobalException(ErrorType.ENTITY_NOT_FOUND, Constants.FIELD_PROJECT, dto.masterName());
-            }
-            groupService.addProjectToGroup(masterProject.get(), entity);
+            entity = this.saveMasterProject(dto);
+        } else {
+            entity = this.saveSubProject(dto);
         }
 
         return new BeanMapper<>(ProjectDTO.class).apply(entity);
+    }
+
+    /**
+     * Save master project.
+     *
+     * @param dto
+     *            Project to create.
+     * @return Created project.
+     */
+    public Project saveMasterProject(final NewProjectRecord dto) {
+        SearchProjectViewDTO projectFilter = new SearchProjectViewDTO();
+        projectFilter.setIsMaster("true");
+        projectFilter.setName(dto.name());
+        Optional<ProjectView> masterProject = this.projectViewDAO.load(projectFilter);
+        if (masterProject.isPresent()) {
+            throw new GlobalException(ErrorType.WRONG_VALUE, "name", "duplicate");
+        }
+
+        Project entity = this.projectDAO.save(new BeanMapper<>(Project.class).apply(dto));
+        groupService.create(entity);
+
+        return entity;
+    }
+
+    /**
+     * Save sub-project.
+     *
+     * @param dto
+     *            Sub-project to create.
+     * @return Created sub-project.
+     */
+    public Project saveSubProject(final NewProjectRecord dto) {
+        if (StringUtils.isBlank(dto.masterName())) {
+            throw new GlobalException(ErrorType.EMPTY_VALUE, "masterName");
+        }
+        SearchProjectViewDTO projectFilter = new SearchProjectViewDTO();
+        projectFilter.setIsMaster("false");
+        projectFilter.setName(dto.name());
+        projectFilter.setMasterProject(dto.masterName());
+        Optional<ProjectView> masterProject = this.projectViewDAO.load(projectFilter);
+        if (masterProject.isPresent()) {
+            throw new GlobalException(ErrorType.WRONG_VALUE, "name", "duplicate");
+        }
+
+        projectFilter = new SearchProjectViewDTO();
+        projectFilter.setIsMaster("true");
+        projectFilter.setName(dto.masterName());
+        masterProject = this.projectViewDAO.load(projectFilter);
+        if (!masterProject.isPresent()) {
+            throw new GlobalException(ErrorType.ENTITY_NOT_FOUND, Constants.FIELD_PROJECT, dto.masterName());
+        }
+        Project entity = this.projectDAO.save(new BeanMapper<>(Project.class).apply(dto));
+        groupService.addProjectToGroup(masterProject.get().getId(), entity);
+
+        return entity;
     }
 
     /**

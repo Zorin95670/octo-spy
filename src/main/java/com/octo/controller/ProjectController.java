@@ -56,23 +56,23 @@ public class ProjectController {
     private CountService countService;
 
     /**
-     * Count field of entry for restricted value.
+     * Count field of project for restricted value.
      *
      * @param countBody
      *            CountDTO
      * @param projectsBody
      *            Project's filter.
-     * @return Resource to contains entries and total of this.
+     * @return Resource to contains projects and total of this.
      */
     @GET
     @PermitAll
     @Path("/count")
     public Response count(@BeanParam final CountDTO countBody, @BeanParam final SearchProjectViewDTO projectsBody) {
-        LOGGER.info("Received GET request to count projects with count DTO {} and search DTO {}", countBody,
+        LOGGER.info("Received GET request to count projects with count DTO {} and search DTO {}.", countBody,
                 projectsBody);
         CountDTO countDTO = new BeanMapper<>(CountDTO.class).apply(countBody);
-        SearchProjectViewDTO entriesDTO = new BeanMapper<>(SearchProjectViewDTO.class).apply(projectsBody);
-        return Response.ok(this.countService.count(ProjectView.class, countDTO, entriesDTO)).build();
+        SearchProjectViewDTO dto = new BeanMapper<>(SearchProjectViewDTO.class).apply(projectsBody);
+        return Response.ok(this.countService.count(ProjectView.class, countDTO, dto)).build();
     }
 
     /**
@@ -86,7 +86,7 @@ public class ProjectController {
     @Path("/{id}")
     @PermitAll
     public final Response getProject(@PathParam("id") final Long id) {
-        LOGGER.info("Receive GET request to get project with id {}", id);
+        LOGGER.info("Receive GET request to get project with id {}.", id);
         return Response.ok(this.service.load(id)).build();
     }
 
@@ -103,7 +103,7 @@ public class ProjectController {
     @Path("/{id}")
     @PermitAll
     public final Response updateProject(@PathParam("id") final Long id, final NewProjectRecord project) {
-        LOGGER.info("Receive PATCH request to update project with id {} and record {}", id, project);
+        LOGGER.info("Receive PATCH request to update project with id {} and {}.", id, project);
         this.service.update(id, project);
         return Response.noContent().build();
     }
@@ -118,7 +118,7 @@ public class ProjectController {
     @GET
     @PermitAll
     public final Response getProjects(final @BeanParam SearchProjectViewDTO dto) {
-        LOGGER.info("Receive GET request to get all projects with {}", dto);
+        LOGGER.info("Receive GET request to get all projects with {}.", dto);
         return Response.ok(this.service.findAll(dto)).build();
     }
 
@@ -133,7 +133,7 @@ public class ProjectController {
     @Consumes(MediaType.APPLICATION_JSON)
     @RolesAllowed({UserRoleType.ADMIN, UserRoleType.PROJECT_MANAGER})
     public final Response createProject(final NewProjectRecord dto) {
-        LOGGER.info("Receive POST request to create project with dto {}", dto);
+        LOGGER.info("Receive POST request to create project with dto {}.", dto);
         return Response.ok(this.service.save(dto)).status(Status.CREATED).build();
     }
 
@@ -149,7 +149,7 @@ public class ProjectController {
     @Path("/{id}")
     @RolesAllowed({UserRoleType.ADMIN, UserRoleType.PROJECT_MANAGER})
     public Response deleteProject(@PathParam("id") final Long id) {
-        LOGGER.info("Receive DELETE request to delete project with id {}", id);
+        LOGGER.info("Receive DELETE request to delete project with id {}.", id);
         this.service.delete(id);
         return Response.noContent().build();
     }

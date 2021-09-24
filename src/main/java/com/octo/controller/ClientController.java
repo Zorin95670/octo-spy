@@ -42,7 +42,7 @@ public class ClientController {
     @GET
     @PermitAll
     public final Response getClients() {
-        LOGGER.info("Receive GET request to get all clients");
+        LOGGER.info("Receive GET request to get all clients.");
         return Response.ok(this.service.findAll()).build();
     }
 

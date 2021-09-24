@@ -44,7 +44,7 @@ public class EnvironmentController {
     @GET
     @PermitAll
     public final List<EnvironmentDTO> getAll() {
-        LOGGER.info("Receive GET request to get  all environment");
+        LOGGER.info("Receive GET request to get  all environments.");
         return service.findAll();
     }
 }

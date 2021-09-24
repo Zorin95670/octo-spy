@@ -22,12 +22,16 @@ import org.springframework.stereotype.Controller;
 
 import com.octo.model.authentication.UserRoleType;
 import com.octo.model.common.Resource;
+import com.octo.model.dto.count.CountDTO;
 import com.octo.model.dto.deployment.DeploymentDTO;
 import com.octo.model.dto.deployment.NewDeploymentRecord;
 import com.octo.model.dto.deployment.SearchDeploymentViewDTO;
 import com.octo.model.dto.deployment.SearchLastDeploymentViewDTO;
+import com.octo.model.entity.DeploymentView;
+import com.octo.service.CountService;
 import com.octo.service.DeploymentService;
 import com.octo.service.LastDeploymentViewService;
+import com.octo.utils.bean.BeanMapper;
 
 /**
  * Deployment controller.
@@ -56,6 +60,33 @@ public class DeploymentController {
     private LastDeploymentViewService lastDeploymentViewService;
 
     /**
+     * Service to manage count.
+     */
+    @Autowired
+    private CountService countService;
+
+    /**
+     * Count field of deployments for restricted value.
+     *
+     * @param countBody
+     *            CountDTO
+     * @param deploymentDTO
+     *            deployment's filter.
+     * @return Resource to contains deployments and total of this.
+     */
+    @GET
+    @PermitAll
+    @Path("/count")
+    public Response count(@BeanParam final CountDTO countBody,
+            @BeanParam final SearchLastDeploymentViewDTO deploymentDTO) {
+        LOGGER.info("Received GET request to count deployments with count DTO {} and search DTO {}.", countBody,
+                deploymentDTO);
+        CountDTO countDTO = new BeanMapper<>(CountDTO.class).apply(countBody);
+        SearchLastDeploymentViewDTO dto = new BeanMapper<>(SearchLastDeploymentViewDTO.class).apply(deploymentDTO);
+        return Response.ok(this.countService.count(DeploymentView.class, countDTO, dto)).build();
+    }
+
+    /**
      * Endpoint to return a last deployments.
      *
      * @param dto
@@ -67,7 +98,7 @@ public class DeploymentController {
     @Path("/last")
     @PermitAll
     public final Response getLastDeployments(final @BeanParam SearchLastDeploymentViewDTO dto) {
-        LOGGER.info("Receive GET request to get last deployment with {}", dto);
+        LOGGER.info("Receive GET request to get last deployment with {}.", dto);
         return Response.ok(this.lastDeploymentViewService.find(dto)).build();
     }
 
@@ -82,7 +113,7 @@ public class DeploymentController {
     @Path("/{id}")
     @PermitAll
     public final Response getDeployment(@PathParam("id") final Long id) {
-        LOGGER.info("Receive GET request to get deployment with id {}", id);
+        LOGGER.info("Receive GET request to get deployment with id {}.", id);
         return Response.ok(this.service.load(id)).build();
     }
 
@@ -96,7 +127,7 @@ public class DeploymentController {
     @GET
     @PermitAll
     public final Response getDeployments(final @BeanParam SearchDeploymentViewDTO dto) {
-        LOGGER.info("Receive GET request to get deployments with {}", dto);
+        LOGGER.info("Receive GET request to get deployments with {}.", dto);
         final Resource<DeploymentDTO> resources = this.service.find(dto);
         int status = HttpStatus.OK.value();
         if (!Long.valueOf(resources.getResources().size()).equals(resources.getTotal())) {
@@ -116,7 +147,7 @@ public class DeploymentController {
     @Consumes(MediaType.APPLICATION_JSON)
     @RolesAllowed({UserRoleType.ADMIN, UserRoleType.PROJECT_MANAGER})
     public final Response createDeployment(final NewDeploymentRecord dto) {
-        LOGGER.info("Receive POST request to create deployment with dto {}", dto);
+        LOGGER.info("Receive POST request to create deployment with dto {}.", dto);
         return Response.ok(this.service.save(dto)).status(Status.CREATED).build();
     }
 
@@ -132,7 +163,7 @@ public class DeploymentController {
     @Path("/{id}")
     @RolesAllowed({UserRoleType.ADMIN, UserRoleType.PROJECT_MANAGER})
     public Response deleteDeployment(@PathParam("id") final Long id) {
-        LOGGER.info("Receive DELETE request to delete deployment with id {}", id);
+        LOGGER.info("Receive DELETE request to delete deployment with id {}.", id);
         this.service.delete(id);
         return Response.noContent().build();
     }
@@ -149,7 +180,7 @@ public class DeploymentController {
     @Path("/progress")
     @RolesAllowed({UserRoleType.ADMIN, UserRoleType.PROJECT_MANAGER})
     public final Response deleteProgressDeployment(final SearchDeploymentViewDTO dto) {
-        LOGGER.info("Receive DELETE request to delete progress of deployment");
+        LOGGER.info("Receive DELETE request to delete progress of deployment.");
         service.deleteProgressDeployment(dto);
         return Response.noContent().build();
     }

@@ -33,18 +33,27 @@ public class UserMapper implements Function<ContainerRequestContext, User> {
         }
         String encodedAuthentication = authorization.get(0);
 
-        if (!StringUtils.startsWith(encodedAuthentication, Constants.AUTHENTICATION_SCHEME)) {
+        String authenticationScheme = null;
+        if (StringUtils.startsWith(encodedAuthentication, Constants.AUTHENTICATION_BASIC_SCHEME)) {
+            authenticationScheme = Constants.AUTHENTICATION_BASIC_SCHEME;
+        } else if (StringUtils.startsWith(encodedAuthentication, Constants.AUTHENTICATION_TOKEN_SCHEME)) {
+            authenticationScheme = Constants.AUTHENTICATION_TOKEN_SCHEME;
+        } else {
             throw new GlobalException(ErrorType.AUTHORIZATION_ERROR, "authentication scheme");
         }
 
-        encodedAuthentication = encodedAuthentication.replaceFirst(Constants.AUTHENTICATION_SCHEME + " ", "");
-        String authentication = new String(Base64.getDecoder().decode(encodedAuthentication.getBytes()));
-
-        final StringTokenizer tokenizer = new StringTokenizer(authentication, ":");
+        encodedAuthentication = encodedAuthentication.replaceFirst(authenticationScheme + " ", "");
+        String authentication = new String(Base64.getUrlDecoder().decode(encodedAuthentication.getBytes()));
 
         User user = new User();
-        user.setLogin(tokenizer.nextToken());
-        user.setPassword(tokenizer.nextToken());
+        if (Constants.AUTHENTICATION_BASIC_SCHEME.equals(authenticationScheme)) {
+            final StringTokenizer tokenizer = new StringTokenizer(authentication, ":");
+            user.setLogin(tokenizer.nextToken());
+            user.setPassword(tokenizer.nextToken());
+        } else {
+            user.setPassword(authentication);
+        }
+        user.setAuthenticationType(authenticationScheme);
 
         return user;
     }

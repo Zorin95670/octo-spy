@@ -63,14 +63,14 @@ class UserMapperTest {
     }
 
     @Test
-    void testGetUser() {
+    void testBasicAuthentication() {
         ContainerRequestContext context = Mockito.mock(ContainerRequestContext.class);
 
         String encodedUser = Base64.encodeBytes(new String("login:password").getBytes());
 
         MultivaluedHashMap<String, String> headers = new MultivaluedHashMap<>();
         headers.add(Constants.AUTHORIZATION_PROPERTY,
-                String.format("%s %s", Constants.AUTHENTICATION_SCHEME, encodedUser));
+                String.format("%s %s", Constants.AUTHENTICATION_BASIC_SCHEME, encodedUser));
 
         Mockito.when(context.getHeaders()).thenReturn(headers);
 
@@ -85,6 +85,32 @@ class UserMapperTest {
         assertNotNull(user);
         assertEquals("login", user.getLogin());
         assertEquals("password", user.getPassword());
+        assertEquals(Constants.AUTHENTICATION_BASIC_SCHEME, user.getAuthenticationType());
+    }
+
+    @Test
+    void testTokenAuthentication() {
+        ContainerRequestContext context = Mockito.mock(ContainerRequestContext.class);
+
+        String encodedUser = Base64.encodeBytes(new String("token").getBytes());
+
+        MultivaluedHashMap<String, String> headers = new MultivaluedHashMap<>();
+        headers.add(Constants.AUTHORIZATION_PROPERTY,
+                String.format("%s %s", Constants.AUTHENTICATION_TOKEN_SCHEME, encodedUser));
+
+        Mockito.when(context.getHeaders()).thenReturn(headers);
+
+        GlobalException exception = null;
+        User user = null;
+        try {
+            user = new UserMapper().apply(context);
+        } catch (GlobalException e) {
+            exception = e;
+        }
+        assertNull(exception);
+        assertNotNull(user);
+        assertEquals("token", user.getPassword());
+        assertEquals(Constants.AUTHENTICATION_TOKEN_SCHEME, user.getAuthenticationType());
     }
 
 }

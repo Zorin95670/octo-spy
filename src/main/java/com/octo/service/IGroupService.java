@@ -24,11 +24,11 @@ public interface IGroupService {
     /**
      * Add project to group.
      *
-     * @param masterProject
-     *            Master project used to identify group.
+     * @param masterProjectId
+     *            Master project id.
      * @param project
      *            Project to add in group
      * @return Created ProjectGroup.
      */
-    ProjectGroup addProjectToGroup(Project masterProject, Project project);
+    ProjectGroup addProjectToGroup(Long masterProjectId, Project project);
 }

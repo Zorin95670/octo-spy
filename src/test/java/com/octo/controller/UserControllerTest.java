@@ -3,7 +3,9 @@ package com.octo.controller;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Application;
@@ -61,7 +63,7 @@ class UserControllerTest extends JerseyTest {
 
         MultivaluedHashMap<String, String> headers = new MultivaluedHashMap<>();
         headers.add(Constants.AUTHORIZATION_PROPERTY,
-                String.format("%s %s", Constants.AUTHENTICATION_SCHEME, encodedUser));
+                String.format("%s %s", Constants.AUTHENTICATION_BASIC_SCHEME, encodedUser));
 
         Mockito.when(context.getHeaders()).thenReturn(headers);
 
@@ -72,5 +74,61 @@ class UserControllerTest extends JerseyTest {
         assertNotNull(response);
         assertEquals(Status.OK.getStatusCode(), response.getStatus());
         assertNotNull(response.getEntity());
+    }
+
+    @Test
+    void testGetToken() {
+        ContainerRequestContext context = Mockito.mock(ContainerRequestContext.class);
+
+        String encodedUser = Base64.encodeBytes(new String("login:password").getBytes());
+
+        MultivaluedHashMap<String, String> headers = new MultivaluedHashMap<>();
+        headers.add(Constants.AUTHORIZATION_PROPERTY,
+                String.format("%s %s", Constants.AUTHENTICATION_BASIC_SCHEME, encodedUser));
+
+        Mockito.when(context.getHeaders()).thenReturn(headers);
+        Mockito.when(this.service.getUserToken(Mockito.any())).thenReturn(List.of("token1", "token2"));
+        final Response response = this.controller.getToken(context);
+
+        assertNotNull(response);
+        assertEquals(Status.OK.getStatusCode(), response.getStatus());
+        assertEquals("[\"token1\",\"token2\"]", response.getEntity().toString());
+    }
+
+    @Test
+    void testCreateToken() throws NoSuchAlgorithmException {
+        ContainerRequestContext context = Mockito.mock(ContainerRequestContext.class);
+
+        String encodedUser = Base64.encodeBytes(new String("login:password").getBytes());
+
+        MultivaluedHashMap<String, String> headers = new MultivaluedHashMap<>();
+        headers.add(Constants.AUTHORIZATION_PROPERTY,
+                String.format("%s %s", Constants.AUTHENTICATION_BASIC_SCHEME, encodedUser));
+
+        Mockito.when(context.getHeaders()).thenReturn(headers);
+        Mockito.when(this.service.createToken(Mockito.any(), Mockito.any())).thenReturn("token");
+        final Response response = this.controller.createToken(context, "token");
+
+        assertNotNull(response);
+        assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
+        assertEquals("{\"token\":\"token\"}", response.getEntity().toString());
+    }
+
+    @Test
+    void testDeleteToken() {
+        ContainerRequestContext context = Mockito.mock(ContainerRequestContext.class);
+
+        String encodedUser = Base64.encodeBytes(new String("login:password").getBytes());
+
+        MultivaluedHashMap<String, String> headers = new MultivaluedHashMap<>();
+        headers.add(Constants.AUTHORIZATION_PROPERTY,
+                String.format("%s %s", Constants.AUTHENTICATION_BASIC_SCHEME, encodedUser));
+
+        Mockito.when(context.getHeaders()).thenReturn(headers);
+        Mockito.doNothing().when(this.service).deleteToken(Mockito.any(), Mockito.any());
+        final Response response = this.controller.deleteToken(context, null);
+
+        assertNotNull(response);
+        assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
     }
 }

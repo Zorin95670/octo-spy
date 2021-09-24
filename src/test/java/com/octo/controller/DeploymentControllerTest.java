@@ -25,9 +25,11 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.octo.model.common.Resource;
 import com.octo.model.dto.deployment.DeploymentDTO;
 import com.octo.model.dto.deployment.LastDeploymentDTO;
+import com.octo.service.CountService;
 import com.octo.service.DeploymentService;
 import com.octo.service.LastDeploymentViewService;
 
@@ -38,6 +40,9 @@ class DeploymentControllerTest extends JerseyTest {
 
     @Mock
     DeploymentService service;
+
+    @Mock
+    CountService countService;
 
     @Mock
     LastDeploymentViewService viewService;
@@ -128,5 +133,16 @@ class DeploymentControllerTest extends JerseyTest {
 
         assertNotNull(response);
         assertEquals(HttpStatus.OK.value(), response.getStatus());
+    }
+
+    @Test
+    void testCount() {
+        Mockito.when(this.countService.count(Mockito.any(), Mockito.any(), Mockito.any()))
+                .thenReturn(JsonNodeFactory.instance.objectNode());
+        final Response response = this.controller.count(null, null);
+
+        assertNotNull(response);
+        assertEquals(Status.OK.getStatusCode(), response.getStatus());
+        assertNotNull(response.getEntity());
     }
 }

@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.CharBuffer;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,7 +23,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.octo.dao.IDAO;
 import com.octo.model.authentication.UserRoleType;
+import com.octo.model.dto.user.token.SearchUserTokenDTO;
 import com.octo.model.entity.User;
+import com.octo.model.entity.UserToken;
 import com.octo.model.error.GlobalException;
 import com.octo.utils.Constants;
 import com.octo.utils.predicate.filter.QueryFilter;
@@ -32,6 +35,9 @@ class UserServiceTest {
 
     @Mock
     IDAO<User, QueryFilter> userDAO;
+
+    @Mock
+    IDAO<UserToken, QueryFilter> userTokenDAO;
 
     @Mock
     PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -163,5 +169,172 @@ class UserServiceTest {
         assertNotNull(roles);
         assertEquals(1, roles.size());
         assertEquals(UserRoleType.ADMIN, roles.get(0));
+    }
+
+    @Test
+    void testGetUserFromToken() {
+        UserToken token = new UserToken();
+        token.setUser(new User());
+        Mockito.when(this.userTokenDAO.load(Mockito.any())).thenReturn(Optional.of(token));
+        assertNotNull(service.getUserFromToken("token"));
+
+        Mockito.when(this.userTokenDAO.load(Mockito.any())).thenReturn(Optional.empty());
+        assertNull(service.getUserFromToken("token"));
+    }
+
+    @Test
+    void testGetUserTokenUnknownUser() {
+        Mockito.when(this.userDAO.load(Mockito.any())).thenReturn(Optional.empty());
+        GlobalException exception = null;
+        try {
+            this.service.getUserToken("test");
+        } catch (GlobalException e) {
+            exception = e;
+        }
+        assertNotNull(exception);
+    }
+
+    @Test
+    void testGetUserToken() {
+        User user = new User();
+        user.setId(1L);
+        UserToken token1 = new UserToken();
+        token1.setName("token1");
+        UserToken token2 = new UserToken();
+        token2.setName("token2");
+        List<UserToken> tokens = List.of(token1, token2);
+        Mockito.when(this.userDAO.load(Mockito.any())).thenReturn(Optional.of(user));
+        Mockito.when(this.userTokenDAO.find(Mockito.any())).thenReturn(tokens);
+
+        assertEquals(List.of("token1", "token2"), service.getUserToken("admin"));
+    }
+
+    @Test
+    void testCreateDuplicateToken() throws NoSuchAlgorithmException {
+        User user = new User();
+        user.setId(1L);
+
+        UserToken userToken = new UserToken();
+        userToken.setName("TOKEN");
+
+        Mockito.when(this.userDAO.load(Mockito.any())).thenReturn(Optional.of(user));
+        Mockito.when(this.userTokenDAO.find(Mockito.any())).thenReturn(List.of(userToken));
+
+        GlobalException exception = null;
+        try {
+            this.service.createToken("test", "token");
+        } catch (GlobalException e) {
+            exception = e;
+        }
+        assertNotNull(exception);
+    }
+
+    @Test
+    void testCreateTokenUnknownUser() throws NoSuchAlgorithmException {
+        Mockito.when(this.userDAO.load(Mockito.any())).thenReturn(Optional.empty());
+
+        GlobalException exception = null;
+        try {
+            this.service.createToken("test", "test");
+        } catch (GlobalException e) {
+            exception = e;
+        }
+        assertNotNull(exception);
+    }
+
+    @Test
+    void testCreateToken() throws NoSuchAlgorithmException {
+        User user = new User();
+        user.setId(1L);
+
+        UserToken userToken = new UserToken();
+        userToken.setName("TOKEN");
+
+        Mockito.when(this.userDAO.load(Mockito.any())).thenReturn(Optional.of(user));
+        Mockito.when(this.userTokenDAO.find(Mockito.any())).thenReturn(List.of(userToken));
+        Mockito.when(this.userTokenDAO.load(Mockito.any())).thenReturn(Optional.empty());
+        Mockito.when(this.userTokenDAO.save(Mockito.any())).thenReturn(new UserToken());
+
+        GlobalException exception = null;
+        try {
+            this.service.createToken("test", "test");
+        } catch (GlobalException e) {
+            exception = e;
+        }
+        assertNull(exception);
+    }
+
+    @Test
+    void testGenerateToken() throws NoSuchAlgorithmException {
+        UserToken userToken = new UserToken();
+        userToken.setUser(new User());
+        Mockito.when(this.userTokenDAO.load(Mockito.any())).thenReturn(Optional.of(userToken), Optional.empty());
+
+        String token = this.service.generateToken();
+        assertNotNull(token);
+        assertEquals(Constants.TOKEN_LENGHT, token.length());
+    }
+
+    @Test
+    void testDeleteEmptyToken() {
+        GlobalException exception = null;
+        try {
+            this.service.deleteToken("test", new SearchUserTokenDTO());
+        } catch (GlobalException e) {
+            exception = e;
+        }
+        assertNotNull(exception);
+    }
+
+    @Test
+    void testDeleteTokenUnknownUser() {
+        Mockito.when(this.userDAO.load(Mockito.any())).thenReturn(Optional.empty());
+
+        GlobalException exception = null;
+        try {
+            SearchUserTokenDTO dto = new SearchUserTokenDTO();
+            dto.setName("token");
+            this.service.deleteToken("test", dto);
+        } catch (GlobalException e) {
+            exception = e;
+        }
+        assertNotNull(exception);
+    }
+
+    @Test
+    void testDeleteUnknownToken() {
+        User user = new User();
+        user.setId(1L);
+        Mockito.when(this.userDAO.load(Mockito.any())).thenReturn(Optional.of(user));
+        Mockito.when(this.userTokenDAO.load(Mockito.any())).thenReturn(Optional.empty());
+
+        GlobalException exception = null;
+        try {
+            SearchUserTokenDTO dto = new SearchUserTokenDTO();
+            dto.setName("token");
+            this.service.deleteToken("test", dto);
+        } catch (GlobalException e) {
+            exception = e;
+        }
+        assertNotNull(exception);
+    }
+
+    @Test
+    void testDeleteToken() {
+        User user = new User();
+        user.setId(1L);
+        Mockito.when(this.userDAO.load(Mockito.any())).thenReturn(Optional.of(user));
+        Mockito.when(this.userTokenDAO.load(Mockito.any())).thenReturn(Optional.of(new UserToken()));
+        Mockito.doNothing().when(this.userTokenDAO).delete(Mockito.any());
+
+        GlobalException exception = null;
+        try {
+            SearchUserTokenDTO dto = new SearchUserTokenDTO();
+            dto.setName("token");
+            this.service.deleteToken("test", dto);
+        } catch (GlobalException e) {
+            exception = e;
+        }
+        assertNull(exception);
     }
 }

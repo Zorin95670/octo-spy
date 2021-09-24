@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## 2021/09/23: Version 1.12.0
+
+### Features
+
+* Add endpoint to count deployments
+* Add token management and authentication
+
+### Bug fixes
+
+* Fix add project in group
+* Fix bug on project creation
+* Fix value of isMaster boolean in project view
+* Fix returning empty deployments in last deployments view
+
 ## 2021/09/15: Version 1.11.2
 
 ### Bug fixes

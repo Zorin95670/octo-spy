@@ -14,6 +14,7 @@
 		<class>com.octo.model.entity.ProjectGroup</class>
 		<class>com.octo.model.entity.DeploymentProgress</class>
 		<class>com.octo.model.entity.User</class>
+		<class>com.octo.model.entity.UserToken</class>
 		<class>com.octo.model.entity.InformationView</class>
 		<properties>
 			<property name="hibernate.dialect"

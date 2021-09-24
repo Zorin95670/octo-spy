@@ -167,6 +167,8 @@ public class QueryFilter extends DefaultDTO {
                 filter = new BooleanPredicateFilter(name, value);
             } else if (Type.ARRAY.equals(filterType.type())) {
                 filter = new ArrayPredicateFilter(name, value);
+            } else if (Type.TOKEN.equals(filterType.type())) {
+                filter = new TokenPredicateFilter(name, value);
             } else {
                 filter = new TextPredicateFilter(name, value);
             }

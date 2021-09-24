@@ -7,6 +7,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -20,6 +22,9 @@ import com.octo.service.UserService;
 @Produces(MediaType.APPLICATION_JSON)
 @Controller
 public class AdministratorController {
+
+    /** Logger. **/
+    private static final Logger LOGGER = LoggerFactory.getLogger(AdministratorController.class);
 
     /**
      * User service.
@@ -38,6 +43,7 @@ public class AdministratorController {
     @Path("/password")
     @RolesAllowed(UserRoleType.ADMIN)
     public final Response updatePassword(final String encodedPassword) {
+        LOGGER.info("Received PUT request to update administrator password.");
         this.service.updateDefaultAdminitratorPassword(encodedPassword);
         return Response.noContent().build();
     }
@@ -53,6 +59,7 @@ public class AdministratorController {
     @Path("/email")
     @RolesAllowed(UserRoleType.ADMIN)
     public final Response updateEmail(final String email) {
+        LOGGER.info("Received PUT request to update administrator email to {}.", email);
         this.service.updateDefaultAdminitratorEmail(email);
         return Response.noContent().build();
     }

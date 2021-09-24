@@ -1,6 +1,12 @@
 # CHANGELOG
 
-## 2021/09/23: Version 1.12.0
+## 2021/09/24: Version 1.12.1
+
+### Bug fixes
+
+* Add missing token authorization
+
+## 2021/09/24: Version 1.12.0
 
 ### Features
 

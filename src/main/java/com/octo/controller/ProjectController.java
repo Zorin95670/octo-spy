@@ -35,7 +35,7 @@ import com.octo.utils.bean.BeanMapper;
  * @author Vincent Moittié
  *
  */
-@Path("/project")
+@Path("/projects")
 @Produces(MediaType.APPLICATION_JSON)
 @Controller
 public class ProjectController {

@@ -39,7 +39,7 @@ import com.octo.utils.bean.BeanMapper;
  * @author Vincent Moittié
  *
  */
-@Path("/deployment")
+@Path("/deployments")
 @Produces(MediaType.APPLICATION_JSON)
 @Controller
 public class DeploymentController {

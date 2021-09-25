@@ -20,7 +20,7 @@ import com.octo.service.ClientService;
  * @author Vincent Moittié
  *
  */
-@Path("/client")
+@Path("/clients")
 @Produces(MediaType.APPLICATION_JSON)
 @Controller
 public class ClientController {

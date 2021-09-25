@@ -22,7 +22,7 @@ import com.octo.service.EnvironmentService;
  * @author Vincent Moittié
  *
  */
-@Path("/environment")
+@Path("/environments")
 @Produces(MediaType.APPLICATION_JSON)
 @Controller
 public class EnvironmentController {

@@ -71,7 +71,7 @@ class EnvironmentControllerTest extends JerseyTest {
         List<EnvironmentDTO> environments = new ArrayList<>();
         environments.add(new EnvironmentDTO());
         Mockito.when(this.service.findAll()).thenReturn(environments);
-        final Response response = this.target("/environment").request().get();
+        final Response response = this.target("/environments").request().get();
 
         assertEquals(HttpStatus.OK.value(), response.getStatus());
         ArrayNode array = response.readEntity(ArrayNode.class);

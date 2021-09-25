@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## 2021/10/10: Version 1.13.0
+
+### New features
+
+* Add endpoints to manage environments
+* Add endpoint to update deployment
+
+### Bug fixes
+
+* Put token name in url on token creation
+* Standardize all endpoint names
+* Fix roles for updating project
+
 ## 2021/09/24: Version 1.12.1
 
 ### Bug fixes

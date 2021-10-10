@@ -37,6 +37,12 @@ public class Environment {
     private String name;
 
     /**
+     * Environment's position.
+     */
+    @Column(name = "position", nullable = false)
+    private int position;
+
+    /**
      * Get primary key value.
      *
      * @return Primary key value.
@@ -72,5 +78,24 @@ public class Environment {
      */
     public void setName(final String name) {
         this.name = name;
+    }
+
+    /**
+     * Get environment's position.
+     *
+     * @return Environment's position.
+     */
+    public int getPosition() {
+        return position;
+    }
+
+    /**
+     * Set environment's position.
+     *
+     * @param position
+     *            Environment's position.
+     */
+    public void setPosition(final int position) {
+        this.position = position;
     }
 }

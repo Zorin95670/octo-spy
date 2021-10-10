@@ -13,12 +13,15 @@ class EnvironmentDTOTest {
 
         assertNull(dto.getId());
         assertNull(dto.getName());
+        assertEquals(0, dto.getPosition());
 
         dto.setId(1L);
         dto.setName("name");
+        dto.setPosition(1);
 
         assertEquals(Long.valueOf(1L), dto.getId());
         assertEquals("name", dto.getName());
+        assertEquals(1, dto.getPosition());
 
         dto = new EnvironmentDTO(2L, "test");
 

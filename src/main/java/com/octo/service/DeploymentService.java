@@ -1,10 +1,12 @@
 package com.octo.service;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import org.apache.commons.beanutils.BeanUtilsBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +29,7 @@ import com.octo.model.error.GlobalException;
 import com.octo.utils.Configuration;
 import com.octo.utils.Constants;
 import com.octo.utils.bean.BeanMapper;
+import com.octo.utils.bean.NullAwareBeanUtilsBean;
 import com.octo.utils.predicate.filter.QueryFilter;
 
 /**
@@ -255,5 +258,27 @@ public class DeploymentService {
                 .map(new BeanMapper<>(DeploymentDTO.class)).toList();
 
         return new Resource<>(total, deployments, dto.getPage(), dto.getCount());
+    }
+
+    /**
+     * Update deployment.
+     *
+     * @param id
+     *            Deployment's id.
+     * @param deploymentRecord
+     *            Deployment's information.
+     * @throws InvocationTargetException
+     *             If the property accessor method throws an exception.
+     * @throws IllegalAccessException
+     *             If the caller does not have access to the property accessor
+     *             method.
+     */
+    public void update(final Long id, final NewDeploymentRecord deploymentRecord)
+            throws IllegalAccessException, InvocationTargetException {
+        Deployment deployment = this.deploymentDAO.loadEntityById(id);
+        BeanUtilsBean merger = new NullAwareBeanUtilsBean("id", "project", "environment", "client");
+        merger.copyProperties(deployment, new BeanMapper<>(Deployment.class).apply(deploymentRecord));
+
+        this.deploymentDAO.save(deployment);
     }
 }

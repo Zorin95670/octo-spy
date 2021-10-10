@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -308,7 +309,7 @@ class DeploymentServiceTest {
         assertNotNull(exception.getError());
         assertEquals(ErrorType.EMPTY_VALUE.getMessage(), exception.getError().getMessage());
         assertEquals("environment", exception.getError().getField());
-        
+
         dto.setEnvironment("test");
         exception = null;
         try {
@@ -448,5 +449,18 @@ class DeploymentServiceTest {
         assertEquals(9, deployments.getCount());
         assertEquals(Long.valueOf(2L), deployments.getTotal());
         assertEquals(new ArrayList<>(), deployments.getResources());
+    }
+
+    @Test
+    void testUpdate() throws IllegalAccessException, InvocationTargetException {
+        Mockito.when(this.deploymentDAO.loadEntityById(Mockito.any())).thenReturn(new Deployment());
+        Mockito.when(this.deploymentDAO.save(Mockito.any())).thenReturn(new Deployment());
+        GlobalException exception = null;
+        try {
+            service.update(1L, new NewDeploymentRecord(null, null, null, null, false, false));
+        } catch (GlobalException e) {
+            exception = e;
+        }
+        assertNull(exception);
     }
 }

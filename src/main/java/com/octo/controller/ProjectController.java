@@ -35,7 +35,7 @@ import com.octo.utils.bean.BeanMapper;
  * @author Vincent Moittié
  *
  */
-@Path("/project")
+@Path("/projects")
 @Produces(MediaType.APPLICATION_JSON)
 @Controller
 public class ProjectController {
@@ -101,7 +101,7 @@ public class ProjectController {
      */
     @PATCH
     @Path("/{id}")
-    @PermitAll
+    @RolesAllowed({UserRoleType.ADMIN, UserRoleType.PROJECT_MANAGER})
     public final Response updateProject(@PathParam("id") final Long id, final NewProjectRecord project) {
         LOGGER.info("Receive PATCH request to update project with id {} and {}.", id, project);
         this.service.update(id, project);

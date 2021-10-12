@@ -279,7 +279,7 @@ class UserServiceTest {
     void testDeleteEmptyToken() {
         GlobalException exception = null;
         try {
-            this.service.deleteToken("test", new SearchUserTokenDTO());
+            this.service.deleteToken("test", null);
         } catch (GlobalException e) {
             exception = e;
         }
@@ -294,7 +294,7 @@ class UserServiceTest {
         try {
             SearchUserTokenDTO dto = new SearchUserTokenDTO();
             dto.setName("token");
-            this.service.deleteToken("test", dto);
+            this.service.deleteToken("test", "token");
         } catch (GlobalException e) {
             exception = e;
         }
@@ -312,7 +312,7 @@ class UserServiceTest {
         try {
             SearchUserTokenDTO dto = new SearchUserTokenDTO();
             dto.setName("token");
-            this.service.deleteToken("test", dto);
+            this.service.deleteToken("test", "token");
         } catch (GlobalException e) {
             exception = e;
         }
@@ -331,7 +331,7 @@ class UserServiceTest {
         try {
             SearchUserTokenDTO dto = new SearchUserTokenDTO();
             dto.setName("token");
-            this.service.deleteToken("test", dto);
+            this.service.deleteToken("test", "token");
         } catch (GlobalException e) {
             exception = e;
         }

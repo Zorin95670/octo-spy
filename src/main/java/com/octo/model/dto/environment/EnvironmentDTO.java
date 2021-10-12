@@ -18,6 +18,10 @@ public class EnvironmentDTO extends DefaultDTO {
      * Environment's name.
      */
     private String name;
+    /**
+     * Environment's position.
+     */
+    private int position;
 
     /**
      * Default constructor.
@@ -75,5 +79,24 @@ public class EnvironmentDTO extends DefaultDTO {
      */
     public void setName(final String name) {
         this.name = name;
+    }
+
+    /**
+     * Get environment's position.
+     *
+     * @return Environment's position.
+     */
+    public int getPosition() {
+        return position;
+    }
+
+    /**
+     * Set environment's position.
+     *
+     * @param position
+     *            Environment's position.
+     */
+    public void setPosition(final int position) {
+        this.position = position;
     }
 }

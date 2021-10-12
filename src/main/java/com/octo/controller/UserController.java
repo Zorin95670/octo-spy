@@ -3,11 +3,11 @@ package com.octo.controller;
 import java.security.NoSuchAlgorithmException;
 
 import javax.annotation.security.RolesAllowed;
-import javax.ws.rs.BeanParam;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
@@ -25,7 +25,6 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.octo.model.authentication.UserRoleType;
 import com.octo.model.dto.user.FullUserDTO;
-import com.octo.model.dto.user.token.SearchUserTokenDTO;
 import com.octo.model.entity.User;
 import com.octo.service.UserService;
 import com.octo.utils.http.UserMapper;
@@ -112,18 +111,18 @@ public class UserController {
      *
      * @param requestContext
      *            Request context to get default user login.
-     * @param dto
-     *            User token filter
+     * @param name
+     *            Token name.
      * @return No content response.
      */
     @DELETE
-    @Path("/token")
+    @Path("/token/{name}")
     @RolesAllowed(UserRoleType.ADMIN)
     public final Response deleteToken(@Context final ContainerRequestContext requestContext,
-            final @BeanParam SearchUserTokenDTO dto) {
+            @PathParam("name") final String name) {
         User user = new UserMapper().apply(requestContext);
-        LOGGER.info("Received DELETE request to delete user token for {}, with {}.", user.getLogin(), dto);
-        service.deleteToken(user.getLogin(), dto);
+        LOGGER.info("Received DELETE request to delete user token for {}, with {}.", user.getLogin(), name);
+        service.deleteToken(user.getLogin(), name);
         return Response.noContent().build();
     }
 

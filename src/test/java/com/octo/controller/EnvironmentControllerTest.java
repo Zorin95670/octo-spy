@@ -2,6 +2,7 @@ package com.octo.controller;
 
 import static org.junit.Assert.assertEquals;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +27,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.octo.model.dto.environment.EnvironmentDTO;
+import com.octo.model.dto.environment.NewEnvironmentRecord;
 import com.octo.service.EnvironmentService;
 
 @ExtendWith(SpringExtension.class)
@@ -67,14 +69,38 @@ class EnvironmentControllerTest extends JerseyTest {
     }
 
     @Test
-    void getAllTest() throws JsonProcessingException {
+    void testGetAll() throws JsonProcessingException {
         List<EnvironmentDTO> environments = new ArrayList<>();
         environments.add(new EnvironmentDTO());
         Mockito.when(this.service.findAll()).thenReturn(environments);
-        final Response response = this.target("/environment").request().get();
+        final Response response = this.target("/environments").request().get();
 
         assertEquals(HttpStatus.OK.value(), response.getStatus());
         ArrayNode array = response.readEntity(ArrayNode.class);
         assertEquals(1, array.size());
+    }
+
+    @Test
+    void testCreateEnvironment() {
+        Mockito.when(this.service.save(Mockito.any())).thenReturn(new EnvironmentDTO());
+        final Response response = this.controller.createEnvironment(new NewEnvironmentRecord(null, 0));
+
+        assertEquals(HttpStatus.CREATED.value(), response.getStatus());
+    }
+
+    @Test
+    void testUpdateEnvironment() throws IllegalAccessException, InvocationTargetException {
+        Mockito.doNothing().when(service).update(Mockito.any(), Mockito.any());
+        final Response response = this.controller.updateEnvironment(1L, new NewEnvironmentRecord(null, 0));
+
+        assertEquals(HttpStatus.NO_CONTENT.value(), response.getStatus());
+    }
+
+    @Test
+    void testDeleteEnvironment() throws IllegalAccessException, InvocationTargetException {
+        Mockito.doNothing().when(service).delete(Mockito.any());
+        final Response response = this.controller.deleteEnvironment(1L);
+
+        assertEquals(HttpStatus.NO_CONTENT.value(), response.getStatus());
     }
 }

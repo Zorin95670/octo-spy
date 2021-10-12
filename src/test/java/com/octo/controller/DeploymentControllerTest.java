@@ -3,6 +3,7 @@ package com.octo.controller;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -144,5 +145,14 @@ class DeploymentControllerTest extends JerseyTest {
         assertNotNull(response);
         assertEquals(Status.OK.getStatusCode(), response.getStatus());
         assertNotNull(response.getEntity());
+    }
+
+    @Test
+    void testUpdateProject() throws IllegalAccessException, InvocationTargetException {
+        Mockito.doNothing().when(this.service).update(Mockito.anyLong(), Mockito.any());
+        final Response response = this.controller.updateProject(1L, null);
+
+        assertNotNull(response);
+        assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
     }
 }

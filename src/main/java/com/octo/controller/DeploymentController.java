@@ -1,11 +1,14 @@
 package com.octo.controller;
 
+import java.lang.reflect.InvocationTargetException;
+
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.PATCH;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -39,7 +42,7 @@ import com.octo.utils.bean.BeanMapper;
  * @author Vincent Moittié
  *
  */
-@Path("/deployment")
+@Path("/deployments")
 @Produces(MediaType.APPLICATION_JSON)
 @Controller
 public class DeploymentController {
@@ -149,6 +152,30 @@ public class DeploymentController {
     public final Response createDeployment(final NewDeploymentRecord dto) {
         LOGGER.info("Receive POST request to create deployment with dto {}.", dto);
         return Response.ok(this.service.save(dto)).status(Status.CREATED).build();
+    }
+
+    /**
+     * Update a specific deployment.
+     *
+     * @param id
+     *            Deployment's id.
+     * @param deployment
+     *            Deployment's record.
+     * @return No content response.
+     * @throws InvocationTargetException
+     *             If the property accessor method throws an exception.
+     * @throws IllegalAccessException
+     *             If the caller does not have access to the property accessor
+     *             method.
+     */
+    @PATCH
+    @Path("/{id}")
+    @RolesAllowed({UserRoleType.ADMIN, UserRoleType.PROJECT_MANAGER, UserRoleType.TOKEN})
+    public final Response updateProject(@PathParam("id") final Long id, final NewDeploymentRecord deployment)
+            throws IllegalAccessException, InvocationTargetException {
+        LOGGER.info("Receive PATCH request to update project with id {} and {}.", id, deployment);
+        this.service.update(id, deployment);
+        return Response.noContent().build();
     }
 
     /**

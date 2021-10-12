@@ -251,11 +251,11 @@ public class UserService {
      *
      * @param login
      *            User login.
-     * @param filter
-     *            Filter to find token name.
+     * @param name
+     *            Token name.
      */
-    public void deleteToken(final String login, final SearchUserTokenDTO filter) {
-        if (StringUtils.isBlank(filter.getName())) {
+    public void deleteToken(final String login, final String name) {
+        if (StringUtils.isBlank(name)) {
             throw new GlobalException(ErrorType.EMPTY_VALUE, "name");
         }
         SearchUserDTO userFilter = new SearchUserDTO();
@@ -267,7 +267,7 @@ public class UserService {
 
         SearchUserTokenDTO tokenFilter = new SearchUserTokenDTO();
         tokenFilter.setUser(user.get().getId().toString());
-        tokenFilter.setName(filter.getName());
+        tokenFilter.setName(name);
 
         Optional<UserToken> token = userTokenDAO.load(tokenFilter);
 

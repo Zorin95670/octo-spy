@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 2021/10/27: Version 1.14.0
+
+### New features
+
+* Add endpoints to manage deployment report
+
 ## 2021/10/10: Version 1.13.0
 
 ### New features

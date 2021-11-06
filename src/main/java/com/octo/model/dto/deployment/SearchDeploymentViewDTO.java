@@ -2,6 +2,7 @@ package com.octo.model.dto.deployment;
 
 import javax.ws.rs.QueryParam;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.octo.model.entity.Environment;
 import com.octo.model.entity.Project;
 import com.octo.utils.predicate.filter.FilterType;
@@ -14,6 +15,7 @@ import com.octo.utils.predicate.filter.QueryFilter;
  * @author Vincent Moittié
  *
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class SearchDeploymentViewDTO extends QueryFilter {
     /**
      * Primary key.

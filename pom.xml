@@ -27,6 +27,7 @@
         <junit.version>5.8.1</junit.version>
         <junit-platform>1.8.1</junit-platform>
         <logback.version>1.2.6</logback.version>
+        <lombok.version>1.18.22</lombok.version>
         <lang.version>3.12.0</lang.version>
         <mockito.version>4.0.0</mockito.version>
         <postgresql.version>42.3.1</postgresql.version>
@@ -206,6 +207,14 @@
             <groupId>commons-validator</groupId>
             <artifactId>commons-validator</artifactId>
             <version>${validator.version}</version>
+        </dependency>
+
+        <!-- Project lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Logger -->

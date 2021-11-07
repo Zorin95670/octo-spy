@@ -9,6 +9,9 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.octo.utils.Constants;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 /**
  * Environment model.
@@ -16,10 +19,10 @@ import com.octo.utils.Constants;
  * @author Vincent Moittié
  *
  */
+@NoArgsConstructor
 @Entity
 @Table(name = "environments")
-public class Environment {
-
+public @Data class Environment {
     /**
      * Primary key.
      */
@@ -41,61 +44,4 @@ public class Environment {
      */
     @Column(name = "position", nullable = false)
     private int position;
-
-    /**
-     * Get primary key value.
-     *
-     * @return Primary key value.
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * Set primary key value.
-     *
-     * @param id
-     *            Primary key value.
-     */
-    public void setId(final Long id) {
-        this.id = id;
-    }
-
-    /**
-     * Get environment's name.
-     *
-     * @return Environment's name.
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * eSet environment's name.
-     *
-     * @param name
-     *            Environment's name.
-     */
-    public void setName(final String name) {
-        this.name = name;
-    }
-
-    /**
-     * Get environment's position.
-     *
-     * @return Environment's position.
-     */
-    public int getPosition() {
-        return position;
-    }
-
-    /**
-     * Set environment's position.
-     *
-     * @param position
-     *            Environment's position.
-     */
-    public void setPosition(final int position) {
-        this.position = position;
-    }
 }

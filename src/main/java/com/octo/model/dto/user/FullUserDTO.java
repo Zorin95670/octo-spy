@@ -1,5 +1,9 @@
 package com.octo.model.dto.user;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -9,7 +13,7 @@ import java.util.List;
  * @author Vincent Moittié
  *
  */
-public class FullUserDTO {
+public @Data class FullUserDTO {
 
     /**
      * User.
@@ -26,43 +30,5 @@ public class FullUserDTO {
      */
     public FullUserDTO() {
         this.setRoles(Collections.emptyList());
-    }
-
-    /**
-     * Get user.
-     *
-     * @return User.
-     */
-    public UserViewDTO getUser() {
-        return user;
-    }
-
-    /**
-     * Set user.
-     *
-     * @param user
-     *            User.
-     */
-    public void setUser(final UserViewDTO user) {
-        this.user = user;
-    }
-
-    /**
-     * Get roles.
-     *
-     * @return Roles.
-     */
-    public List<String> getRoles() {
-        return roles;
-    }
-
-    /**
-     * Set roles.
-     *
-     * @param roles
-     *            Roles.
-     */
-    public void setRoles(final List<String> roles) {
-        this.roles = roles;
     }
 }

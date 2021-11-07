@@ -3,7 +3,6 @@ package com.octo.model.common;
 import java.util.Collections;
 import java.util.List;
 
-import com.octo.utils.json.ToJsonMapper;
 import com.octo.utils.predicate.filter.IPredicateFilter;
 import com.octo.utils.predicate.filter.IQueryFilter;
 
@@ -14,11 +13,6 @@ import com.octo.utils.predicate.filter.IQueryFilter;
  *
  */
 public abstract class DefaultDTO implements IQueryFilter {
-
-    @Override
-    public final String toString() {
-        return new ToJsonMapper<>(false).apply(this);
-    }
 
     /**
      * Override this if you need to add more filters.

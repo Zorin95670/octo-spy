@@ -1,8 +1,11 @@
 package com.octo.model.dto.deployment;
 
-import com.octo.model.dto.project.AbstractDateDTO;
+import com.octo.model.dto.common.AbstractDateDTO;
 import com.octo.model.entity.Environment;
 import com.octo.model.entity.Project;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 /**
  * Default deployment DTO.
@@ -10,7 +13,9 @@ import com.octo.model.entity.Project;
  * @author Vincent Moittié
  *
  */
-public class DeploymentDTO extends AbstractDateDTO {
+@EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
+public @Data class DeploymentDTO extends AbstractDateDTO {
     /**
      * Primary key.
      */
@@ -53,69 +58,12 @@ public class DeploymentDTO extends AbstractDateDTO {
     private boolean alive;
 
     /**
-     * Get id.
-     *
-     * @return Id.
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * Set id.
-     *
-     * @param id
-     *            Id.
-     */
-    public void setId(final Long id) {
-        this.id = id;
-    }
-
-    /**
-     * Get project id.
-     *
-     * @return Project id.
-     */
-    public Long getProjectId() {
-        return projectId;
-    }
-
-    /**
-     * Set project id.
-     *
-     * @param projectId
-     *            Project id.
-     */
-    public void setProjectId(final Long projectId) {
-        this.projectId = projectId;
-    }
-
-    /**
-     * Get environment's name.
-     *
-     * @return Environment's name.
-     */
-    public String getEnvironment() {
-        return environment;
-    }
-
-    /**
-     * Set environment's name.
-     *
-     * @param environment
-     *            Environment's name.
-     */
-    public void setEnvironment(final String environment) {
-        this.environment = environment;
-    }
-
-    /**
      * Set environment's name.
      *
      * @param entity
      *            Environment entity.
      */
-    public void setEnvironment(final Environment entity) {
+    public void setEnvironmentFromEntity(final Environment entity) {
         String name = null;
 
         if (entity != null) {
@@ -126,31 +74,12 @@ public class DeploymentDTO extends AbstractDateDTO {
     }
 
     /**
-     * Get project's name.
-     *
-     * @return Project's name.
-     */
-    public String getProject() {
-        return project;
-    }
-
-    /**
-     * Set project's name.
-     *
-     * @param project
-     *            Project's name.
-     */
-    public void setProject(final String project) {
-        this.project = project;
-    }
-
-    /**
      * Set project's name.
      *
      * @param entity
      *            Project entity.
      */
-    public void setProject(final Project entity) {
+    public void setProjectFromEntity(final Project entity) {
         String name = null;
 
         if (entity != null) {
@@ -161,50 +90,12 @@ public class DeploymentDTO extends AbstractDateDTO {
     }
 
     /**
-     * Get project's color.
-     *
-     * @return Project's color.
-     */
-    public String getColor() {
-        return color;
-    }
-
-    /**
-     * Set project's color.
-     *
-     * @param color
-     *            Project's color.
-     */
-    public void setColor(final String color) {
-        this.color = color;
-    }
-
-    /**
-     * Get master project's name.
-     *
-     * @return Master project's name.
-     */
-    public String getMasterProject() {
-        return masterProject;
-    }
-
-    /**
-     * Set master project's name.
-     *
-     * @param masterProject
-     *            Master project's name.
-     */
-    public void setMasterProject(final String masterProject) {
-        this.masterProject = masterProject;
-    }
-
-    /**
      * Set master project's name.
      *
      * @param entity
      *            Master project entity.
      */
-    public void setMasterProject(final Project entity) {
+    public void setMasterProjectFromEntity(final Project entity) {
         String name = null;
 
         if (entity != null) {
@@ -212,81 +103,5 @@ public class DeploymentDTO extends AbstractDateDTO {
         }
 
         this.setMasterProject(name);
-    }
-
-    /**
-     * Get master project's color.
-     *
-     * @return Master project's color.
-     */
-    public String getMasterProjectColor() {
-        return masterProjectColor;
-    }
-
-    /**
-     * Set master project's color.
-     *
-     * @param masterProjectColor
-     *            Master project's color.
-     */
-    public void setMasterProjectColor(final String masterProjectColor) {
-        this.masterProjectColor = masterProjectColor;
-    }
-
-    /**
-     * Get version.
-     *
-     * @return Version.
-     */
-    public String getVersion() {
-        return version;
-    }
-
-    /**
-     * Set version.
-     *
-     * @param version
-     *            Version.
-     */
-    public void setVersion(final String version) {
-        this.version = version;
-    }
-
-    /**
-     * Get client.
-     *
-     * @return Client.
-     */
-    public String getClient() {
-        return client;
-    }
-
-    /**
-     * Set client.
-     *
-     * @param client
-     *            Client.
-     */
-    public void setClient(final String client) {
-        this.client = client;
-    }
-
-    /**
-     * Is deployment alive.
-     *
-     * @return Alive state.
-     */
-    public boolean isAlive() {
-        return alive;
-    }
-
-    /**
-     * Set deployement alive state.
-     *
-     * @param alive
-     *            Alive state.
-     */
-    public void setAlive(final boolean alive) {
-        this.alive = alive;
     }
 }

@@ -3,6 +3,9 @@ package com.octo.model.dto.deployment;
 import com.octo.utils.predicate.filter.FilterType;
 import com.octo.utils.predicate.filter.FilterType.Type;
 import com.octo.utils.predicate.filter.QueryFilter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 /**
  * DTO to search progress of deployment.
@@ -10,7 +13,9 @@ import com.octo.utils.predicate.filter.QueryFilter;
  * @author Vincent Moittié
  *
  */
-public class SearchProgressDeploymentDTO extends QueryFilter {
+@EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
+public @Data class SearchProgressDeploymentDTO extends QueryFilter {
     /**
      * Primary key.
      */
@@ -21,42 +26,4 @@ public class SearchProgressDeploymentDTO extends QueryFilter {
      */
     @FilterType(type = Type.NUMBER)
     private String deployment;
-
-    /**
-     * Get id.
-     *
-     * @return Id.
-     */
-    public String getId() {
-        return id;
-    }
-
-    /**
-     * Set id.
-     *
-     * @param id
-     *            Id.
-     */
-    public void setId(final String id) {
-        this.id = id;
-    }
-
-    /**
-     * Get deployment id.
-     *
-     * @return Deployment id.
-     */
-    public String getDeployment() {
-        return deployment;
-    }
-
-    /**
-     * Set deployment id.
-     *
-     * @param deployment
-     *            Deployment id.
-     */
-    public void setDeployment(final String deployment) {
-        this.deployment = deployment;
-    }
 }

@@ -6,6 +6,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.octo.utils.Constants;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 /**
  * Information entity.
@@ -13,9 +16,10 @@ import com.octo.utils.Constants;
  * @author Vincent Moittié
  *
  */
+@NoArgsConstructor
 @Entity
 @Table(name = "information_view")
-public class InformationView {
+public @Data class InformationView {
 
     /**
      * Primary key.
@@ -28,43 +32,4 @@ public class InformationView {
      */
     @Column(name = "version", nullable = false, length = Constants.DEFAULT_SIZE_OF_STRING)
     private String version;
-
-    /**
-     * Get id.
-     *
-     * @return Id.
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * Set id.
-     *
-     * @param id
-     *            Id.
-     */
-    public void setId(final Long id) {
-        this.id = id;
-    }
-
-    /**
-     * Get version.
-     *
-     * @return Version.
-     */
-    public String getVersion() {
-        return version;
-    }
-
-    /**
-     * Set version.
-     *
-     * @param version
-     *            Version.
-     */
-    public void setVersion(final String version) {
-        this.version = version;
-    }
-
 }

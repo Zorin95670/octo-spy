@@ -1,5 +1,9 @@
 package com.octo.model.entity;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -10,32 +14,15 @@ import javax.persistence.Table;
  * @author Vincent Moittié
  *
  */
+@EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
 @Entity
 @Table(name = "last_deployments_view")
-public class LastDeploymentView extends AbstractDeploymentView {
+public @Data class LastDeploymentView extends AbstractDeploymentView {
 
     /**
      * Is deployment on master project.
      */
     @Column(name = "on_master_project")
     private boolean onMasterProject;
-
-    /**
-     * Deployment on master project.
-     *
-     * @return On master project.
-     */
-    public boolean getOnMasterProject() {
-        return onMasterProject;
-    }
-
-    /**
-     * Set deployment on master project.
-     *
-     * @param alive
-     *            On master project.
-     */
-    public void setAlive(final boolean alive) {
-        this.onMasterProject = alive;
-    }
 }

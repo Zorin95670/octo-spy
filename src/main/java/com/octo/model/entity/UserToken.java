@@ -15,13 +15,18 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.octo.utils.Constants;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 /**
  * User token entity.
  */
+@EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
 @Entity
 @Table(name = "user_tokens")
-public class UserToken extends AbstractEntity {
+public @Data class UserToken extends AbstractEntity {
 
     /**
      * Primary key.
@@ -55,81 +60,4 @@ public class UserToken extends AbstractEntity {
     public void prePersist() {
         this.setInsertDate(Timestamp.valueOf(LocalDateTime.now()));
     }
-
-    /**
-     * Get id.
-     *
-     * @return Id.
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * Set id.
-     *
-     * @param id
-     *            Id.
-     */
-    public void setId(final Long id) {
-        this.id = id;
-    }
-
-    /**
-     * Get user.
-     *
-     * @return User.
-     */
-    public User getUser() {
-        return user;
-    }
-
-    /**
-     * Set user.
-     *
-     * @param user
-     *            User.
-     */
-    public void setUser(final User user) {
-        this.user = user;
-    }
-
-    /**
-     * Get token name.
-     *
-     * @return Token name.
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Set token name.
-     *
-     * @param name
-     *            Token name.
-     */
-    public void setName(final String name) {
-        this.name = name;
-    }
-
-    /**
-     * Get token token.
-     *
-     * @return Token token.
-     */
-    public String getToken() {
-        return token;
-    }
-
-    /**
-     * Set token token.
-     *
-     * @param token
-     *            Token token.
-     */
-    public void setToken(final String token) {
-        this.token = token;
-    }
-
 }

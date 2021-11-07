@@ -13,13 +13,18 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.octo.utils.Constants;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 /**
  * User entity.
  */
+@EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
 @Entity
 @Table(name = "users")
-public class User extends AbstractEntity {
+public @Data class User extends AbstractEntity {
 
     /**
      * Primary key.
@@ -71,157 +76,5 @@ public class User extends AbstractEntity {
     @PrePersist
     public void prePersist() {
         this.setInsertDate(Timestamp.valueOf(LocalDateTime.now()));
-    }
-
-    /**
-     * Get id.
-     *
-     * @return Id.
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * Set id.
-     *
-     * @param id
-     *            Id.
-     */
-    public void setId(final Long id) {
-        this.id = id;
-    }
-
-    /**
-     * Get type of authentication.
-     *
-     * @return Type of authentication.
-     */
-    public String getAuthenticationType() {
-        return authenticationType;
-    }
-
-    /**
-     * Set type of authentication.
-     *
-     * @param authenticationType
-     *            Type of authentication.
-     */
-    public void setAuthenticationType(final String authenticationType) {
-        this.authenticationType = authenticationType;
-    }
-
-    /**
-     * Get login.
-     *
-     * @return Login.
-     */
-    public String getLogin() {
-        return login;
-    }
-
-    /**
-     * Set login.
-     *
-     * @param login
-     *            Login.
-     */
-    public void setLogin(final String login) {
-        this.login = login;
-    }
-
-    /**
-     * Get user's first name.
-     *
-     * @return User's first name.
-     */
-    public String getFirstname() {
-        return firstname;
-    }
-
-    /**
-     * Set user's first name.
-     *
-     * @param firstname
-     *            User's first name.
-     */
-    public void setFirstname(final String firstname) {
-        this.firstname = firstname;
-    }
-
-    /**
-     * Get user's last name.
-     *
-     * @return User's last name.
-     */
-    public String getLastname() {
-        return lastname;
-    }
-
-    /**
-     * Set user's last name.
-     *
-     * @param lastname
-     *            User's last name.
-     */
-    public void setLastname(final String lastname) {
-        this.lastname = lastname;
-    }
-
-    /**
-     * Get user's password. Hashed with bcrypt and bf.
-     *
-     * @return User's password.
-     */
-    public String getPassword() {
-        return password;
-    }
-
-    /**
-     * Set user's password.
-     *
-     * @param password
-     *            User's password.
-     */
-    public void setPassword(final String password) {
-        this.password = password;
-    }
-
-    /**
-     * Get user's email.
-     *
-     * @return User's email.
-     */
-    public String getEmail() {
-        return email;
-    }
-
-    /**
-     * Set user's email.
-     *
-     * @param email
-     *            User's email.
-     */
-    public void setEmail(final String email) {
-        this.email = email;
-    }
-
-    /**
-     * User can be used for authentication.
-     *
-     * @return State.
-     */
-    public boolean isActive() {
-        return active;
-    }
-
-    /**
-     * Enable or disabled this user for authentication.
-     *
-     * @param active
-     *            State.
-     */
-    public void setActive(final boolean active) {
-        this.active = active;
     }
 }

@@ -1,5 +1,9 @@
 package com.octo.model.entity;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
@@ -20,10 +24,11 @@ import javax.persistence.Table;
  * @author Vincent Moittié
  *
  */
+@EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
 @Entity
 @Table(name = "groups")
-public class Group extends AbstractEntity {
-
+public @Data class Group extends AbstractEntity {
     /**
      * Primary key.
      */
@@ -45,43 +50,5 @@ public class Group extends AbstractEntity {
     @PrePersist
     public void prePersist() {
         this.setInsertDate(Timestamp.valueOf(LocalDateTime.now()));
-    }
-
-    /**
-     * Get id.
-     *
-     * @return Id.
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * Set id.
-     *
-     * @param id
-     *            Id.
-     */
-    public void setId(final Long id) {
-        this.id = id;
-    }
-
-    /**
-     * Get master's project.
-     *
-     * @return Master's project.
-     */
-    public Project getMasterProject() {
-        return masterProject;
-    }
-
-    /**
-     * Set master's project.
-     *
-     * @param masterProject
-     *            Master's Project.
-     */
-    public void setMasterProject(final Project masterProject) {
-        this.masterProject = masterProject;
     }
 }

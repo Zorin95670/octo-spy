@@ -1,5 +1,9 @@
 package com.octo.model.error;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
 import javax.ws.rs.core.Response.Status;
 
 /**
@@ -15,7 +19,7 @@ public class GlobalException extends RuntimeException {
      */
     private static final long serialVersionUID = -6050355569225117225L;
     /**
-     * HTTP status of exception.
+     * HTTP status of exception.
      */
     private final Status status;
     /**

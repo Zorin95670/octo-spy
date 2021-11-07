@@ -1,5 +1,9 @@
 package com.octo.model.error;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 
 /**
@@ -8,7 +12,7 @@ import java.io.Serializable;
  * @author Vincent Moittié
  *
  */
-public class ErrorDTO implements Serializable {
+public @Data class ErrorDTO implements Serializable {
 
     /**
      * Serial version UID.
@@ -56,72 +60,6 @@ public class ErrorDTO implements Serializable {
         this.setField(field);
         this.setValue(value);
         this.setCause(cause);
-    }
-
-    /**
-     * Get error's message.
-     *
-     * @return Message.
-     */
-    public String getMessage() {
-        return this.message;
-    }
-
-    /**
-     * Set error's message.
-     *
-     * @param message
-     *            Message.
-     */
-    public void setMessage(final String message) {
-        this.message = message;
-    }
-
-    /**
-     * Get field's name.
-     *
-     * @return Field's name.
-     */
-    public String getField() {
-        return this.field;
-    }
-
-    /**
-     * Set field's name.
-     *
-     * @param field
-     *            Field's name.
-     */
-    public void setField(final String field) {
-        this.field = field;
-    }
-
-    /**
-     * Get field's value, can be null.
-     *
-     * @return Field's value.
-     */
-    public String getValue() {
-        return this.value;
-    }
-
-    /**
-     * Set field's value, can be set to null.
-     *
-     * @param value
-     *            Field's value.
-     */
-    public void setValue(final String value) {
-        this.value = value;
-    }
-
-    /**
-     * Get the cause of the error.
-     *
-     * @return Message.
-     */
-    public String getCause() {
-        return this.cause;
     }
 
     /**

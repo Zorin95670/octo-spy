@@ -6,6 +6,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.octo.utils.predicate.filter.FilterType;
 import com.octo.utils.predicate.filter.FilterType.Type;
 import com.octo.utils.predicate.filter.QueryFilter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 /**
  * DTO to search project.
@@ -13,8 +16,10 @@ import com.octo.utils.predicate.filter.QueryFilter;
  * @author Vincent Moittié
  *
  */
+@EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SearchProjectViewDTO extends QueryFilter {
+public @Data class SearchProjectViewDTO extends QueryFilter {
     /**
      * Primary key.
      */
@@ -39,81 +44,4 @@ public class SearchProjectViewDTO extends QueryFilter {
     @QueryParam("masterProject")
     @FilterType(type = Type.TEXT)
     private String masterProject;
-
-    /**
-     * Get primary key value.
-     *
-     * @return Primary key value.
-     */
-    public String getId() {
-        return id;
-    }
-
-    /**
-     * Set primary key value.
-     *
-     * @param id
-     *            Primary key value.
-     */
-    public void setId(final String id) {
-        this.id = id;
-    }
-
-    /**
-     * Get project's name.
-     *
-     * @return Project's name.
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Set project's name.
-     *
-     * @param name
-     *            Project's name.
-     */
-    public void setName(final String name) {
-        this.name = name;
-    }
-
-    /**
-     * Get project is master.
-     *
-     * @return Project is master.
-     */
-    public String getIsMaster() {
-        return isMaster;
-    }
-
-    /**
-     * Set project is master.
-     *
-     * @param isMaster
-     *            Project is master.
-     */
-    public void setIsMaster(final String isMaster) {
-        this.isMaster = isMaster;
-    }
-
-    /**
-     * Get master project's name.
-     *
-     * @return Master project's name.
-     */
-    public String getMasterProject() {
-        return masterProject;
-    }
-
-    /**
-     * Set master project's name.
-     *
-     * @param masterProject
-     *            Master project's name.
-     */
-    public void setMasterProject(final String masterProject) {
-        this.masterProject = masterProject;
-    }
-
 }

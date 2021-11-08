@@ -15,10 +15,10 @@
         <beanutils.version>1.9.4</beanutils.version>
         <cucumber.version>7.0.0</cucumber.version>
         <dbcp2.version>2.8.0</dbcp2.version>
-        <flyway.version>7.11.4</flyway.version>
-        <hibernate.version>5.4.26.Final</hibernate.version>
-        <hsqldb.version>2.6.0</hsqldb.version>
-        <jackson.version>2.12.0</jackson.version>
+        <flyway.version>8.0.2</flyway.version>
+        <hibernate.version>5.6.1.Final</hibernate.version>
+        <hsqldb.version>2.6.1</hsqldb.version>
+        <jackson.version>2.13.0</jackson.version>
         <jacoco-version>0.8.7</jacoco-version>
         <jakarta.ws.rs.version>2.1.6</jakarta.ws.rs.version>
         <java.persistence>2.2</java.persistence>
@@ -26,13 +26,13 @@
         <jersey.version>2.34</jersey.version>
         <junit.version>5.8.1</junit.version>
         <junit-platform>1.8.1</junit-platform>
-        <logback.version>1.2.3</logback.version>
+        <logback.version>1.2.6</logback.version>
         <lang.version>3.12.0</lang.version>
-        <mockito.version>3.11.2</mockito.version>
-        <postgresql.version>42.2.23</postgresql.version>
+        <mockito.version>4.0.0</mockito.version>
+        <postgresql.version>42.3.1</postgresql.version>
         <replacer.version>1.5.3</replacer.version>
-        <spring.version>5.3.9</spring.version>
-        <spring.security.version>5.4.2</spring.security.version>
+        <spring.version>5.3.12</spring.version>
+        <spring.security.version>5.5.1</spring.security.version>
         <testcontainers.version>1.16.2</testcontainers.version>
         <validator.version>1.7</validator.version>
         <!-- Project build properties -->

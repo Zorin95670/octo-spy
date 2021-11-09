@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.Base64;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -19,7 +20,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.postgresql.util.Base64;
 
 import com.octo.model.authentication.UserRoleType;
 import com.octo.model.entity.User;
@@ -44,7 +44,7 @@ class AuthenticationFilterTest {
     AuthenticationFilter filter = new AuthenticationFilter();
 
     private void mockUserMapping(String data, String authenticationType) {
-        String encodedUser = Base64.encodeBytes(new String(data).getBytes());
+        String encodedUser = Base64.getUrlEncoder().encodeToString(new String(data).getBytes());
 
         MultivaluedHashMap<String, String> headers = new MultivaluedHashMap<>();
         headers.add(Constants.AUTHORIZATION_PROPERTY, String.format("%s %s", authenticationType, encodedUser));

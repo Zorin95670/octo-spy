@@ -64,7 +64,8 @@ public class UserService {
         if (StringUtils.isBlank(encodedPassword)) {
             throw new GlobalException(ErrorType.EMPTY_VALUE, "password");
         }
-        String password = new String(Base64.getDecoder().decode(encodedPassword.getBytes()));
+        String password = new String(Base64.getUrlDecoder().decode(encodedPassword.getBytes()));
+
         if (StringUtils.length(password) < Constants.MINIMUM_PASSWORD_LENGTH
                 || StringUtils.length(password) > Constants.MAXMUM_PASSWORD_LENGTH) {
             throw new GlobalException(ErrorType.WRONG_VALUE, "Password length.");

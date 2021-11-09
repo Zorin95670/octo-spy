@@ -9,11 +9,12 @@ import javax.ws.rs.core.MultivaluedHashMap;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.postgresql.util.Base64;
 
 import com.octo.model.entity.User;
 import com.octo.model.error.GlobalException;
 import com.octo.utils.Constants;
+
+import java.util.Base64;
 
 class UserMapperTest {
 
@@ -66,7 +67,7 @@ class UserMapperTest {
     void testBasicAuthentication() {
         ContainerRequestContext context = Mockito.mock(ContainerRequestContext.class);
 
-        String encodedUser = Base64.encodeBytes(new String("login:password").getBytes());
+        String encodedUser = Base64.getUrlEncoder().encodeToString(new String("login:password").getBytes());
 
         MultivaluedHashMap<String, String> headers = new MultivaluedHashMap<>();
         headers.add(Constants.AUTHORIZATION_PROPERTY,
@@ -92,7 +93,7 @@ class UserMapperTest {
     void testTokenAuthentication() {
         ContainerRequestContext context = Mockito.mock(ContainerRequestContext.class);
 
-        String encodedUser = Base64.encodeBytes(new String("token").getBytes());
+        String encodedUser = Base64.getUrlEncoder().encodeToString(new String("token").getBytes());
 
         MultivaluedHashMap<String, String> headers = new MultivaluedHashMap<>();
         headers.add(Constants.AUTHORIZATION_PROPERTY,

@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.CharBuffer;
 import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,7 +18,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.postgresql.util.Base64;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -60,7 +60,7 @@ class UserServiceTest {
 
         exception = null;
         try {
-            String encodedPassword = Base64.encodeBytes(tooShortPassword.getBytes());
+            String encodedPassword = Base64.getUrlEncoder().encodeToString(tooShortPassword.getBytes());
             service.updateDefaultAdminitratorPassword(encodedPassword);
         } catch (GlobalException e) {
             exception = e;
@@ -68,7 +68,7 @@ class UserServiceTest {
         assertNotNull(exception);
         exception = null;
         try {
-            String encodedPassword = Base64.encodeBytes(tooLongPassword.getBytes());
+            String encodedPassword = Base64.getUrlEncoder().encodeToString(tooLongPassword.getBytes());
             service.updateDefaultAdminitratorPassword(encodedPassword);
         } catch (GlobalException e) {
             exception = e;

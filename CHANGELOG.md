@@ -1,5 +1,22 @@
 # CHANGELOG
 
+## 2021/10/27: Version 1.15.0-rc
+
+### New features
+
+* Setup cucumber with testcontainers
+* Adding cucumber for
+** administrator endpoint
+** client endpoint
+** info endpoint
+** project endpoint
+
+### Bug fixes
+
+* Fix the object of get all projects
+* Fix base64 error
+* Fix saving null color on project
+
 ## 2021/10/27: Version 1.14.0
 
 ### New features

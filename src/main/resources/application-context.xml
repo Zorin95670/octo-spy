@@ -29,42 +29,42 @@
 			value="org.postgresql.Driver"></property>
 		<property name="url"
 			value="jdbc:postgresql://${octo-spy.database.host:localhost}:${octo-spy.database.port:5432}/${octo-spy.database.name:octo_db}" />
-		<property name="username"
-			value="${octo-spy.database.username:octo}" />
-		<property name="password"
-			value="${octo-spy.database.password:password}" />
-	</bean>
-	<bean id="transactionManager"
-		class="org.springframework.orm.jpa.JpaTransactionManager">
-		<property name="entityManagerFactory"
-			ref="entityManagerFactory" />
-	</bean>
-	<bean id="entityManagerFactory"
-		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-		<property name="dataSource" ref="dataSource" />
-		<property name="persistenceUnitName" value="JPA-OCTO" />
-		<property name="jpaVendorAdapter">
-			<bean
-				class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
-		</property>
-	</bean>
+                <property name="username"
+                    value="${octo-spy.database.username:octo}" />
+                <property name="password"
+                    value="${octo-spy.database.password:password}" />
+            </bean>
+            <bean id="transactionManager"
+                class="org.springframework.orm.jpa.JpaTransactionManager">
+                <property name="entityManagerFactory"
+                    ref="entityManagerFactory" />
+            </bean>
+            <bean id="entityManagerFactory"
+                class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+                <property name="dataSource" ref="dataSource" />
+                <property name="persistenceUnitName" value="JPA-OCTO" />
+                <property name="jpaVendorAdapter">
+                    <bean
+                        class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+                </property>
+            </bean>
 
-	<bean
-		class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
+            <bean
+                class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
 
-	<bean id="flywayConfig"
-		class="org.flywaydb.core.api.configuration.ClassicConfiguration">
-		<property name="dataSource" ref="dataSource" />
-		<property name="baselineOnMigrate" value="true" />
-		<property name="outOfOrder" value="true" />
-	</bean>
+            <bean id="flywayConfig"
+                class="org.flywaydb.core.api.configuration.ClassicConfiguration">
+                <property name="dataSource" ref="dataSource" />
+                <property name="baselineOnMigrate" value="true" />
+                <property name="outOfOrder" value="true" />
+            </bean>
 
-	<bean id="flyway" class="org.flywaydb.core.Flyway"
-		init-method="migrate">
-		<constructor-arg ref="flywayConfig" />
-	</bean>
+            <bean id="flyway" class="org.flywaydb.core.Flyway"
+                init-method="migrate">
+                <constructor-arg ref="flywayConfig" />
+            </bean>
 
-	<bean id="passwordEncoder"
-		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
-	</bean>
-</beans>
+            <bean id="passwordEncoder"
+                class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+            </bean>
+        </beans>

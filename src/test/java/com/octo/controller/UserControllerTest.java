@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 import javax.ws.rs.container.ContainerRequestContext;
@@ -22,7 +23,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.postgresql.util.Base64;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -59,7 +59,7 @@ class UserControllerTest extends JerseyTest {
     void testGetMyInformations() {
         ContainerRequestContext context = Mockito.mock(ContainerRequestContext.class);
 
-        String encodedUser = Base64.encodeBytes(new String("login:password").getBytes());
+        String encodedUser = Base64.getUrlEncoder().encodeToString(new String("login:password").getBytes());
 
         MultivaluedHashMap<String, String> headers = new MultivaluedHashMap<>();
         headers.add(Constants.AUTHORIZATION_PROPERTY,
@@ -80,7 +80,7 @@ class UserControllerTest extends JerseyTest {
     void testGetToken() {
         ContainerRequestContext context = Mockito.mock(ContainerRequestContext.class);
 
-        String encodedUser = Base64.encodeBytes(new String("login:password").getBytes());
+        String encodedUser = Base64.getUrlEncoder().encodeToString(new String("login:password").getBytes());
 
         MultivaluedHashMap<String, String> headers = new MultivaluedHashMap<>();
         headers.add(Constants.AUTHORIZATION_PROPERTY,
@@ -99,7 +99,7 @@ class UserControllerTest extends JerseyTest {
     void testCreateToken() throws NoSuchAlgorithmException {
         ContainerRequestContext context = Mockito.mock(ContainerRequestContext.class);
 
-        String encodedUser = Base64.encodeBytes(new String("login:password").getBytes());
+        String encodedUser = Base64.getUrlEncoder().encodeToString(new String("login:password").getBytes());
 
         MultivaluedHashMap<String, String> headers = new MultivaluedHashMap<>();
         headers.add(Constants.AUTHORIZATION_PROPERTY,
@@ -118,7 +118,7 @@ class UserControllerTest extends JerseyTest {
     void testDeleteToken() {
         ContainerRequestContext context = Mockito.mock(ContainerRequestContext.class);
 
-        String encodedUser = Base64.encodeBytes(new String("login:password").getBytes());
+        String encodedUser = Base64.getUrlEncoder().encodeToString(new String("login:password").getBytes());
 
         MultivaluedHashMap<String, String> headers = new MultivaluedHashMap<>();
         headers.add(Constants.AUTHORIZATION_PROPERTY,

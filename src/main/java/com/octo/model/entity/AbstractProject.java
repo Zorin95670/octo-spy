@@ -38,7 +38,7 @@ public abstract class AbstractProject extends AbstractEntity {
     /**
      * Project's color.
      */
-    @Column(name = "color", nullable = false, length = Constants.DEFAULT_SIZE_OF_STRING)
+    @Column(name = "color", length = Constants.DEFAULT_SIZE_OF_STRING)
     private String color;
 
     /**

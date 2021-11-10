@@ -15,6 +15,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import com.octo.model.common.Resource;
+import com.octo.model.dto.project.ProjectViewDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,8 @@ import com.octo.model.entity.ProjectView;
 import com.octo.service.CountService;
 import com.octo.service.ProjectService;
 import com.octo.utils.bean.BeanMapper;
+
+import java.util.List;
 
 /**
  * Project controller.
@@ -119,7 +123,9 @@ public class ProjectController {
     @PermitAll
     public final Response getProjects(final @BeanParam SearchProjectViewDTO dto) {
         LOGGER.info("Receive GET request to get all projects with {}.", dto);
-        return Response.ok(this.service.findAll(dto)).build();
+        List<ProjectViewDTO> projects = this.service.findAll(dto);
+        Resource<ProjectViewDTO> resources = new Resource<>((long) projects.size(), projects, 0, projects.size());
+        return Response.ok(resources).build();
     }
 
     /**

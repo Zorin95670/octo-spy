@@ -1,7 +1,4 @@
 /**
- * Default package for octo-spy.
- *
- * @author Vincent Moittié
- *
+ * Octo project.
  */
 package com.octo;

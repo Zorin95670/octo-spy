@@ -46,3 +46,12 @@ INSERT INTO deployments (env_id, pro_id, version, client) VALUES
 
 INSERT INTO deployment_progress (dpl_id, insert_date, update_date) VALUES
 (1, now(), now());
+
+SELECT setval('deployment_progress_dpg_id_seq', (SELECT MAX(dpg_id) FROM deployment_progress));
+SELECT setval('deployments_dpl_id_seq', (SELECT MAX(dpl_id) FROM deployments));
+SELECT setval('environments_env_id_seq', (SELECT MAX(env_id) FROM environments));
+SELECT setval('groups_grp_id_seq', (SELECT MAX(grp_id) FROM groups));
+SELECT setval('project_groups_gpr_id_seq', (SELECT MAX(gpr_id) FROM project_groups));
+SELECT setval('projects_pro_id_seq', (SELECT MAX(pro_id) FROM projects));
+SELECT setval('user_tokens_ust_id_seq', (SELECT MAX(ust_id) FROM user_tokens));
+SELECT setval('users_usr_id_seq', (SELECT MAX(usr_id) FROM users));

@@ -1,70 +1,52 @@
 package com.octo.service;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
+import com.octo.controller.model.QueryFilter;
+import com.octo.model.environment.EnvironmentRecord;
+import com.octo.model.error.ErrorType;
+import com.octo.model.error.GlobalException;
+import com.octo.persistence.model.Environment;
+import com.octo.persistence.repository.EnvironmentRepository;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
-import com.octo.dao.IDAO;
-import com.octo.model.dto.environment.NewEnvironmentRecord;
-import com.octo.model.entity.Environment;
-import com.octo.model.error.ErrorType;
-import com.octo.model.error.GlobalException;
-import com.octo.utils.predicate.filter.QueryFilter;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
+@Tag("unit")
 class EnvironmentServiceTest {
 
     @Mock
-    IDAO<Environment, QueryFilter> environmentDAO;
+    EnvironmentRepository environmentRepository;
 
     @InjectMocks
-    EnvironmentService service;
+    EnvironmentServiceImpl service;
 
     @Test
     void testFindAll() {
-        List<Environment> list = new ArrayList<>();
-        Mockito.when(this.environmentDAO.find(Mockito.any(), Mockito.any())).thenReturn(list);
-        assertNotNull(service.findAll());
-    }
-
-    @Test
-    void testSaveWithEmptyName() {
-        GlobalException exception = null;
-        try {
-            service.save(null);
-        } catch (GlobalException e) {
-            exception = e;
-        }
-        assertNotNull(exception);
-        assertEquals(exception.getMessage(), ErrorType.EMPTY_VALUE.getMessage());
-        exception = null;
-        try {
-            service.save(new NewEnvironmentRecord(null, 0));
-        } catch (GlobalException e) {
-            exception = e;
-        }
-        assertNotNull(exception);
-        assertEquals(exception.getMessage(), ErrorType.EMPTY_VALUE.getMessage());
+        Mockito.when(this.environmentRepository.findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class)))
+                .thenReturn(new PageImpl(List.of()));
+        assertNotNull(service.findAll(Map.of(), new QueryFilter().getPagination()));
     }
 
     @Test
     void testSaveWithDuplicateName() {
-        Mockito.when(this.environmentDAO.load(Mockito.any())).thenReturn(Optional.of(new Environment()));
+        Mockito.when(this.environmentRepository.findByNameIgnoreCase(Mockito.any()))
+                .thenReturn(Optional.of(new Environment()));
         GlobalException exception = null;
         try {
-            service.save(new NewEnvironmentRecord("test", 0));
+            service.save(new EnvironmentRecord("test", 0));
         } catch (GlobalException e) {
             exception = e;
         }
@@ -74,29 +56,18 @@ class EnvironmentServiceTest {
 
     @Test
     void testSave() {
-        Mockito.when(this.environmentDAO.load(Mockito.any())).thenReturn(Optional.empty());
-        Mockito.when(this.environmentDAO.save(Mockito.any())).thenReturn(new Environment());
-        assertNotNull(service.save(new NewEnvironmentRecord("name", 0)));
+        Mockito.when(this.environmentRepository.findByNameIgnoreCase(Mockito.any())).thenReturn(Optional.empty());
+        Mockito.when(this.environmentRepository.save(Mockito.any())).thenReturn(new Environment());
+        assertNotNull(service.save(new EnvironmentRecord("name", 0)));
     }
 
     @Test
-    void testUpdateEmptyName() throws IllegalAccessException, InvocationTargetException {
+    void testUpdateDuplicateName() {
+        Mockito.when(this.environmentRepository.findByNameIgnoreCaseAndIdIsNot(Mockito.any(), Mockito.any()))
+                .thenReturn(Optional.of(new Environment()));
         GlobalException exception = null;
         try {
-            service.update(1L, new NewEnvironmentRecord("", 0));
-        } catch (GlobalException e) {
-            exception = e;
-        }
-        assertNotNull(exception);
-        assertEquals(exception.getMessage(), ErrorType.EMPTY_VALUE.getMessage());
-    }
-
-    @Test
-    void testUpdateDuplicateName() throws IllegalAccessException, InvocationTargetException {
-        Mockito.when(this.environmentDAO.load(Mockito.any())).thenReturn(Optional.of(new Environment()));
-        GlobalException exception = null;
-        try {
-            service.update(1L, new NewEnvironmentRecord("test", 0));
+            service.update(1L, new EnvironmentRecord("test", 0));
         } catch (GlobalException e) {
             exception = e;
         }
@@ -105,20 +76,24 @@ class EnvironmentServiceTest {
     }
 
     @Test
-    void testUpdate() throws IllegalAccessException, InvocationTargetException {
-        Mockito.when(this.environmentDAO.load(Mockito.any())).thenReturn(Optional.empty());
-        Mockito.when(this.environmentDAO.save(Mockito.any())).thenReturn(new Environment());
-        Mockito.when(this.environmentDAO.loadEntityById(Mockito.any())).thenReturn(new Environment());
+    void testUpdate() {
+        Environment environment = new Environment();
+        environment.setId(1L);
+        environment.setName("test");
+        Mockito.when(this.environmentRepository.findByNameIgnoreCaseAndIdIsNot(Mockito.any(), Mockito.any()))
+                .thenReturn(Optional.empty());
+        Mockito.when(this.environmentRepository.save(Mockito.any())).thenReturn(environment);
+        Mockito.when(this.environmentRepository.findById(Mockito.any())).thenReturn(Optional.of(environment));
         GlobalException exception = null;
         try {
-            service.update(1L, new NewEnvironmentRecord("test", 0));
+            service.update(1L, new EnvironmentRecord("test", 0));
         } catch (GlobalException e) {
             exception = e;
         }
         assertNull(exception);
         exception = null;
         try {
-            service.update(1L, new NewEnvironmentRecord(null, 0));
+            service.update(1L, new EnvironmentRecord(null, 0));
         } catch (GlobalException e) {
             exception = e;
         }
@@ -127,8 +102,8 @@ class EnvironmentServiceTest {
 
     @Test
     void testDelete() {
-        Mockito.when(this.environmentDAO.loadEntityById(Mockito.any())).thenReturn(new Environment());
-        Mockito.doNothing().when(environmentDAO).delete(Mockito.any());
+        Mockito.when(this.environmentRepository.findById(Mockito.any())).thenReturn(Optional.of(new Environment()));
+        Mockito.doNothing().when(environmentRepository).deleteById(Mockito.any());
         GlobalException exception = null;
         try {
             service.delete(1L);

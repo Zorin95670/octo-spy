@@ -16,6 +16,7 @@ SELECT
     deployments.version                            AS "version",
     deployments.client                             AS "client",
     deployments.insert_date                        AS "insert_date",
+    deployments.update_date                        AS "update_date",
     deployment_progress.dpg_id IS NOT NULL         AS "in_progress"
 FROM
     projects

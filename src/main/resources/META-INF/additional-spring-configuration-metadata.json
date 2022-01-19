@@ -1,0 +1,28 @@
+{
+  "properties": [
+    {
+      "name": "flyway.locations",
+      "type": "java.lang.String",
+      "description": "Description for flyway.locations."
+    },
+    {
+      "name": "application.client",
+      "type": "java.lang.String",
+      "description": "Client of the application."
+    },
+    {
+      "name": "application.environment",
+      "type": "java.lang.String",
+      "description": "Environment of the application."
+    },
+    {
+      "name": "application.version",
+      "type": "java.lang.String",
+      "description": "Version of the application."
+    },
+    {
+      "name": "application.name",
+      "type": "java.lang.String",
+      "description": "Name of the application."
+    }
+  ] }

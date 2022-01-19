@@ -1,32 +1,28 @@
 package com.octo.controller;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import java.util.ArrayList;
-
-import javax.ws.rs.core.Application;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
-
-import org.glassfish.jersey.internal.inject.AbstractBinder;
-import org.glassfish.jersey.server.ResourceConfig;
-import org.glassfish.jersey.test.JerseyTest;
+import com.octo.controller.model.QueryFilter;
+import com.octo.service.ClientService;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.octo.service.ClientService;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import java.util.ArrayList;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(SpringExtension.class)
 @ExtendWith(MockitoExtension.class)
-@ContextConfiguration(locations = {"classpath:application-context.xml"})
-class ClientControllerTest extends JerseyTest {
+@Tag("unit")
+class ClientControllerTest {
 
     @Mock
     ClientService service;
@@ -34,24 +30,10 @@ class ClientControllerTest extends JerseyTest {
     @InjectMocks
     ClientController controller;
 
-    @Override
-    protected Application configure() {
-        final ResourceConfig rc = new ResourceConfig().register(ClientController.class).register(new AbstractBinder() {
-            @Override
-            protected void configure() {
-                this.bind(ClientControllerTest.this.controller).to(ClientController.class);
-            }
-        });;
-
-        rc.property("contextConfigLocation", "classpath:application-context.xml");
-
-        return rc;
-    }
-
     @Test
     void testGetClients() {
-        Mockito.when(this.service.findAll()).thenReturn(new ArrayList<>());
-        final Response response = this.controller.getClients();
+        Mockito.when(this.service.findAll(Mockito.any())).thenReturn(new PageImpl<>(new ArrayList<>()));
+        final Response response = this.controller.getClients(new QueryFilter());
 
         assertNotNull(response);
         assertEquals(Status.OK.getStatusCode(), response.getStatus());

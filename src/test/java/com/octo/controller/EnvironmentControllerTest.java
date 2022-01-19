@@ -1,39 +1,30 @@
 package com.octo.controller;
 
-import static org.junit.Assert.assertEquals;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.ws.rs.core.Application;
-import javax.ws.rs.core.Response;
-
-import org.glassfish.jersey.internal.inject.AbstractBinder;
-import org.glassfish.jersey.server.ResourceConfig;
-import org.glassfish.jersey.test.JerseyTest;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import com.octo.controller.model.QueryFilter;
+import com.octo.helper.MockHelper;
+import com.octo.model.environment.EnvironmentRecord;
+import com.octo.persistence.model.Environment;
+import com.octo.service.EnvironmentService;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.octo.model.dto.environment.EnvironmentDTO;
-import com.octo.model.dto.environment.NewEnvironmentRecord;
-import com.octo.service.EnvironmentService;
+import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @ExtendWith(MockitoExtension.class)
-@ContextConfiguration(locations = {"classpath:application-context.xml"})
-class EnvironmentControllerTest extends JerseyTest {
+@Tag("unit")
+class EnvironmentControllerTest extends MockHelper {
 
     @Mock
     EnvironmentService service;
@@ -41,63 +32,33 @@ class EnvironmentControllerTest extends JerseyTest {
     @InjectMocks
     EnvironmentController controller;
 
-    @BeforeEach
-    @Override
-    public void setUp() throws Exception {
-        super.setUp();
-    }
-
-    @AfterEach
-    @Override
-    public void tearDown() throws Exception {
-        super.tearDown();
-    }
-
-    @Override
-    protected Application configure() {
-        final ResourceConfig rc = new ResourceConfig().register(EnvironmentController.class)
-                .register(new AbstractBinder() {
-                    @Override
-                    protected void configure() {
-                        this.bind(EnvironmentControllerTest.this.controller).to(EnvironmentController.class);
-                    }
-                });;
-
-        rc.property("contextConfigLocation", "classpath:application-context.xml");
-
-        return rc;
-    }
-
     @Test
-    void testGetAll() throws JsonProcessingException {
-        List<EnvironmentDTO> environments = new ArrayList<>();
-        environments.add(new EnvironmentDTO());
-        Mockito.when(this.service.findAll()).thenReturn(environments);
-        final Response response = this.target("/environments").request().get();
+    void testGetAll() {
+        Mockito.when(this.service.findAll(Mockito.any(), Mockito.any())).thenReturn(new PageImpl<>(new ArrayList<>()));
+        final Response response = this.controller.getAll(mockUriInfo(), new QueryFilter());
+
 
         assertEquals(HttpStatus.OK.value(), response.getStatus());
-        ArrayNode array = response.readEntity(ArrayNode.class);
-        assertEquals(1, array.size());
     }
 
     @Test
     void testCreateEnvironment() {
-        Mockito.when(this.service.save(Mockito.any())).thenReturn(new EnvironmentDTO());
-        final Response response = this.controller.createEnvironment(new NewEnvironmentRecord(null, 0));
+        Mockito.when(this.service.save(Mockito.any())).thenReturn(new Environment());
+        final Response response = this.controller.createEnvironment(new EnvironmentRecord(null, 0));
 
         assertEquals(HttpStatus.CREATED.value(), response.getStatus());
     }
 
     @Test
-    void testUpdateEnvironment() throws IllegalAccessException, InvocationTargetException {
+    void testUpdateEnvironment() {
         Mockito.doNothing().when(service).update(Mockito.any(), Mockito.any());
-        final Response response = this.controller.updateEnvironment(1L, new NewEnvironmentRecord(null, 0));
+        final Response response = this.controller.updateEnvironment(1L, new EnvironmentRecord(null, 0));
 
         assertEquals(HttpStatus.NO_CONTENT.value(), response.getStatus());
     }
 
     @Test
-    void testDeleteEnvironment() throws IllegalAccessException, InvocationTargetException {
+    void testDeleteEnvironment() {
         Mockito.doNothing().when(service).delete(Mockito.any());
         final Response response = this.controller.deleteEnvironment(1L);
 

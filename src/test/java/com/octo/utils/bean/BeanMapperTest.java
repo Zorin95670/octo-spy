@@ -1,27 +1,26 @@
 package com.octo.utils.bean;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
+import com.octo.model.deployment.DeploymentDTO;
+import com.octo.model.error.GlobalException;
+import com.octo.persistence.model.Deployment;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import com.octo.helpers.EntityHelpers;
-import com.octo.helpers.EntityTestSearch;
-import com.octo.model.error.GlobalException;
+import static org.junit.jupiter.api.Assertions.*;
 
+@Tag("unit")
 class BeanMapperTest {
 
     @Test
     void testApply() {
-        final BeanMapper<EntityHelpers, EntityTestSearch> mapper = new BeanMapper<>(EntityTestSearch.class);
+        final BeanMapper<Deployment, DeploymentDTO> mapper = new BeanMapper<>(DeploymentDTO.class);
 
-        final EntityHelpers entity = new EntityHelpers();
+        final Deployment entity = new Deployment();
         entity.setId(1L);
-        EntityTestSearch dto = mapper.apply(entity);
+        DeploymentDTO dto = mapper.apply(entity);
 
-        assertEquals("1", dto.getId());
+        assertEquals(1L, dto.getId());
 
         dto = mapper.apply(null);
         assertNotNull(dto);
@@ -29,14 +28,14 @@ class BeanMapperTest {
 
     @Test
     void testWithIgnoreFields() {
-        final BeanMapper<EntityHelpers, EntityHelpers> mapper = new BeanMapper<>(EntityHelpers.class, "name");
+        final BeanMapper<Deployment, Deployment> mapper = new BeanMapper<>(Deployment.class, "version");
 
-        final EntityHelpers dto = new EntityHelpers();
+        final Deployment dto = new Deployment();
         dto.setId(1L);
-        dto.setName("name");
+        dto.setVersion("test");
 
-        final EntityHelpers value = mapper.apply(dto);
-        final EntityHelpers expected = new EntityHelpers();
+        final Deployment value = mapper.apply(dto);
+        final Deployment expected = new Deployment();
         expected.setId(1L);
 
         assertTrue(EqualsBuilder.reflectionEquals(expected, value));
@@ -64,7 +63,7 @@ class BeanMapperTest {
         GlobalException exception = null;
         try {
             mapper.setFieldValue(Source.class.getDeclaredField("test1"), Source.class.getDeclaredField("test1"),
-                    new Destination(), new EntityHelpers());
+                    new Destination(), new Deployment());
         } catch (final GlobalException e) {
             exception = e;
         }

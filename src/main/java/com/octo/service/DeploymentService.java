@@ -1,284 +1,100 @@
 package com.octo.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.octo.model.deployment.DeploymentRecord;
+import com.octo.persistence.model.Deployment;
+import com.octo.persistence.model.DeploymentView;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import java.lang.reflect.InvocationTargetException;
-import java.util.List;
-import java.util.Optional;
-
-import javax.transaction.Transactional;
-
-import org.apache.commons.beanutils.BeanUtilsBean;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.octo.dao.IDAO;
-import com.octo.dao.ProcedureParameter;
-import com.octo.model.common.Resource;
-import com.octo.model.dto.common.SearchByNameDTO;
-import com.octo.model.dto.deployment.DeploymentDTO;
-import com.octo.model.dto.deployment.NewDeploymentRecord;
-import com.octo.model.dto.deployment.SearchDeploymentDTO;
-import com.octo.model.dto.deployment.SearchDeploymentViewDTO;
-import com.octo.model.dto.deployment.SearchProgressDeploymentDTO;
-import com.octo.model.entity.Deployment;
-import com.octo.model.entity.DeploymentProgress;
-import com.octo.model.entity.DeploymentView;
-import com.octo.model.entity.Environment;
-import com.octo.model.entity.Project;
-import com.octo.model.error.ErrorType;
-import com.octo.model.error.GlobalException;
-import com.octo.utils.Configuration;
-import com.octo.utils.Constants;
-import com.octo.utils.bean.BeanMapper;
-import com.octo.utils.bean.NullAwareBeanUtilsBean;
-import com.octo.utils.predicate.filter.QueryFilter;
+import java.util.Map;
 
 /**
  * Deployment service.
- *
- * @author Vincent Moittié
- *
  */
-@Service
-@Transactional
-public class DeploymentService {
-
-    /**
-     * Deployment's DAO.
-     */
-    @Autowired
-    private IDAO<Deployment, QueryFilter> deploymentDAO;
-
-    /**
-     * Deployment's DAO.
-     */
-    @Autowired
-    private IDAO<DeploymentView, QueryFilter> deploymentViewDAO;
-
-    /**
-     * Progress of deployment's DAO.
-     */
-    @Autowired
-    private IDAO<DeploymentProgress, QueryFilter> deploymentProgressDAO;
-
-    /**
-     * Environment's DAO.
-     */
-    @Autowired
-    private IDAO<Environment, QueryFilter> environmentDAO;
-
-    /**
-     * Project's DAO.
-     */
-    @Autowired
-    private IDAO<Project, QueryFilter> projectDAO;
-
-    /**
-     * Configuration class.
-     */
-    @Autowired
-    private Configuration configuration;
-
-    /**
-     * Load Deployment by id.
-     *
-     * @param id
-     *            Id.
-     * @return Deployment.
-     */
-    public DeploymentDTO load(final Long id) {
-        return new BeanMapper<>(DeploymentDTO.class).apply(this.deploymentDAO.loadEntityById(id));
-    }
-
-    /**
-     * Save deployment in database.
-     *
-     * @param newDeployment
-     *            Record to save
-     * @return Deployment.
-     */
-    public DeploymentDTO save(final NewDeploymentRecord newDeployment) {
-        if (newDeployment.environment() == null) {
-            throw new GlobalException(ErrorType.EMPTY_VALUE, Constants.FIELD_ENVIRONMENT, null);
-        }
-        if (newDeployment.project() == null) {
-            throw new GlobalException(ErrorType.EMPTY_VALUE, Constants.FIELD_PROJECT, null);
-        }
-
-        if (newDeployment.client() == null) {
-            throw new GlobalException(ErrorType.EMPTY_VALUE, "client", null);
-        }
-
-        if (newDeployment.version() == null) {
-            throw new GlobalException(ErrorType.EMPTY_VALUE, "version", null);
-        }
-
-        Optional<Environment> environment = this.environmentDAO.load(new SearchByNameDTO(newDeployment.environment()));
-        if (!environment.isPresent()) {
-            throw new GlobalException(ErrorType.ENTITY_NOT_FOUND, Constants.FIELD_ENVIRONMENT,
-                    newDeployment.environment());
-        }
-
-        Optional<Project> project = this.projectDAO.load(new SearchByNameDTO(newDeployment.project()));
-        if (!project.isPresent()) {
-            throw new GlobalException(ErrorType.ENTITY_NOT_FOUND, Constants.FIELD_PROJECT, newDeployment.project());
-        }
-
-        Deployment entity = new BeanMapper<>(Deployment.class, Constants.FIELD_ENVIRONMENT, Constants.FIELD_PROJECT)
-                .apply(newDeployment);
-        entity.setEnvironment(environment.get());
-        entity.setProject(project.get());
-
-        if (entity.isAlive()) {
-            this.disablePreviousDeployment(entity);
-        }
-
-        entity = this.deploymentDAO.save(entity);
-
-        if (newDeployment.inProgress()) {
-            this.deleteAllProgress(entity);
-
-            DeploymentProgress progress = new DeploymentProgress();
-            progress.setDeployment(entity);
-            this.deploymentProgressDAO.save(progress);
-        }
-
-        return new BeanMapper<>(DeploymentDTO.class).apply(this.deploymentViewDAO.loadById(entity.getId()));
-    }
-
-    /**
-     * Disable previous deployment.
-     *
-     * @param entity
-     *            Entity to search previous deployment.
-     */
-    public void disablePreviousDeployment(final Deployment entity) {
-        SearchDeploymentDTO searchDTO = new SearchDeploymentDTO();
-        searchDTO.setAlive("true");
-        searchDTO.setClient(entity.getClient());
-        searchDTO.setEnvironment(entity.getEnvironment().getId().toString());
-        searchDTO.setProject(entity.getProject().getId().toString());
-        searchDTO.setCount(1);
-        searchDTO.setOrder("insertDate");
-        searchDTO.setSort("desc");
-
-        Optional<Deployment> deployment = this.deploymentDAO.find(searchDTO).stream().findAny();
-
-        if (!deployment.isPresent()) {
-            return; // No entity to update.
-        }
-        Deployment entityToUpdate = deployment.get();
-        entityToUpdate.setAlive(false);
-        this.deploymentDAO.save(entityToUpdate);
-    }
-
-    /**
-     * Delete an deployment.
-     *
-     * @param id
-     *            Id of deployment to update.
-     */
-    public void delete(final Long id) {
-        final Deployment entity = this.deploymentDAO.loadById(id);
-        this.deploymentDAO.delete(entity);
-    }
-
-    /**
-     * Delete progress of deployment.
-     *
-     * @param dto
-     *            Filter.
-     */
-    public void deleteProgressDeployment(final SearchDeploymentViewDTO dto) {
-        if (dto.getEnvironment() == null) {
-            throw new GlobalException(ErrorType.EMPTY_VALUE, Constants.FIELD_ENVIRONMENT);
-        }
-        if (dto.getProject() == null) {
-            throw new GlobalException(ErrorType.EMPTY_VALUE, Constants.FIELD_PROJECT);
-        }
-
-        Optional<DeploymentView> deployment = this.deploymentViewDAO.load(dto);
-        if (!deployment.isPresent()) {
-            throw new GlobalException(ErrorType.ENTITY_NOT_FOUND, "deployment");
-        }
-        SearchProgressDeploymentDTO searchDTO = new SearchProgressDeploymentDTO();
-        searchDTO.setDeployment(deployment.get().getId().toString());
-        Optional<DeploymentProgress> progress = this.deploymentProgressDAO.load(searchDTO);
-
-        if (!progress.isPresent()) {
-            throw new GlobalException(ErrorType.ENTITY_NOT_FOUND, "deploymentProgress");
-        }
-        this.deploymentProgressDAO.delete(progress.get());
-    }
-
-    /**
-     * Delete all progress from an deployment with same project, environment and
-     * client.
-     *
-     * @param deployment
-     *            Deployment to identify progress.
-     */
-    public void deleteAllProgress(final Deployment deployment) {
-        this.deploymentProgressDAO.callUpdateProcedure("delete_all_progress",
-                new ProcedureParameter("_project", deployment.getProject().getName()),
-                new ProcedureParameter("_environment", deployment.getEnvironment().getName()),
-                new ProcedureParameter("_client", deployment.getClient()));
-    }
+public interface DeploymentService extends ServiceHelper {
 
     /**
      * Count deployments.
      *
-     * @param dto
-     *            Filter.
-     * @return Number of selected deployments.
+     * @param filters Filter options.
+     * @param field Field to count.
+     * @param value Default value for count.
+     * @return Count object.
      */
-    public Long count(final SearchDeploymentViewDTO dto) {
-        return this.deploymentViewDAO.count(dto);
-    }
+    JsonNode count(Map<String, String> filters, String field, String value);
+
+    /**
+     * Load Deployment by id.
+     *
+     * @param id Id.
+     * @return Deployment.
+     */
+    Deployment load(Long id);
+
+    /**
+     * Load deployment view by id.
+     *
+     * @param id Id to find.
+     * @return Deployment view.
+     */
+    DeploymentView loadView(Long id);
+
+    /**
+     * Save deployment in database.
+     *
+     * @param newDeployment Record to save
+     * @return Deployment.
+     */
+    DeploymentView save(DeploymentRecord newDeployment);
+
+    /**
+     * Disable previous deployment.
+     *
+     * @param entity Entity to search previous deployment.
+     */
+    void disablePreviousDeployment(Deployment entity);
+
+    /**
+     * Delete an deployment.
+     *
+     * @param id Id of deployment to update.
+     */
+    void delete(Long id);
+
+    /**
+     * Delete progress of deployment.
+     *
+     * @param filters Filters.
+     */
+    void deleteProgressDeployment(Map<String, String> filters);
+
+    /**
+     * Delete all progress from a deployment with same project, environment and
+     * client.
+     *
+     * @param deployment Deployment to identify progress.
+     */
+    void deleteAllProgress(Deployment deployment);
 
     /**
      * Find deployments.
      *
-     * @param dto
-     *            Filter.
+     * @param filters  Filters.
+     * @param pageable Page option.
      * @return List of selected deployments.
      */
-    public Resource<DeploymentDTO> find(final SearchDeploymentViewDTO dto) {
-        if (dto.getPage() < 0) {
-            throw new GlobalException(ErrorType.WRONG_VALUE, "page", Integer.toString(dto.getPage()));
-        }
-
-        if (dto.getCount() <= 0) {
-            dto.setCount(this.configuration.getDefaultApiLimit());
-        } else if (dto.getCount() > this.configuration.getMaximumApiLimit()) {
-            dto.setCount(this.configuration.getMaximumApiLimit());
-        }
-
-        final Long total = this.count(dto);
-        final List<DeploymentDTO> deployments = this.deploymentViewDAO.find(dto).stream()
-                .map(new BeanMapper<>(DeploymentDTO.class)).toList();
-
-        return new Resource<>(total, deployments, dto.getPage(), dto.getCount());
-    }
+    Page<DeploymentView> find(Map<String, String> filters, Pageable pageable);
 
     /**
      * Update deployment.
      *
-     * @param id
-     *            Deployment's id.
-     * @param deploymentRecord
-     *            Deployment's information.
-     * @throws InvocationTargetException
-     *             If the property accessor method throws an exception.
-     * @throws IllegalAccessException
-     *             If the caller does not have access to the property accessor
-     *             method.
+     * @param id               Deployment's id.
+     * @param deploymentRecord Deployment's information.
+     * @throws InvocationTargetException If the property accessor method throws an exception.
+     * @throws IllegalAccessException    If the caller does not have access to the property accessor
+     *                                   method.
      */
-    public void update(final Long id, final NewDeploymentRecord deploymentRecord)
-            throws IllegalAccessException, InvocationTargetException {
-        Deployment deployment = this.deploymentDAO.loadEntityById(id);
-        BeanUtilsBean merger = new NullAwareBeanUtilsBean("id", "project", "environment", "client");
-        merger.copyProperties(deployment, new BeanMapper<>(Deployment.class).apply(deploymentRecord));
-
-        this.deploymentDAO.save(deployment);
-    }
+    void update(Long id, Deployment deploymentRecord) throws IllegalAccessException, InvocationTargetException;
 }

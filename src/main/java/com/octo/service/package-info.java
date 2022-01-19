@@ -1,7 +1,4 @@
 /**
- * Common service.
- *
- * @author Vincent Moittié
- *
+ * Application services.
  */
 package com.octo.service;

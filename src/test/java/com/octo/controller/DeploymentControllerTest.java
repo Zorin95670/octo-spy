@@ -1,49 +1,37 @@
 package com.octo.controller;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.ws.rs.core.Application;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
-
-import org.glassfish.jersey.internal.inject.AbstractBinder;
-import org.glassfish.jersey.server.ResourceConfig;
-import org.glassfish.jersey.test.JerseyTest;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.octo.controller.model.QueryFilter;
+import com.octo.helper.MockHelper;
+import com.octo.persistence.model.DeploymentView;
+import com.octo.service.DeploymentService;
+import com.octo.service.LastDeploymentViewService;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.octo.model.common.Resource;
-import com.octo.model.dto.deployment.DeploymentDTO;
-import com.octo.model.dto.deployment.LastDeploymentDTO;
-import com.octo.service.CountService;
-import com.octo.service.DeploymentService;
-import com.octo.service.LastDeploymentViewService;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(SpringExtension.class)
 @ExtendWith(MockitoExtension.class)
-@ContextConfiguration(locations = {"classpath:application-context.xml"})
-class DeploymentControllerTest extends JerseyTest {
+@Tag("unit")
+class DeploymentControllerTest extends MockHelper {
 
     @Mock
     DeploymentService service;
-
-    @Mock
-    CountService countService;
 
     @Mock
     LastDeploymentViewService viewService;
@@ -51,24 +39,9 @@ class DeploymentControllerTest extends JerseyTest {
     @InjectMocks
     DeploymentController controller;
 
-    @Override
-    protected Application configure() {
-        final ResourceConfig rc = new ResourceConfig().register(DeploymentController.class)
-                .register(new AbstractBinder() {
-                    @Override
-                    protected void configure() {
-                        this.bind(DeploymentControllerTest.this.controller).to(DeploymentController.class);
-                    }
-                });;
-
-        rc.property("contextConfigLocation", "classpath:application-context.xml");
-
-        return rc;
-    }
-
     @Test
     void testGetDeployment() {
-        Mockito.when(this.service.load(Mockito.anyLong())).thenReturn(new DeploymentDTO());
+        Mockito.when(this.service.loadView(Mockito.anyLong())).thenReturn(new DeploymentView());
 
         final Response response = this.controller.getDeployment(1L);
 
@@ -79,7 +52,7 @@ class DeploymentControllerTest extends JerseyTest {
 
     @Test
     void testCreateDeployment() {
-        Mockito.when(this.service.save(Mockito.any())).thenReturn(new DeploymentDTO());
+        Mockito.when(this.service.save(Mockito.any())).thenReturn(new DeploymentView());
 
         final Response response = this.controller.createDeployment(null);
 
@@ -99,38 +72,26 @@ class DeploymentControllerTest extends JerseyTest {
 
     @Test
     void testGetLastDeployments() {
-        List<LastDeploymentDTO> expected = new ArrayList<>();
-        Mockito.when(this.viewService.find(Mockito.any())).thenReturn(expected);
-        final Response response = this.controller.getLastDeployments(Mockito.any());
+        Mockito.when(this.viewService.find(Mockito.any(), Mockito.any())).thenReturn(new PageImpl<>(new ArrayList<>()));
+        final Response response = this.controller.getLastDeployments(this.mockUriInfo(), new QueryFilter());
 
         assertNotNull(response);
         assertEquals(Status.OK.getStatusCode(), response.getStatus());
-        assertEquals(expected, response.getEntity());
-
     }
 
     @Test
     void testDeleteDeploymentProgress() {
         Mockito.doNothing().when(this.service).deleteProgressDeployment(Mockito.any());
-        final Response response = this.controller.deleteProgressDeployment(null);
+        final Response response = this.controller.deleteProgressDeployment(this.mockUriInfo());
 
         assertNotNull(response);
         assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
     }
 
     @Test
-    void testGetDeployments() throws JsonProcessingException {
-        Mockito.when(this.service.find(Mockito.any())).thenReturn(new Resource<>(5L, new ArrayList<>(), 0, 0));
-        Response response = this.controller.getDeployments(null);
-
-        assertNotNull(response);
-        assertEquals(HttpStatus.PARTIAL_CONTENT.value(), response.getStatus());
-        final String json = new ObjectMapper().writeValueAsString(response.getEntity());
-
-        assertEquals("{\"total\":5,\"page\":0,\"count\":0,\"resources\":[]}", json);
-
-        Mockito.when(this.service.find(Mockito.any())).thenReturn(new Resource<>(0L, new ArrayList<>(), 0, 0));
-        response = this.controller.getDeployments(null);
+    void testGetDeployments() {
+        Mockito.when(this.service.find(Mockito.any(), Mockito.any())).thenReturn(new PageImpl<>(new ArrayList<>()));
+        Response response = this.controller.getDeployments(mockUriInfo(), new QueryFilter());
 
         assertNotNull(response);
         assertEquals(HttpStatus.OK.value(), response.getStatus());
@@ -138,9 +99,9 @@ class DeploymentControllerTest extends JerseyTest {
 
     @Test
     void testCount() {
-        Mockito.when(this.countService.count(Mockito.any(), Mockito.any(), Mockito.any()))
+        Mockito.when(this.service.count(Mockito.any(), Mockito.any(), Mockito.any()))
                 .thenReturn(JsonNodeFactory.instance.objectNode());
-        final Response response = this.controller.count(null, null);
+        final Response response = this.controller.count(this.mockUriInfo(), null, null);
 
         assertNotNull(response);
         assertEquals(Status.OK.getStatusCode(), response.getStatus());

@@ -1,7 +1,4 @@
 /**
- * Common models.
- *
- * @author Vincent Moittié
- *
+ * Default application models.
  */
 package com.octo.model.common;

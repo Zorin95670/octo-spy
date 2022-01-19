@@ -1,78 +1,88 @@
 package com.octo.service;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.octo.controller.model.QueryFilter;
+import com.octo.model.deployment.DeploymentRecord;
+import com.octo.model.error.ErrorType;
+import com.octo.model.error.GlobalException;
+import com.octo.persistence.model.Deployment;
+import com.octo.persistence.model.DeploymentProgress;
+import com.octo.persistence.model.DeploymentView;
+import com.octo.persistence.model.Environment;
+import com.octo.persistence.model.Project;
+import com.octo.persistence.repository.DeploymentProgressRepository;
+import com.octo.persistence.repository.DeploymentRepository;
+import com.octo.persistence.repository.DeploymentViewRepository;
+import com.octo.persistence.repository.EnvironmentRepository;
+import com.octo.persistence.repository.ProjectRepository;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.octo.dao.IDAO;
-import com.octo.model.common.Resource;
-import com.octo.model.dto.deployment.DeploymentDTO;
-import com.octo.model.dto.deployment.NewDeploymentRecord;
-import com.octo.model.dto.deployment.SearchDeploymentViewDTO;
-import com.octo.model.entity.Deployment;
-import com.octo.model.entity.DeploymentProgress;
-import com.octo.model.entity.DeploymentView;
-import com.octo.model.entity.Environment;
-import com.octo.model.entity.Project;
-import com.octo.model.error.ErrorType;
-import com.octo.model.error.GlobalException;
-import com.octo.utils.Configuration;
-import com.octo.utils.predicate.filter.QueryFilter;
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @ExtendWith(MockitoExtension.class)
-@ContextConfiguration(locations = {"classpath:application-context.xml"})
+@Tag("unit")
 class DeploymentServiceTest {
 
     @Mock
-    IDAO<Environment, QueryFilter> environmentDAO;
+    DeploymentRepository deploymentRepository;
 
     @Mock
-    IDAO<Deployment, QueryFilter> deploymentDAO;
+    DeploymentViewRepository deploymentViewRepository;
 
     @Mock
-    IDAO<DeploymentView, QueryFilter> deploymentViewDAO;
+    DeploymentProgressRepository deploymentProgressRepository;
 
     @Mock
-    IDAO<DeploymentProgress, QueryFilter> deploymentProgressDAO;
+    EnvironmentRepository environmentRepository;
 
     @Mock
-    IDAO<Project, QueryFilter> projectDAO;
-
-    @Mock
-    Configuration configuration;
+    ProjectRepository projectRepository;
 
     @InjectMocks
-    DeploymentService service;
+    DeploymentServiceImpl service;
 
     @Test
     void testLoad() {
-        Mockito.when(this.deploymentDAO.loadEntityById(Mockito.any())).thenReturn(new Deployment());
+        Mockito.when(this.deploymentRepository.findById(Mockito.any())).thenReturn(Optional.of(new Deployment()));
         assertNotNull(service.load(1L));
+    }
+
+    @Test
+    void testLoadView() {
+        Mockito.when(this.deploymentViewRepository.findById(Mockito.any())).thenReturn(Optional.of(new DeploymentView()));
+        assertNotNull(service.loadView(1L));
+    }
+
+    @Test
+    void testFind() {
+        Mockito.when(this.deploymentViewRepository.findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class)))
+                .thenReturn(new PageImpl<>(List.of()));
+        assertNotNull(service.find(Map.of(), new QueryFilter().getPagination()));
     }
 
     @Test
     void testSave() {
         // Test null environment
         GlobalException exception = null;
-        NewDeploymentRecord input = new NewDeploymentRecord(null, null, null, null, false, false);
-        Mockito.when(this.environmentDAO.load(Mockito.any())).thenReturn(Optional.empty());
-        Mockito.when(this.projectDAO.load(Mockito.any())).thenReturn(Optional.empty());
+        DeploymentRecord input = new DeploymentRecord(null, null, null, null, false, false);
+        Mockito.when(this.environmentRepository.findByName(Mockito.any())).thenReturn(Optional.empty());
 
         try {
             service.save(input);
@@ -82,13 +92,15 @@ class DeploymentServiceTest {
 
         assertNotNull(exception);
         assertNotNull(exception.getError());
-        assertEquals(ErrorType.EMPTY_VALUE.getMessage(), exception.getError().getMessage());
+        assertEquals(ErrorType.WRONG_VALUE.getMessage(), exception.getError().getMessage());
         assertEquals("environment", exception.getError().getField());
         assertNull(exception.getError().getValue());
 
-        // Test null client
+        // Test null project
+        Mockito.when(this.environmentRepository.findByName(Mockito.any())).thenReturn(Optional.of(new Environment()));
+        Mockito.when(this.projectRepository.findByName(Mockito.any())).thenReturn(Optional.empty());
         exception = null;
-        input = new NewDeploymentRecord("", null, null, null, false, false);
+        input = new DeploymentRecord(null, null, null, null, false, false);
 
         try {
             service.save(input);
@@ -98,91 +110,26 @@ class DeploymentServiceTest {
 
         assertNotNull(exception);
         assertNotNull(exception.getError());
-        assertEquals(ErrorType.EMPTY_VALUE.getMessage(), exception.getError().getMessage());
+        assertEquals(ErrorType.WRONG_VALUE.getMessage(), exception.getError().getMessage());
         assertEquals("project", exception.getError().getField());
-        assertNull(exception.getError().getValue());
-
-        // Test null version
-        exception = null;
-        input = new NewDeploymentRecord("", "", null, null, false, false);
-
-        try {
-            service.save(input);
-        } catch (GlobalException e) {
-            exception = e;
-        }
-
-        assertNotNull(exception);
-        assertNotNull(exception.getError());
-        assertEquals(ErrorType.EMPTY_VALUE.getMessage(), exception.getError().getMessage());
-        assertEquals("client", exception.getError().getField());
-        assertNull(exception.getError().getValue());
-
-        // Test null version
-        exception = null;
-        input = new NewDeploymentRecord("", "", null, "", false, false);
-
-        try {
-            service.save(input);
-        } catch (GlobalException e) {
-            exception = e;
-        }
-
-        assertNotNull(exception);
-        assertNotNull(exception.getError());
-        assertEquals(ErrorType.EMPTY_VALUE.getMessage(), exception.getError().getMessage());
-        assertEquals("version", exception.getError().getField());
         assertNull(exception.getError().getValue());
 
         // Test all good
-        exception = null;
-        input = new NewDeploymentRecord("QA", "project", "version", "client", false, false);
-
         Environment environment = new Environment();
         environment.setId(1L);
-        environment.setName("QA");
         Project project = new Project();
         project.setId(1L);
-        project.setName("project");
         Deployment deployment = new Deployment();
-        deployment.setAlive(true);
-        deployment.setClient("client");
-        deployment.setEnvironment(environment);
-        deployment.setProject(project);
-        Mockito.when(this.deploymentDAO.save(Mockito.any())).thenReturn(deployment);
-        DeploymentDTO dto = null;
-
-        try {
-            dto = service.save(input);
-        } catch (GlobalException e) {
-            exception = e;
-        }
-
-        assertNotNull(exception);
-        assertNotNull(exception.getError());
-        assertEquals(ErrorType.ENTITY_NOT_FOUND.getMessage(), exception.getError().getMessage());
-        assertEquals("environment", exception.getError().getField());
-        Mockito.when(this.environmentDAO.load(Mockito.any())).thenReturn(Optional.of(environment));
-
-        try {
-            dto = service.save(input);
-        } catch (GlobalException e) {
-            exception = e;
-        }
-
-        assertNotNull(exception);
-        assertNotNull(exception.getError());
-        assertEquals(ErrorType.ENTITY_NOT_FOUND.getMessage(), exception.getError().getMessage());
-        assertEquals("project", exception.getError().getField());
+        deployment.setId(1L);
+        Mockito.when(this.environmentRepository.findByName(Mockito.any())).thenReturn(Optional.of(environment));
+        Mockito.when(this.projectRepository.findByName(Mockito.any())).thenReturn(Optional.of(project));
+        Mockito.when(this.deploymentRepository.save(Mockito.any())).thenReturn(deployment);
 
         // Test all good and disable previous deployment
         exception = null;
-        input = new NewDeploymentRecord("QA", "project", "version", "client", true, false);
-
-        Mockito.when(this.environmentDAO.load(Mockito.any())).thenReturn(Optional.of(environment));
-        Mockito.when(this.projectDAO.load(Mockito.any())).thenReturn(Optional.of(project));
-        Mockito.when(this.deploymentDAO.save(Mockito.any())).thenReturn(new Deployment());
-        dto = null;
+        input = new DeploymentRecord("QA", "project", "version", "client", true, false);
+        Mockito.when(this.deploymentViewRepository.getById(Mockito.any())).thenReturn(new DeploymentView());
+        DeploymentView dto = null;
 
         try {
             dto = service.save(input);
@@ -193,7 +140,7 @@ class DeploymentServiceTest {
         assertNull(exception);
         assertNotNull(dto);
 
-        input = new NewDeploymentRecord("QA", "project", "version", "client", false, false);
+        input = new DeploymentRecord("QA", "project", "version", "client", false, false);
         try {
             dto = service.save(input);
         } catch (GlobalException e) {
@@ -218,12 +165,13 @@ class DeploymentServiceTest {
         deployment.setEnvironment(environment);
         deployment.setProject(project);
 
-        Mockito.when(this.deploymentProgressDAO.callUpdateProcedure(Mockito.any(), Mockito.any())).thenReturn(0);
-        Mockito.when(this.environmentDAO.load(Mockito.any())).thenReturn(Optional.of(environment));
-        Mockito.when(this.projectDAO.load(Mockito.any())).thenReturn(Optional.of(project));
-        Mockito.when(this.deploymentDAO.save(Mockito.any())).thenReturn(deployment);
-        Mockito.when(this.deploymentProgressDAO.save(Mockito.any())).thenReturn(null);
-        NewDeploymentRecord dto = new NewDeploymentRecord("QA", "project", "version", "client", true, true);
+        Mockito.doNothing().when(this.deploymentProgressRepository).deleteAllProgress(Mockito.any(), Mockito.any(),
+                Mockito.any());
+        Mockito.when(this.environmentRepository.findByName(Mockito.any())).thenReturn(Optional.of(environment));
+        Mockito.when(this.projectRepository.findByName(Mockito.any())).thenReturn(Optional.of(project));
+        Mockito.when(this.deploymentRepository.save(Mockito.any())).thenReturn(deployment);
+        Mockito.when(this.deploymentProgressRepository.save(Mockito.any())).thenReturn(null);
+        DeploymentRecord dto = new DeploymentRecord("QA", "project", "version", "client", true, true);
 
         GlobalException exception = null;
         try {
@@ -233,7 +181,7 @@ class DeploymentServiceTest {
         }
 
         assertNull(exception);
-        Mockito.verify(this.deploymentProgressDAO, Mockito.times(1)).save(Mockito.any());
+        Mockito.verify(this.deploymentProgressRepository, Mockito.times(1)).save(Mockito.any());
     }
 
     @Test
@@ -251,7 +199,8 @@ class DeploymentServiceTest {
         // Test no entity to disable
         GlobalException exception = null;
         try {
-            Mockito.when(this.deploymentDAO.find(Mockito.any())).thenReturn(new ArrayList<>());
+            Mockito.when(this.deploymentRepository.findOne(Mockito.any(Specification.class)))
+                    .thenReturn(Optional.empty());
             this.service.disablePreviousDeployment(deployment);
         } catch (GlobalException e) {
             exception = e;
@@ -263,10 +212,9 @@ class DeploymentServiceTest {
         assertNull(exception);
         exception = null;
         try {
-            List<Deployment> list = new ArrayList<>();
-            list.add(entityToUpdate);
-            Mockito.when(this.deploymentDAO.find(Mockito.any())).thenReturn(list);
-            Mockito.when(this.deploymentDAO.save(Mockito.any())).thenReturn(null);
+            Mockito.when(this.deploymentRepository.findOne(Mockito.any(Specification.class)))
+                    .thenReturn(Optional.of(entityToUpdate));
+            Mockito.when(this.deploymentRepository.save(Mockito.any())).thenReturn(null);
             this.service.disablePreviousDeployment(deployment);
         } catch (GlobalException e) {
             exception = e;
@@ -278,8 +226,8 @@ class DeploymentServiceTest {
 
     @Test
     void testDelete() {
-        Mockito.when(this.deploymentDAO.loadById(Mockito.any())).thenReturn(new Deployment());
-        Mockito.doNothing().when(this.deploymentDAO).delete(Mockito.any());
+        Mockito.when(this.deploymentRepository.findById(Mockito.any())).thenReturn(Optional.of(new Deployment()));
+        Mockito.doNothing().when(this.deploymentRepository).deleteById(Mockito.any());
 
         GlobalException exception = null;
         try {
@@ -292,16 +240,10 @@ class DeploymentServiceTest {
     }
 
     @Test
-    void testDeleteProgress() {
-        DeploymentView deployment = new DeploymentView();
-        deployment.setId(1L);
-        deployment.setProject("project");
-        deployment.setEnvironment("env");
-
-        SearchDeploymentViewDTO dto = new SearchDeploymentViewDTO();
+    void testDeleteProgressEmptyEnvironment() {
         GlobalException exception = null;
         try {
-            this.service.deleteProgressDeployment(dto);
+            this.service.deleteProgressDeployment(Map.of());
         } catch (GlobalException e) {
             exception = e;
         }
@@ -310,10 +252,23 @@ class DeploymentServiceTest {
         assertEquals(ErrorType.EMPTY_VALUE.getMessage(), exception.getError().getMessage());
         assertEquals("environment", exception.getError().getField());
 
-        dto.setEnvironment("test");
         exception = null;
         try {
-            this.service.deleteProgressDeployment(dto);
+            this.service.deleteProgressDeployment(Map.of("environment", ""));
+        } catch (GlobalException e) {
+            exception = e;
+        }
+        assertNotNull(exception);
+        assertNotNull(exception.getError());
+        assertEquals(ErrorType.EMPTY_VALUE.getMessage(), exception.getError().getMessage());
+        assertEquals("environment", exception.getError().getField());
+    }
+
+    @Test
+    void testDeleteProgressEmptyProject() {
+        GlobalException exception = null;
+        try {
+            this.service.deleteProgressDeployment(Map.of("environment", "test"));
         } catch (GlobalException e) {
             exception = e;
         }
@@ -322,11 +277,30 @@ class DeploymentServiceTest {
         assertEquals(ErrorType.EMPTY_VALUE.getMessage(), exception.getError().getMessage());
         assertEquals("project", exception.getError().getField());
 
-        dto.setProject("project");
-        Mockito.when(this.deploymentViewDAO.load(Mockito.any())).thenReturn(Optional.empty());
         exception = null;
         try {
-            this.service.deleteProgressDeployment(dto);
+            this.service.deleteProgressDeployment(Map.of("environment", "test", "project", ""));
+        } catch (GlobalException e) {
+            exception = e;
+        }
+        assertNotNull(exception);
+        assertNotNull(exception.getError());
+        assertEquals(ErrorType.EMPTY_VALUE.getMessage(), exception.getError().getMessage());
+        assertEquals("project", exception.getError().getField());
+    }
+
+    @Test
+    void testDeleteProgressEmptyDeployment() {
+        DeploymentView deployment = new DeploymentView();
+        deployment.setId(1L);
+        deployment.setProject("project");
+        deployment.setEnvironment("env");
+
+        GlobalException exception;
+        Mockito.when(this.deploymentViewRepository.findOne(Mockito.any())).thenReturn(Optional.empty());
+        exception = null;
+        try {
+            this.service.deleteProgressDeployment(Map.of("environment", "test", "project", "test"));
         } catch (GlobalException e) {
             exception = e;
         }
@@ -334,12 +308,21 @@ class DeploymentServiceTest {
         assertNotNull(exception.getError());
         assertEquals(ErrorType.ENTITY_NOT_FOUND.getMessage(), exception.getError().getMessage());
         assertEquals("deployment", exception.getError().getField());
+    }
 
-        Mockito.when(this.deploymentViewDAO.load(Mockito.any())).thenReturn(Optional.of(deployment));
-        Mockito.when(this.deploymentProgressDAO.load(Mockito.any())).thenReturn(Optional.empty());
+    @Test
+    void testDeleteProgressEmptyDeploymentProgress() {
+        DeploymentView deployment = new DeploymentView();
+        deployment.setId(1L);
+        deployment.setProject("project");
+        deployment.setEnvironment("env");
+
+        GlobalException exception;
+        Mockito.when(this.deploymentViewRepository.findOne(Mockito.any())).thenReturn(Optional.of(deployment));
+        Mockito.when(this.deploymentProgressRepository.findByDeploymentId(Mockito.any())).thenReturn(Optional.empty());
         exception = null;
         try {
-            this.service.deleteProgressDeployment(dto);
+            this.service.deleteProgressDeployment(Map.of("environment", "test", "project", "test"));
         } catch (GlobalException e) {
             exception = e;
         }
@@ -362,15 +345,13 @@ class DeploymentServiceTest {
         deployment.setProject("project");
         deployment.setEnvironment("environment");
 
-        GlobalException exception = null;
-        SearchDeploymentViewDTO dto = new SearchDeploymentViewDTO();
-        dto.setEnvironment("test");
-        dto.setProject("test");
-        Mockito.when(this.deploymentViewDAO.load(Mockito.any())).thenReturn(Optional.of(deployment));
-        Mockito.when(this.deploymentProgressDAO.load(Mockito.any())).thenReturn(Optional.of(new DeploymentProgress()));
+        GlobalException exception;
+        Mockito.when(this.deploymentViewRepository.findOne(Mockito.any())).thenReturn(Optional.of(deployment));
+        Mockito.when(this.deploymentProgressRepository.findByDeploymentId(Mockito.any()))
+                .thenReturn(Optional.of(new DeploymentProgress()));
         exception = null;
         try {
-            this.service.deleteProgressDeployment(dto);
+            this.service.deleteProgressDeployment(Map.of("environment", "test", "project", "test"));
         } catch (GlobalException e) {
             exception = e;
         }
@@ -379,85 +360,36 @@ class DeploymentServiceTest {
 
     @Test
     void testCount() {
-        Mockito.when(this.deploymentViewDAO.count(Mockito.any())).thenReturn(1L);
-        assertEquals(Long.valueOf(1L), this.service.count(null));
-    }
-
-    @Test
-    void testFind() {
-        List<DeploymentView> list = new ArrayList<DeploymentView>();
-        Mockito.when(this.deploymentViewDAO.count(Mockito.any())).thenReturn(2L);
-        Mockito.when(this.deploymentViewDAO.find(Mockito.any())).thenReturn(list);
-
-        Mockito.when(this.configuration.getDefaultApiLimit()).thenReturn(1);
-        Mockito.when(this.configuration.getMaximumApiLimit()).thenReturn(10);
-
-        SearchDeploymentViewDTO dto = new SearchDeploymentViewDTO();
-        dto.setPage(-1);
-
         GlobalException exception = null;
-
         try {
-            this.service.find(dto);
+            this.service.count(null, "", "");
         } catch (GlobalException e) {
             exception = e;
         }
         assertNotNull(exception);
-        assertNotNull(exception.getError());
-        assertEquals(ErrorType.WRONG_VALUE.getMessage(), exception.getError().getMessage());
-        assertEquals("page", exception.getError().getField());
+        assertEquals(ErrorType.UNKNOWN_FIELD.getMessage(), exception.getMessage());
+
+        Mockito.when(this.deploymentViewRepository.count(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any()))
+                .thenReturn(JsonNodeFactory.instance.objectNode());
         exception = null;
-
-        dto.setPage(0);
-        Resource<DeploymentDTO> deployments = null;
+        JsonNode node = null;
         try {
-            deployments = this.service.find(dto);
+            node = this.service.count(null, "id", "");
         } catch (GlobalException e) {
             exception = e;
         }
         assertNull(exception);
-        assertNotNull(deployments);
-        assertEquals(0, deployments.getPage());
-        assertEquals(1, deployments.getCount());
-        assertEquals(Long.valueOf(2L), deployments.getTotal());
-        assertEquals(new ArrayList<>(), deployments.getResources());
-
-        dto.setCount(100);
-        deployments = null;
-        try {
-            deployments = this.service.find(dto);
-        } catch (GlobalException e) {
-            exception = e;
-        }
-        assertNull(exception);
-        assertNotNull(deployments);
-        assertEquals(0, deployments.getPage());
-        assertEquals(10, deployments.getCount());
-        assertEquals(Long.valueOf(2L), deployments.getTotal());
-        assertEquals(new ArrayList<>(), deployments.getResources());
-
-        dto.setCount(9);
-        deployments = null;
-        try {
-            deployments = this.service.find(dto);
-        } catch (GlobalException e) {
-            exception = e;
-        }
-        assertNull(exception);
-        assertNotNull(deployments);
-        assertEquals(0, deployments.getPage());
-        assertEquals(9, deployments.getCount());
-        assertEquals(Long.valueOf(2L), deployments.getTotal());
-        assertEquals(new ArrayList<>(), deployments.getResources());
+        assertNotNull(node);
     }
+
 
     @Test
     void testUpdate() throws IllegalAccessException, InvocationTargetException {
-        Mockito.when(this.deploymentDAO.loadEntityById(Mockito.any())).thenReturn(new Deployment());
-        Mockito.when(this.deploymentDAO.save(Mockito.any())).thenReturn(new Deployment());
+        Mockito.when(this.deploymentRepository.findById(Mockito.any())).thenReturn(Optional.of(new Deployment()));
+        Mockito.when(this.deploymentRepository.save(Mockito.any())).thenReturn(new Deployment());
         GlobalException exception = null;
         try {
-            service.update(1L, new NewDeploymentRecord(null, null, null, null, false, false));
+            service.update(1L, new Deployment());
         } catch (GlobalException e) {
             exception = e;
         }

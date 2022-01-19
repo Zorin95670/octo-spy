@@ -27,7 +27,7 @@
         <testcontainers.version>1.16.2</testcontainers.version>
         <spotbugs.maven.plugin>4.3.0</spotbugs.maven.plugin>
         <!-- Sonar properties -->
-        <sonar.projectVersion>1.15.0-rc</sonar.projectVersion>
+        <sonar.projectVersion>2.0.0</sonar.projectVersion>
         <sonar.projectKey>Zorin95670_octo-spy</sonar.projectKey>
         <sonar.organization>zorin95670</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>

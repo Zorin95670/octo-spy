@@ -1,15 +1,12 @@
 # CHANGELOG
 
-## 2021/10/27: Version 1.15.0-rc
+## 2022/01/20: Version 2.0.0
 
 ### New features
 
 * Setup cucumber with testcontainers
-* Adding cucumber for
-** administrator endpoint
-** client endpoint
-** info endpoint
-** project endpoint
+* Adding cucumber test
+* Setup spring boot
 
 ### Bug fixes
 
@@ -74,14 +71,14 @@
 ### Features
 
 * Add endpoint to update project color and name
-* Add attribut isMaster/projectId in models
+* Add attribute isMaster/projectId in models
 
 ## 2021/08/02: Version 1.10.0
 
 ### Features
 
 * Add alert for database compatibility
-* Add adminstrator email/password management
+* Add administrator email/password management
 
 ## 2021/08/02: Version 1.9.0
 

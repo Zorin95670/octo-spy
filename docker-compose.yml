@@ -9,12 +9,18 @@ services:
       POSTGRES_USER: octo_admin
       POSTGRES_PASSWORD: password
     ports:
-      - 5432:5432
+      - ${DATABASE_PORT:-5432}:5432
   spy:
     image: octo-spy:latest
     environment:
-      CATALINA_OPTS: "-Docto-spy.database.host=db"
+      DATABASE_HOST: "db"
+      DATABASE_PORT: ${DATABASE_PORT:-5432}
+      DATABASE_NAME: octo_db
+      DATABASE_USER: octo
+      DATABASE_PASSWORD: password
+      APPLICATION_ENVIRONMENT: ${APPLICATION_ENVIRONMENT:-Development}
+      APPLICATION_CLIENT: ${APPLICATION_CLIENT:-Internal}
     ports:
-      - 8080:8080
+      - ${APPLICATION_PORT:-8080}:8080
     depends_on:
       - db

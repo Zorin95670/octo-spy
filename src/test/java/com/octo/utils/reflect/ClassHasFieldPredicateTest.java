@@ -1,16 +1,17 @@
 package com.octo.utils.reflect;
 
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.jupiter.api.Test;
-
+@Tag("unit")
 class ClassHasFieldPredicateTest {
 
     @Test
     void testSimpleClass() {
         class Test {
-            @SuppressWarnings("unused") // Used in tests below.
             private String test;
         }
         final ClassHasFieldPredicate predicate = new ClassHasFieldPredicate(Test.class);
@@ -22,11 +23,9 @@ class ClassHasFieldPredicateTest {
     @Test
     void testClassWithSubClass() {
         class Test {
-            @SuppressWarnings("unused") // Used in tests below.
             private String test;
         }
         class SubTest extends Test {
-            @SuppressWarnings("unused") // Used in tests below.
             private String subTest;
         }
         final ClassHasFieldPredicate predicate = new ClassHasFieldPredicate(SubTest.class);

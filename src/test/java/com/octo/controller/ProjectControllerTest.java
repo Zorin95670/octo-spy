@@ -1,63 +1,44 @@
 package com.octo.controller;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import java.util.ArrayList;
-
-import javax.ws.rs.core.Application;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
-
-import org.glassfish.jersey.internal.inject.AbstractBinder;
-import org.glassfish.jersey.server.ResourceConfig;
-import org.glassfish.jersey.test.JerseyTest;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.octo.controller.model.QueryFilter;
+import com.octo.helper.MockHelper;
+import com.octo.model.project.ProjectRecord;
+import com.octo.persistence.model.Project;
+import com.octo.persistence.model.ProjectView;
+import com.octo.service.ProjectService;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.octo.model.dto.project.NewProjectRecord;
-import com.octo.model.dto.project.ProjectDTO;
-import com.octo.service.CountService;
-import com.octo.service.ProjectService;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(SpringExtension.class)
 @ExtendWith(MockitoExtension.class)
-@ContextConfiguration(locations = {"classpath:application-context.xml"})
-class ProjectControllerTest extends JerseyTest {
+@Tag("unit")
+class ProjectControllerTest extends MockHelper {
 
     @Mock
     ProjectService service;
 
-    @Mock
-    CountService countService;
-
     @InjectMocks
     ProjectController controller;
 
-    @Override
-    protected Application configure() {
-        final ResourceConfig rc = new ResourceConfig().register(ProjectController.class).register(new AbstractBinder() {
-            @Override
-            protected void configure() {
-                this.bind(ProjectControllerTest.this.controller).to(ProjectController.class);
-            }
-        });;
-
-        rc.property("contextConfigLocation", "classpath:application-context.xml");
-
-        return rc;
-    }
-
     @Test
     void testGetProject() {
-        Mockito.when(this.service.load(1L)).thenReturn(new ProjectDTO());
+        Mockito.when(this.service.load(1L)).thenReturn(new ProjectView());
         final Response response = this.controller.getProject(1L);
 
         assertNotNull(response);
@@ -67,8 +48,8 @@ class ProjectControllerTest extends JerseyTest {
 
     @Test
     void testGetProjects() {
-        Mockito.when(this.service.findAll(Mockito.any())).thenReturn(new ArrayList<>());
-        final Response response = this.controller.getProjects(null);
+        Mockito.when(this.service.findAll(Mockito.any(), Mockito.any())).thenReturn(new PageImpl<>(new ArrayList<>()));
+        final Response response = this.controller.getProjects(mockUriInfo(), new QueryFilter());
 
         assertNotNull(response);
         assertEquals(Status.OK.getStatusCode(), response.getStatus());
@@ -77,9 +58,9 @@ class ProjectControllerTest extends JerseyTest {
 
     @Test
     void testCount() {
-        Mockito.when(this.countService.count(Mockito.any(), Mockito.any(), Mockito.any()))
+        Mockito.when(this.service.count(Mockito.any(), Mockito.any(), Mockito.any()))
                 .thenReturn(JsonNodeFactory.instance.objectNode());
-        final Response response = this.controller.count(null, null);
+        final Response response = this.controller.count(mockUriInfo(), null, null);
 
         assertNotNull(response);
         assertEquals(Status.OK.getStatusCode(), response.getStatus());
@@ -88,8 +69,8 @@ class ProjectControllerTest extends JerseyTest {
 
     @Test
     void testCreateProject() {
-        Mockito.when(this.service.save(Mockito.any())).thenReturn(new ProjectDTO());
-        final Response response = this.controller.createProject(new NewProjectRecord(null, null, false, null));
+        Mockito.when(this.service.save(Mockito.any())).thenReturn(new Project());
+        final Response response = this.controller.createProject(new ProjectRecord(null, null, false, null));
 
         assertNotNull(response);
         assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
@@ -106,9 +87,9 @@ class ProjectControllerTest extends JerseyTest {
     }
 
     @Test
-    void testUpdateProject() {
+    void testUpdateProject() throws InvocationTargetException, IllegalAccessException {
         Mockito.doNothing().when(this.service).update(Mockito.anyLong(), Mockito.any());
-        final Response response = this.controller.updateProject(1L, new NewProjectRecord("test", "1,1,1", false, null));
+        final Response response = this.controller.updateProject(1L, new Project());
 
         assertNotNull(response);
         assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());

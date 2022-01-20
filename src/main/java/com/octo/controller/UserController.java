@@ -1,8 +1,21 @@
 package com.octo.controller;
 
-import java.security.NoSuchAlgorithmException;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.octo.model.common.UserRoleType;
+import com.octo.model.user.UserDTO;
+import com.octo.persistence.model.User;
+import com.octo.security.UserMapper;
+import com.octo.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Controller;
 
 import javax.annotation.security.RolesAllowed;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -14,20 +27,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.octo.model.authentication.UserRoleType;
-import com.octo.model.dto.user.FullUserDTO;
-import com.octo.model.entity.User;
-import com.octo.service.UserService;
-import com.octo.utils.http.UserMapper;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * User controller.
@@ -37,7 +37,9 @@ import com.octo.utils.http.UserMapper;
 @Controller
 public class UserController {
 
-    /** Logger. **/
+    /**
+     * Logger.
+     **/
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
     /**
@@ -49,27 +51,25 @@ public class UserController {
     /**
      * Get user information.
      *
-     * @param requestContext
-     *            Request context to get default user login.
+     * @param requestContext Request context to get default user login.
      * @return Response with user information.
      */
     @GET
     @Path("/me")
     @RolesAllowed({UserRoleType.ALL, UserRoleType.TOKEN})
-    public final Response getMyInformations(@Context final ContainerRequestContext requestContext) {
+    public final Response getMyInformation(@Context final ContainerRequestContext requestContext) {
         User user = new UserMapper().apply(requestContext);
         LOGGER.info("Received GET request to retrieve user information of {}.", user.getLogin());
-        FullUserDTO fullUser = new FullUserDTO();
-        fullUser.setUser(service.getUser(user.getLogin()));
-        fullUser.setRoles(service.getUserRoles(user.getLogin()));
-        return Response.ok(fullUser).build();
+        UserDTO dto = new UserDTO();
+        dto.setUser(service.getUser(user.getLogin()));
+        dto.setRoles(service.getUserRoles(user.getLogin()));
+        return Response.ok(dto).build();
     }
 
     /**
      * Get user token.
      *
-     * @param requestContext
-     *            Request context to get default user login.
+     * @param requestContext Request context to get default user login.
      * @return Response with user token.
      */
     @GET
@@ -78,21 +78,17 @@ public class UserController {
     public final Response getToken(@Context final ContainerRequestContext requestContext) {
         User user = new UserMapper().apply(requestContext);
         LOGGER.info("Received GET request to retrieve user tokens of {}.", user.getLogin());
-        ArrayNode tokens = JsonNodeFactory.instance.arrayNode();
-        service.getUserToken(user.getLogin()).forEach(tokens::add);
-        return Response.ok(tokens).build();
+        Page<String> tokens = service.getUserToken(user.getLogin());
+        return Response.status(ControllerHelper.getStatus(tokens)).entity(tokens).build();
     }
 
     /**
      * Create token.
      *
-     * @param requestContext
-     *            Request context to get default user login.
-     * @param body
-     *            Token name.
+     * @param requestContext Request context to get default user login.
+     * @param body           Token name.
      * @return Response with generated token.
-     * @throws NoSuchAlgorithmException
-     *             On no secure random algorithm found.
+     * @throws NoSuchAlgorithmException On no secure random algorithm found.
      */
     @POST
     @Path("/token")
@@ -109,17 +105,15 @@ public class UserController {
     /**
      * Delete user token.
      *
-     * @param requestContext
-     *            Request context to get default user login.
-     * @param name
-     *            Token name.
+     * @param requestContext Request context to get default user login.
+     * @param name           Token name.
      * @return No content response.
      */
     @DELETE
     @Path("/token/{name}")
     @RolesAllowed(UserRoleType.ADMIN)
     public final Response deleteToken(@Context final ContainerRequestContext requestContext,
-            @PathParam("name") final String name) {
+                                      @PathParam("name") @Valid @NotBlank final String name) {
         User user = new UserMapper().apply(requestContext);
         LOGGER.info("Received DELETE request to delete user token for {}, with {}.", user.getLogin(), name);
         service.deleteToken(user.getLogin(), name);

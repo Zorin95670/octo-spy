@@ -3,6 +3,8 @@ Feature: ProjectController, testing GET /projects/[id]
 
   Scenario: Get project with unknown id should raise an error
     Given I use basic authentication
+    And   I clean project "test"
+
     When I request "/projects" with method "POST" with json
       | key      | value | type    |
       | name     | test  | string  |
@@ -20,6 +22,8 @@ Feature: ProjectController, testing GET /projects/[id]
 
   Scenario: Get project with a valid id should be a success
     Given I use basic authentication
+    And   I clean project "test"
+
     When I request "/projects" with method "POST" with json
       | key      | value | type    |
       | name     | test  | string  |
@@ -28,10 +32,13 @@ Feature: ProjectController, testing GET /projects/[id]
     And  I set response field "id" to context "project_id"
 
     When I request "/projects/[project_id]"
-    And  I expect response fields length is "5"
+    And  I expect response fields length is "8"
     And  I expect response field "id" is "NOT_NULL"
     And  I expect response field "name" is "test"
     And  I expect response field "color" is "NULL"
+    And  I expect response field "masterProject" is "test"
+    And  I expect response field "masterProjectColor" is "NULL"
+    And  I expect response field "isMaster" is "true"
     And  I expect response field "insertDate" is "NOT_NULL"
     And  I expect response field "updateDate" is "NOT_NULL"
 

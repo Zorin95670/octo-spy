@@ -1,39 +1,36 @@
 package com.octo.controller;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-
-import javax.ws.rs.container.ContainerRequestContext;
-import javax.ws.rs.core.Application;
-import javax.ws.rs.core.MultivaluedHashMap;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
-
-import org.glassfish.jersey.internal.inject.AbstractBinder;
-import org.glassfish.jersey.server.ResourceConfig;
-import org.glassfish.jersey.test.JerseyTest;
+import com.octo.model.common.Constants;
+import com.octo.model.user.UserViewDTO;
+import com.octo.service.UserService;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.octo.model.dto.user.UserViewDTO;
-import com.octo.service.UserService;
-import com.octo.utils.Constants;
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.core.MultivaluedHashMap;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(SpringExtension.class)
 @ExtendWith(MockitoExtension.class)
-@ContextConfiguration(locations = {"classpath:application-context.xml"})
-class UserControllerTest extends JerseyTest {
+@Tag("unit")
+class UserControllerTest {
 
     @Mock
     UserService service;
@@ -41,25 +38,11 @@ class UserControllerTest extends JerseyTest {
     @InjectMocks
     UserController controller;
 
-    @Override
-    protected Application configure() {
-        final ResourceConfig rc = new ResourceConfig().register(UserController.class).register(new AbstractBinder() {
-            @Override
-            protected void configure() {
-                this.bind(UserControllerTest.this.controller).to(UserController.class);
-            }
-        });;
-
-        rc.property("contextConfigLocation", "classpath:application-context.xml");
-
-        return rc;
-    }
-
     @Test
     void testGetMyInformations() {
         ContainerRequestContext context = Mockito.mock(ContainerRequestContext.class);
 
-        String encodedUser = Base64.getUrlEncoder().encodeToString(new String("login:password").getBytes());
+        String encodedUser = Base64.getUrlEncoder().encodeToString("login:password".getBytes());
 
         MultivaluedHashMap<String, String> headers = new MultivaluedHashMap<>();
         headers.add(Constants.AUTHORIZATION_PROPERTY,
@@ -69,7 +52,7 @@ class UserControllerTest extends JerseyTest {
 
         Mockito.when(this.service.getUser(Mockito.any())).thenReturn(new UserViewDTO());
         Mockito.when(this.service.getUserRoles(Mockito.any())).thenReturn(new ArrayList<>());
-        final Response response = this.controller.getMyInformations(context);
+        final Response response = this.controller.getMyInformation(context);
 
         assertNotNull(response);
         assertEquals(Status.OK.getStatusCode(), response.getStatus());
@@ -80,26 +63,27 @@ class UserControllerTest extends JerseyTest {
     void testGetToken() {
         ContainerRequestContext context = Mockito.mock(ContainerRequestContext.class);
 
-        String encodedUser = Base64.getUrlEncoder().encodeToString(new String("login:password").getBytes());
+        String encodedUser = Base64.getUrlEncoder().encodeToString("login:password".getBytes());
 
         MultivaluedHashMap<String, String> headers = new MultivaluedHashMap<>();
         headers.add(Constants.AUTHORIZATION_PROPERTY,
                 String.format("%s %s", Constants.AUTHENTICATION_BASIC_SCHEME, encodedUser));
 
         Mockito.when(context.getHeaders()).thenReturn(headers);
-        Mockito.when(this.service.getUserToken(Mockito.any())).thenReturn(List.of("token1", "token2"));
+        Mockito.when(this.service.getUserToken(Mockito.any())).thenReturn(new PageImpl<>(List.of("token1", "token2")));
         final Response response = this.controller.getToken(context);
 
         assertNotNull(response);
         assertEquals(Status.OK.getStatusCode(), response.getStatus());
-        assertEquals("[\"token1\",\"token2\"]", response.getEntity().toString());
+        Page<String> page = (Page<String>) response.getEntity();
+        assertEquals("token1,token2", page.stream().collect(Collectors.joining(",")));
     }
 
     @Test
     void testCreateToken() throws NoSuchAlgorithmException {
         ContainerRequestContext context = Mockito.mock(ContainerRequestContext.class);
 
-        String encodedUser = Base64.getUrlEncoder().encodeToString(new String("login:password").getBytes());
+        String encodedUser = Base64.getUrlEncoder().encodeToString("login:password".getBytes());
 
         MultivaluedHashMap<String, String> headers = new MultivaluedHashMap<>();
         headers.add(Constants.AUTHORIZATION_PROPERTY,
@@ -118,7 +102,7 @@ class UserControllerTest extends JerseyTest {
     void testDeleteToken() {
         ContainerRequestContext context = Mockito.mock(ContainerRequestContext.class);
 
-        String encodedUser = Base64.getUrlEncoder().encodeToString(new String("login:password").getBytes());
+        String encodedUser = Base64.getUrlEncoder().encodeToString("login:password".getBytes());
 
         MultivaluedHashMap<String, String> headers = new MultivaluedHashMap<>();
         headers.add(Constants.AUTHORIZATION_PROPERTY,

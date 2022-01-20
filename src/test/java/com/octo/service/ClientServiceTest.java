@@ -1,57 +1,34 @@
 package com.octo.service;
 
-import static org.junit.Assert.assertNull;
-
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Order;
-import javax.persistence.criteria.Path;
-import javax.persistence.criteria.Root;
-
+import com.octo.persistence.repository.DeploymentRepository;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
-import com.octo.dao.IDAO;
-import com.octo.model.entity.Deployment;
-import com.octo.utils.predicate.filter.QueryFilter;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(MockitoExtension.class)
+@Tag("unit")
 class ClientServiceTest {
 
     @Mock
-    IDAO<Deployment, QueryFilter> deploymentDAO;
+    DeploymentRepository deploymentRepository;
 
     @InjectMocks
-    ClientService service;
+    ClientServiceImpl service;
 
     @Test
     void testFindALl() {
-        EntityManager entityManager = Mockito.mock(EntityManager.class);
-        CriteriaBuilder builder = Mockito.mock(CriteriaBuilder.class);
-        CriteriaQuery<String> criteria = Mockito.mock(CriteriaQuery.class);
-        Root<Deployment> root = Mockito.mock(Root.class);
-        Path<Object> client = Mockito.mock(Path.class);
-        TypedQuery<String> query = Mockito.mock(TypedQuery.class);
-
-        Mockito.when(entityManager.getCriteriaBuilder()).thenReturn(builder);
-        Mockito.when(entityManager.createQuery(Mockito.any(criteria.getClass()))).thenReturn(query);
-        Mockito.when(query.getResultList()).thenReturn(null);
-        Mockito.when(builder.createQuery(Mockito.eq(String.class))).thenReturn(criteria);
-        Mockito.when(builder.asc(Mockito.any())).thenReturn(Mockito.mock(Order.class));
-        Mockito.when(criteria.from(Mockito.eq(Deployment.class))).thenReturn(root);
-        Mockito.when(criteria.select(Mockito.any())).thenReturn(criteria);
-        Mockito.when(criteria.distinct(Mockito.anyBoolean())).thenReturn(criteria);
-        Mockito.when(criteria.orderBy(Mockito.any(Order.class))).thenReturn(criteria);
-
-        Mockito.when(root.get(Mockito.anyString())).thenReturn(client);
-        Mockito.when(this.deploymentDAO.getEntityManager()).thenReturn(entityManager);
-
-        assertNull(this.service.findAll());
+        Mockito.when(deploymentRepository.findAllDistinctClient(Mockito.any())).thenReturn(new PageImpl(List.of(""),
+                Pageable.ofSize(1), 0));
+        assertNotNull(this.service.findAll(Pageable.ofSize(1)));
     }
 }

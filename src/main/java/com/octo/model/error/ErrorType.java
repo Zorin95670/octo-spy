@@ -6,7 +6,6 @@ import javax.ws.rs.core.Response.Status;
  * List of controller exception error.
  *
  * @author Vincent Moittié
- *
  */
 public enum ErrorType {
     /**
@@ -30,14 +29,6 @@ public enum ErrorType {
      */
     WRONG_FILTER_OPERATOR("Field contains a wrong operator.", Status.BAD_REQUEST),
     /**
-     * Error to call when request order field is wrong.
-     */
-    WRONG_ORDER("Unknow order field.", Status.BAD_REQUEST),
-    /**
-     * Error to call when request sort value is wrong.
-     */
-    WRONG_SORT("Unknow sort value.", Status.BAD_REQUEST),
-    /**
      * Error to call when entity is not found in database.
      */
     ENTITY_NOT_FOUND("Entity not found.", Status.NOT_FOUND),
@@ -50,43 +41,29 @@ public enum ErrorType {
      */
     INTERNAL_ERROR("Internal error occurred, please contact your administrator.", Status.INTERNAL_SERVER_ERROR),
     /**
-     * Error to call when delete is called without a where clause.
-     */
-    DELETE_WITHOUT_WHERE("Trying to delete without where clause.", Status.INTERNAL_SERVER_ERROR),
-    /**
      * Error to call when field is not an attribute of model.
      */
-    UNKNOW_FIELD("Field is not an attribute of model.", Status.BAD_REQUEST),
+    UNKNOWN_FIELD("Field is not an attribute of model.", Status.BAD_REQUEST),
     /**
      * Error to call when field value is wrong.
      */
-    WRONG_VALUE("Wrong field value.", Status.BAD_REQUEST),
-    /**
-     * Error to call when number is wrong.
-     */
-    WRONG_NUMBER("Wrong number.", Status.BAD_REQUEST),
-    /**
-     * Error to call when wrong http method is used for http client.
-     */
-    WRONG_HTTP_METHOD("Internal error occurred, please contact your administrator.", Status.INTERNAL_SERVER_ERROR);
+    WRONG_VALUE("Wrong field value.", Status.BAD_REQUEST);
 
     /**
      * Exception message.
      */
-    private String message;
+    private final String message;
 
     /**
      * Exception status.
      */
-    private Status status;
+    private final Status status;
 
     /**
      * Error type with message.
      *
-     * @param message
-     *            Error's message.
-     * @param status
-     *            Error's status.
+     * @param message Error's message.
+     * @param status  Error's status.
      */
     ErrorType(final String message, final Status status) {
         this.message = message;

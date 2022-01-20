@@ -10,7 +10,6 @@ import java.util.Optional;
  * Provide some helpful method to work with field.
  *
  * @author Vincent Moittié
- *
  */
 public final class FieldUtils {
 
@@ -24,10 +23,8 @@ public final class FieldUtils {
     /**
      * Get declared fields, retrieve them from superclass too.
      *
-     * @param root
-     *            Class that have the field.
-     * @param name
-     *            Name of field to search.
+     * @param root Class that have the field.
+     * @param name Name of field to search.
      * @return Field or null.
      */
     public static Field getField(final Class<?> root, final String name) {
@@ -48,10 +45,8 @@ public final class FieldUtils {
     /**
      * Indicate if current class and all superclasses has the field.
      *
-     * @param root
-     *            Class that have the field.
-     * @param name
-     *            Name of field to search.
+     * @param root Class that have the field.
+     * @param name Name of field to search.
      * @return True if the field exist.
      */
     public static boolean hasField(final Class<?> root, final String name) {
@@ -61,8 +56,7 @@ public final class FieldUtils {
     /**
      * Get all fields from class, private and inherited.
      *
-     * @param clazz
-     *            Class to retrieve fields from.
+     * @param clazz Class to retrieve fields from.
      * @return Fields
      */
     public static List<Field> getFields(final Class<?> clazz) {
@@ -70,10 +64,12 @@ public final class FieldUtils {
 
         Class<?> current = clazz;
         while (current != null) {
-            Arrays.stream(current.getDeclaredFields()).forEach(fields::add);
+            fields.addAll(Arrays.asList(current.getDeclaredFields()));
             current = current.getSuperclass();
         }
 
         return fields;
     }
+
+
 }

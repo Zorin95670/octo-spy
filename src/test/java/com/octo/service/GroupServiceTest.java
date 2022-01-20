@@ -1,56 +1,54 @@
 package com.octo.service;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-
-import java.util.Optional;
-
+import com.octo.model.error.ErrorType;
+import com.octo.model.error.GlobalException;
+import com.octo.persistence.model.Group;
+import com.octo.persistence.model.Project;
+import com.octo.persistence.model.ProjectGroup;
+import com.octo.persistence.repository.GroupRepository;
+import com.octo.persistence.repository.ProjectGroupRepository;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.octo.dao.IDAO;
-import com.octo.model.entity.Group;
-import com.octo.model.entity.Project;
-import com.octo.model.entity.ProjectGroup;
-import com.octo.model.error.ErrorType;
-import com.octo.model.error.GlobalException;
-import com.octo.utils.predicate.filter.QueryFilter;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(SpringExtension.class)
 @ExtendWith(MockitoExtension.class)
-@ContextConfiguration(locations = {"classpath:application-context.xml"})
+@Tag("unit")
 class GroupServiceTest {
 
     @Mock
-    IDAO<ProjectGroup, QueryFilter> projectGroupDAO;
+    ProjectGroupRepository projectGroupRepository;
 
     @Mock
-    IDAO<Group, QueryFilter> groupDAO;
+    GroupRepository groupRepository;
 
     @InjectMocks
-    GroupService service;
+    GroupServiceImpl service;
 
     @Test
-    void testCreate() {
+    void testSave() {
         Group group = new Group();
         group.setId(1L);
 
-        Mockito.when(groupDAO.save(Mockito.any())).thenReturn(group);
-        Mockito.when(projectGroupDAO.save(Mockito.any())).thenReturn(null);
+        Mockito.when(groupRepository.save(Mockito.any())).thenReturn(group);
+        Mockito.when(projectGroupRepository.save(Mockito.any())).thenReturn(null);
 
-        assertEquals(group, service.create(null));
+        assertEquals(group, service.save(null));
     }
 
     @Test
-    void testAddProjectToGroupWithUnknowGroup() {
-        Mockito.when(groupDAO.load(Mockito.any())).thenReturn(Optional.empty());
+    void testAddProjectToGroupWithUnknownGroup() {
+        Mockito.when(groupRepository.findByMasterProjectId(Mockito.any())).thenReturn(Optional.empty());
         GlobalException exception = null;
         try {
             this.service.addProjectToGroup(1L, null);
@@ -63,9 +61,9 @@ class GroupServiceTest {
 
     @Test
     void testAddProjectToGroup() {
-        Mockito.when(groupDAO.load(Mockito.any())).thenReturn(Optional.of(new Group()));
-        Mockito.when(projectGroupDAO.save(Mockito.any())).thenReturn(null);
+        Mockito.when(groupRepository.findByMasterProjectId(Mockito.any())).thenReturn(Optional.of(new Group()));
+        Mockito.when(projectGroupRepository.save(Mockito.any())).thenReturn(new ProjectGroup());
 
-        assertNull(service.addProjectToGroup(1L, new Project()));
+        assertNotNull(service.addProjectToGroup(1L, new Project()));
     }
 }

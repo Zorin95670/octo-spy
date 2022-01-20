@@ -1,5 +1,11 @@
 package com.octo.utils.bean;
 
+import com.octo.model.error.ErrorType;
+import com.octo.model.error.GlobalException;
+import com.octo.utils.reflect.FieldUtils;
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.beanutils.ConversionException;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
@@ -7,23 +13,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.beanutils.ConversionException;
-
-import com.octo.model.error.ErrorType;
-import com.octo.model.error.GlobalException;
-import com.octo.utils.reflect.FieldUtils;
-
 /**
  * Copy all properties of T in Y. Make simple conversion.
  *
- * @param <T>
- *            Source.
- * @param <Y>
- *            Destination.
- *
+ * @param <T> Source.
+ * @param <Y> Destination.
  * @author Vincent Moittié
- *
  */
 public class BeanMapper<T, Y> implements Function<T, Y> {
 
@@ -40,8 +35,7 @@ public class BeanMapper<T, Y> implements Function<T, Y> {
     /**
      * Default constructor.
      *
-     * @param clazz
-     *            Class of object to return.
+     * @param clazz Class of object to return.
      */
     public BeanMapper(final Class<Y> clazz) {
         this(clazz, new String[0]);
@@ -50,12 +44,9 @@ public class BeanMapper<T, Y> implements Function<T, Y> {
     /**
      * Default constructor.
      *
-     *
-     * @param clazz
-     *            Class of object to return.
-     * @param ignoreFields
-     *            Array of property names to ignore when conversion. Can be
-     *            null.
+     * @param clazz        Class of object to return.
+     * @param ignoreFields Array of property names to ignore when conversion. Can be
+     *                     null.
      */
     public BeanMapper(final Class<Y> clazz, final String... ignoreFields) {
         this.clazz = clazz;
@@ -73,7 +64,7 @@ public class BeanMapper<T, Y> implements Function<T, Y> {
 
         final List<String> listOfIgnoredFields = Arrays.asList(this.ignoreFields);
 
-        fieldsDest.stream().forEach(fieldDest -> {
+        fieldsDest.forEach(fieldDest -> {
             final Optional<Field> opt = fieldsSource.stream()
                     // Take only not synthetic and not ignored field, map source
                     // in destination field
@@ -82,9 +73,7 @@ public class BeanMapper<T, Y> implements Function<T, Y> {
                             && fieldSource.getName().equals(fieldDest.getName()))
                     .findFirst();
 
-            if (opt.isPresent()) {
-                this.setFieldValue(opt.get(), fieldDest, result, object);
-            }
+            opt.ifPresent(field -> this.setFieldValue(field, fieldDest, result, object));
         });
 
         return result;
@@ -93,14 +82,10 @@ public class BeanMapper<T, Y> implements Function<T, Y> {
     /**
      * Set destination field value from source field and object.
      *
-     * @param source
-     *            Field source.
-     * @param destination
-     *            Field destination.
-     * @param result
-     *            Object to set value.
-     * @param object
-     *            Object to get value.
+     * @param source      Field source.
+     * @param destination Field destination.
+     * @param result      Object to set value.
+     * @param object      Object to get value.
      */
     public void setFieldValue(final Field source, final Field destination, final Object result, final Object object) {
         try {

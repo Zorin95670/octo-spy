@@ -8,6 +8,8 @@ Feature: ProjectController, testing DELETE /projects/[id]
 
   Scenario: Delete project with unknown id should raise an error
     Given I use basic authentication
+    And   I clean project "test"
+
     When I request "/projects" with method "POST" with json
       | key      | value | type    |
       | name     | test  | string  |
@@ -25,6 +27,8 @@ Feature: ProjectController, testing DELETE /projects/[id]
 
   Scenario: Delete project with valid id should be a success
     Given I use basic authentication
+    And   I clean project "test"
+
     When I request "/projects" with method "POST" with json
       | key      | value | type    |
       | name     | test  | string  |

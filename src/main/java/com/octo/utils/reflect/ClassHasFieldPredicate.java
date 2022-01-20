@@ -6,7 +6,6 @@ import java.util.function.Predicate;
  * Check if class contains this field name.
  *
  * @author Vincent Moittié
- *
  */
 public class ClassHasFieldPredicate implements Predicate<String> {
 
@@ -18,8 +17,7 @@ public class ClassHasFieldPredicate implements Predicate<String> {
     /**
      * Default constructor.
      *
-     * @param clazz
-     *            Class to check field.
+     * @param clazz Class to check field.
      */
     public ClassHasFieldPredicate(final Class<?> clazz) {
         this.rootClazz = clazz;

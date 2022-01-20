@@ -1,185 +1,83 @@
 package com.octo.service;
 
-import java.util.List;
-import java.util.Optional;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.octo.model.project.ProjectRecord;
+import com.octo.persistence.model.Project;
+import com.octo.persistence.model.ProjectView;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-import javax.transaction.Transactional;
-
-import org.apache.commons.beanutils.BeanUtilsBean;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.octo.dao.IDAO;
-import com.octo.model.dto.project.NewProjectRecord;
-import com.octo.model.dto.project.ProjectDTO;
-import com.octo.model.dto.project.ProjectViewDTO;
-import com.octo.model.dto.project.SearchProjectViewDTO;
-import com.octo.model.entity.Project;
-import com.octo.model.entity.ProjectView;
-import com.octo.model.error.ErrorType;
-import com.octo.model.error.GlobalException;
-import com.octo.utils.Constants;
-import com.octo.utils.bean.BeanMapper;
-import com.octo.utils.bean.NullAwareBeanUtilsBean;
-import com.octo.utils.predicate.filter.QueryFilter;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Map;
 
 /**
  * Project service.
- *
- * @author Vincent Moittié
- *
  */
-@Service
-@Transactional
-public class ProjectService {
+public interface ProjectService extends ServiceHelper {
 
     /**
-     * Project DAO.
+     * Count projects.
+     *
+     * @param filters Filter options.
+     * @param field Field to count.
+     * @param value Default value for count.
+     * @return Count object.
      */
-    @Autowired
-    private IDAO<Project, QueryFilter> projectDAO;
-
-    /**
-     * Project DAO.
-     */
-    @Autowired
-    private IDAO<ProjectView, QueryFilter> projectViewDAO;
-
-    /**
-     * Group service.
-     */
-    @Autowired
-    private IGroupService groupService;
+    JsonNode count(Map<String, String> filters, String field, String value);
 
     /**
      * Load project by id.
      *
-     * @param id
-     *            Primary key.
+     * @param id Primary key.
      * @return Project.
      */
-    public ProjectDTO load(final Long id) {
-        return new BeanMapper<>(ProjectDTO.class).apply(projectDAO.loadEntityById(id));
-    }
+    ProjectView load(Long id);
 
     /**
      * Save project in database.
      *
-     * @param dto
-     *            DTO to save
+     * @param newProject Project to save.
      * @return Project.
      */
-    public ProjectDTO save(final NewProjectRecord dto) {
-        if (dto == null || StringUtils.isBlank(dto.name())) {
-            throw new GlobalException(ErrorType.EMPTY_VALUE, "name", null);
-        }
-
-        Project entity = null;
-
-        if (dto.isMaster()) {
-            entity = this.saveMasterProject(dto);
-        } else {
-            entity = this.saveSubProject(dto);
-        }
-
-        return new BeanMapper<>(ProjectDTO.class).apply(entity);
-    }
+    Project save(ProjectRecord newProject);
 
     /**
      * Save master project.
      *
-     * @param dto
-     *            Project to create.
+     * @param newProject Project to save.
      * @return Created project.
      */
-    public Project saveMasterProject(final NewProjectRecord dto) {
-        SearchProjectViewDTO projectFilter = new SearchProjectViewDTO();
-        projectFilter.setIsMaster("true");
-        projectFilter.setName(dto.name());
-        Optional<ProjectView> masterProject = this.projectViewDAO.load(projectFilter);
-        if (masterProject.isPresent()) {
-            throw new GlobalException(ErrorType.WRONG_VALUE, "name", "duplicate");
-        }
-
-        Project entity = this.projectDAO.save(new BeanMapper<>(Project.class).apply(dto));
-        groupService.create(entity);
-
-        return entity;
-    }
+    Project saveMasterProject(ProjectRecord newProject);
 
     /**
-     * Save sub-project.
+     * Save subproject.
      *
-     * @param dto
-     *            Sub-project to create.
-     * @return Created sub-project.
+     * @param newProject Subproject to create.
+     * @return Created subproject.
      */
-    public Project saveSubProject(final NewProjectRecord dto) {
-        if (StringUtils.isBlank(dto.masterName())) {
-            throw new GlobalException(ErrorType.EMPTY_VALUE, "masterName");
-        }
-        SearchProjectViewDTO projectFilter = new SearchProjectViewDTO();
-        projectFilter.setIsMaster("false");
-        projectFilter.setName(dto.name());
-        projectFilter.setMasterProject(dto.masterName());
-        Optional<ProjectView> masterProject = this.projectViewDAO.load(projectFilter);
-        if (masterProject.isPresent()) {
-            throw new GlobalException(ErrorType.WRONG_VALUE, "name", "duplicate");
-        }
-
-        projectFilter = new SearchProjectViewDTO();
-        projectFilter.setIsMaster("true");
-        projectFilter.setName(dto.masterName());
-        masterProject = this.projectViewDAO.load(projectFilter);
-        if (!masterProject.isPresent()) {
-            throw new GlobalException(ErrorType.ENTITY_NOT_FOUND, Constants.FIELD_PROJECT, dto.masterName());
-        }
-        Project entity = this.projectDAO.save(new BeanMapper<>(Project.class).apply(dto));
-        groupService.addProjectToGroup(masterProject.get().getId(), entity);
-
-        return entity;
-    }
+    Project saveSubProject(ProjectRecord newProject);
 
     /**
-     * Delete an project.
+     * Delete a project.
      *
-     * @param id
-     *            Id of project to update.
+     * @param id Id of project to update.
      */
-    public void delete(final Long id) {
-        final Project entity = this.projectDAO.loadEntityById(id);
-        this.projectDAO.delete(entity);
-    }
+    void delete(Long id);
 
     /**
      * Get all projects.
      *
-     * @param dto
-     *            Project filter.
+     * @param filters  Project filter.
+     * @param pageable Object to manage page and sort.
      * @return Projects
      */
-    public List<ProjectViewDTO> findAll(final SearchProjectViewDTO dto) {
-        return this.projectViewDAO.find(dto, true).stream().map(new BeanMapper<>(ProjectViewDTO.class)).toList();
-    }
+    Page<ProjectView> findAll(Map<String, String> filters, Pageable pageable);
 
     /**
      * Update project information.
      *
-     * @param id
-     *            Project's id.
-     * @param projectRecord
-     *            Project's information.
+     * @param id         Project's id.
+     * @param newProject Project's information.
      */
-    public void update(final Long id, final NewProjectRecord projectRecord) {
-        Project project = this.projectDAO.loadEntityById(id);
-        BeanUtilsBean merger = new NullAwareBeanUtilsBean("isMaster", "masterName");
-        try {
-            merger.copyProperties(project, new BeanMapper<>(ProjectDTO.class).apply(projectRecord));
-        } catch (final Exception e) {
-            throw new GlobalException(e, ErrorType.INTERNAL_ERROR, null);
-        }
-
-        this.projectDAO.save(project);
-    }
+    void update(Long id, Project newProject) throws InvocationTargetException, IllegalAccessException;
 }

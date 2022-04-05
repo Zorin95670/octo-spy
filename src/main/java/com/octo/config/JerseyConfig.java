@@ -3,6 +3,7 @@ package com.octo.config;
 import com.octo.controller.AdministratorController;
 import com.octo.controller.AlertsController;
 import com.octo.controller.ClientController;
+import com.octo.controller.DashboardController;
 import com.octo.controller.DeploymentController;
 import com.octo.controller.EnvironmentController;
 import com.octo.controller.InfoController;
@@ -31,6 +32,7 @@ public class JerseyConfig extends ResourceConfig {
         register(AdministratorController.class);
         register(AlertsController.class);
         register(ClientController.class);
+        register(DashboardController.class);
         register(DeploymentController.class);
         register(EnvironmentController.class);
         register(InfoController.class);

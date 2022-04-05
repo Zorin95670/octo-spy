@@ -20,6 +20,7 @@
         <checkstyle.version>8.45</checkstyle.version>
         <cucumber.version>7.2.2</cucumber.version>
         <flyway.version>8.4.1</flyway.version>
+        <hibernate.types.version>2.14.1</hibernate.types.version>
         <jacoco-version>0.8.7</jacoco-version>
         <java.version>17</java.version>
         <maven.checkstyle.plugin>3.1.2</maven.checkstyle.plugin>
@@ -91,6 +92,11 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.vladmihalcea</groupId>
+            <artifactId>hibernate-types-52</artifactId>
+            <version>${hibernate.types.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

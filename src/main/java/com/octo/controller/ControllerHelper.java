@@ -1,8 +1,11 @@
 package com.octo.controller;
 
+import com.octo.persistence.model.User;
+import com.octo.security.UserMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 
+import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.UriInfo;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -39,5 +42,19 @@ public final class ControllerHelper {
             return HttpStatus.PARTIAL_CONTENT.value();
         }
         return HttpStatus.OK.value();
+    }
+
+    /**
+     * Get user login or null.
+     *
+     * @param requestContext Context to get user.
+     * @return Login or null.
+     */
+    public static String getLogin(final ContainerRequestContext requestContext) {
+        User user = new UserMapper().apply(requestContext);
+        if (user == null) {
+            return null;
+        }
+        return user.getLogin();
     }
 }

@@ -40,14 +40,14 @@ Feature: EnvironmentController, testing POST /environments
     And   I clean environment "test"
 
     When I request "/environments" with method "POST" with json
-      | key      | value | type    |
-      | name     | test  | string  |
+      | key  | value | type   |
+      | name | test  | string |
     Then I expect "201" as status code
     And  I set response field "id" to context "env_id"
 
     When I request "/environments" with method "POST" with json
-      | key      | value | type    |
-      | name     | test  | string  |
+      | key  | value | type   |
+      | name | test  | string |
     Then I expect "400" as status code
     And  I expect response field "field" is "name"
     And  I expect response field "value" is "duplicate"

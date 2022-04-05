@@ -55,7 +55,7 @@ public class EnvironmentController {
     /**
      * Endpoint to return all environments.
      *
-     * @param uriInfo Uri info to get query parameters.
+     * @param uriInfo     Uri info to get query parameters.
      * @param queryFilter Query filter for sort and pagination.
      * @return Environments.
      */

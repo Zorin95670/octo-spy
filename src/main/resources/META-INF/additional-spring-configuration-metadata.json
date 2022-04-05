@@ -25,4 +25,5 @@
       "type": "java.lang.String",
       "description": "Name of the application."
     }
-  ] }
+  ]
+}

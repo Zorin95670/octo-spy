@@ -51,7 +51,7 @@ class ProjectServiceTest {
         GlobalException exception = null;
         try {
             service.count(Map.of("", ""), "bad", null);
-        }catch (GlobalException e){
+        } catch (GlobalException e) {
             exception = e;
         }
         assertNotNull(exception);
@@ -66,7 +66,7 @@ class ProjectServiceTest {
         exception = null;
         try {
             node = service.count(Map.of("", ""), "name", "test");
-        }catch (GlobalException e){
+        } catch (GlobalException e) {
             exception = e;
         }
         assertNull(exception);

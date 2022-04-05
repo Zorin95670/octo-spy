@@ -31,7 +31,7 @@ public final class ControllerHelper {
      * Get status code.
      *
      * @param resources Resources.
-     * @param <T> Entity of resources.
+     * @param <T>       Entity of resources.
      * @return 200 on complete resources or 206 on partial resource.
      */
     public static <T> int getStatus(final Page<T> resources) {

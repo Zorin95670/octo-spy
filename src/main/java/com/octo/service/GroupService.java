@@ -21,7 +21,7 @@ public interface GroupService extends ServiceHelper {
      * Add project to a group.
      *
      * @param masterProjectId Master project id to find the group.
-     * @param project Project to save.
+     * @param project         Project to save.
      * @return Project group.
      */
     ProjectGroup addProjectToGroup(Long masterProjectId, Project project);

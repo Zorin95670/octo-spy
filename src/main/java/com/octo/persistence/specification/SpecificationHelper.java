@@ -46,7 +46,7 @@ public class SpecificationHelper<T> implements Specification<T> {
      * Construct specification.
      *
      * @param entityClass Entity class.
-     * @param filters Filter's map..
+     * @param filters     Filter's map..
      */
     public SpecificationHelper(final Class<T> entityClass, final Map<String, String> filters) {
         setEntityClass(entityClass);

@@ -30,7 +30,7 @@ public interface ProjectViewRepository extends CrudRepository<ProjectView, Long>
     /**
      * Find subproject by name and master project name.
      *
-     * @param name Name to find.
+     * @param name          Name to find.
      * @param masterProject Master project name to find.
      * @return Optional of project.
      */
@@ -40,7 +40,7 @@ public interface ProjectViewRepository extends CrudRepository<ProjectView, Long>
      * Get all projects.
      *
      * @param specification Filter options.
-     * @param pageable Page options.
+     * @param pageable      Page options.
      * @return List of project.
      */
     Page<ProjectView> findAll(Specification<ProjectView> specification, Pageable pageable);

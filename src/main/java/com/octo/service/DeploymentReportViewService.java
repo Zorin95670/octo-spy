@@ -14,7 +14,7 @@ public interface DeploymentReportViewService extends ServiceHelper {
      * Count deployment report.
      *
      * @param filters Filter options.
-     * @param fields Field names.
+     * @param fields  Field names.
      * @return Count object.
      */
     JsonNode count(Map<String, String> filters, List<String> fields);

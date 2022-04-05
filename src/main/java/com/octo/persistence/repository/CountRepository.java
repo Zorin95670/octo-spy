@@ -18,10 +18,10 @@ public interface CountRepository<T> {
     /**
      * Count entity field.
      *
-     * @param entity Entity class.
+     * @param entity        Entity class.
      * @param specification Filter options
-     * @param field Field to count.
-     * @param value Default value for count.
+     * @param field         Field to count.
+     * @param value         Default value for count.
      * @return Count object.
      */
     JsonNode count(Class<T> entity, Specification<T> specification, String field, String value);
@@ -29,9 +29,9 @@ public interface CountRepository<T> {
     /**
      * Count entity fields.
      *
-     * @param entity Entity class.
+     * @param entity        Entity class.
      * @param specification Filter options
-     * @param fields Fields to count.
+     * @param fields        Fields to count.
      * @return Count object.
      */
     JsonNode count(Class<T> entity, Specification<T> specification, List<String> fields);

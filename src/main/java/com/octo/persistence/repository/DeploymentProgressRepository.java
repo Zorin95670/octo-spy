@@ -29,9 +29,9 @@ public interface DeploymentProgressRepository extends CrudRepository<DeploymentP
     /**
      * Execute stored procedure to delete all progress.
      *
-     * @param project Project filter.
+     * @param project     Project filter.
      * @param environment Environment filter.
-     * @param client Client filter.
+     * @param client      Client filter.
      */
     @Modifying
     @Query(value = "CALL delete_all_progress(?1, ?2, ?3)", nativeQuery = true)

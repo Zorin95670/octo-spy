@@ -219,11 +219,11 @@ public abstract class PredicateFilter implements IPredicateFilter {
      * Return default predicate. This method call getPredicate with Expression.
      * Override it, to use your wanted expression.
      *
-     * @param <T> Entity class.
-     * @param <Y> Entity class.
-     * @param index Index of predicate.
+     * @param <T>     Entity class.
+     * @param <Y>     Entity class.
+     * @param index   Index of predicate.
      * @param builder Criteria builder.
-     * @param root Root path.
+     * @param root    Root path.
      * @return Predicate.
      */
     public <T, Y> Predicate getPredicate(final int index, final CriteriaBuilder builder, final From<T, Y> root) {
@@ -237,10 +237,10 @@ public abstract class PredicateFilter implements IPredicateFilter {
     /**
      * Override to return specific null predicate.
      *
-     * @param <T> Entity class.
-     * @param index Index of predicate.
+     * @param <T>     Entity class.
+     * @param index   Index of predicate.
      * @param builder Criteria builder.
-     * @param field Field expression.
+     * @param field   Field expression.
      * @return Null predicate.
      */
     private <T> Predicate getNullPredicate(final int index, final CriteriaBuilder builder, final Expression<T> field) {
@@ -253,10 +253,10 @@ public abstract class PredicateFilter implements IPredicateFilter {
     /**
      * Override to return specific predicate.
      *
-     * @param <T> Entity class.
-     * @param index Index of predicate.
+     * @param <T>     Entity class.
+     * @param index   Index of predicate.
      * @param builder Criteria builder.
-     * @param field Field expression.
+     * @param field   Field expression.
      * @return Predicate.
      */
     public <T> Predicate getPredicate(final int index, final CriteriaBuilder builder, final Expression<T> field) {

@@ -28,15 +28,12 @@ class AuthenticationFilterTest {
 
     @Mock
     UserService userService;
-
-    @Mock
-    private ResourceInfo resourceInfo;
-
-    @Mock
-    private ContainerRequestContext context;
-
     @InjectMocks
     AuthenticationFilter filter = new AuthenticationFilter();
+    @Mock
+    private ResourceInfo resourceInfo;
+    @Mock
+    private ContainerRequestContext context;
 
     private void mockUserMapping(String data, String authenticationType) {
         String encodedUser = Base64.getUrlEncoder().encodeToString(data.getBytes());

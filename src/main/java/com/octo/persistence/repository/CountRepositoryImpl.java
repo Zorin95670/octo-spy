@@ -86,9 +86,10 @@ public class CountRepositoryImpl<T> implements CountRepository<T> {
 
     /**
      * Convert value to the type configure on the class.
-     * @param clazz Entity class.
+     *
+     * @param clazz     Entity class.
      * @param fieldName Field name.
-     * @param value Field value.
+     * @param value     Field value.
      * @return Value.
      */
     public Object convertValueToObject(final Class<?> clazz, final String fieldName, final String value) {

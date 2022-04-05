@@ -28,10 +28,11 @@ public class TextPredicateFilter extends PredicateFilter {
         super.setOperatorFromValue(index);
         String value = getValue(index);
         if (value.toLowerCase().startsWith(PredicateOperator.LIKE.getValue())) {
-            value = value.toUpperCase().replace("*", "%");
+            value = value.replace("*", "%");
             this.setOperator(index, PredicateOperator.LIKE);
-            this.setValue(index, value.substring(PredicateOperator.LIKE.getValue().length()));
+            value = value.substring(PredicateOperator.LIKE.getValue().length());
         }
+        this.setValue(index, value.toUpperCase());
     }
 
     @Override
@@ -43,6 +44,6 @@ public class TextPredicateFilter extends PredicateFilter {
             }
             return builder.like(builder.upper((Expression<String>) field), value);
         }
-        return super.getPredicate(index, builder, field);
+        return super.getPredicate(index, builder, builder.upper((Expression<String>) field));
     }
 }

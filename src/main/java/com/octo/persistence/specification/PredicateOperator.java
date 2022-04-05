@@ -32,7 +32,7 @@ public enum PredicateOperator {
     /**
      * Operator like, value "lk".
      */
-    LIKE("lk");
+    LIKE("lk_");
 
     /**
      * String representation of operator.

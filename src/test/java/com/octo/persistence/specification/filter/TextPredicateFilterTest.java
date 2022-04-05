@@ -54,7 +54,7 @@ class TextPredicateFilterTest extends MockHelper {
         assertNotNull(filter.getPredicate(builder, root, null));
         assertEquals(PredicateOperator.EQUALS, filter.getOperator(0));
 
-        filter = new TextPredicateFilter("name", "lk1");
+        filter = new TextPredicateFilter("name", "lk_1");
         assertTrue(filter.extract());
         assertNotNull(filter.getPredicate(builder, root, null));
         assertFalse(filter.getIsNotOperator(0));
@@ -84,14 +84,14 @@ class TextPredicateFilterTest extends MockHelper {
         assertNotNull(filter.getPredicate(builder, root, null));
         assertEquals(PredicateOperator.EQUALS, filter.getOperator(0));
 
-        filter = new TextPredicateFilter("name", "not_lktest");
+        filter = new TextPredicateFilter("name", "not_lk_test");
         assertTrue(filter.extract());
         assertNotNull(filter.getPredicate(builder, root, null));
         assertEquals(PredicateOperator.LIKE, filter.getOperator(0));
         assertTrue(filter.getIsNotOperator(0));
         assertEquals("TEST", filter.getValue(0));
 
-        filter = new TextPredicateFilter("name", "not_lkt*es*t");
+        filter = new TextPredicateFilter("name", "not_lk_t*es*t");
         assertTrue(filter.extract());
         assertNotNull(filter.getPredicate(builder, root, null));
         assertEquals(PredicateOperator.LIKE, filter.getOperator(0));

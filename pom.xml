@@ -24,7 +24,6 @@
         <jacoco-version>0.8.7</jacoco-version>
         <java.version>17</java.version>
         <maven.checkstyle.plugin>3.1.2</maven.checkstyle.plugin>
-        <modelmapper.version>2.4.4</modelmapper.version>
         <testcontainers.version>1.16.3</testcontainers.version>
         <spotbugs.maven.plugin>4.6.0.0</spotbugs.maven.plugin>
         <!-- Sonar properties -->

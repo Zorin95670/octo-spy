@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.6.2</version>
+        <version>2.6.6</version>
         <relativePath/>
     </parent>
     <groupId>com.octo</groupId>
@@ -17,16 +17,16 @@
     <properties>
         <apache.commons.lang.version>3.12.0</apache.commons.lang.version>
         <beanutils.version>1.9.4</beanutils.version>
-        <checkstyle.version>8.45</checkstyle.version>
-        <cucumber.version>7.2.2</cucumber.version>
-        <flyway.version>8.4.1</flyway.version>
+        <checkstyle.version>10.1</checkstyle.version>
+        <cucumber.version>7.2.3</cucumber.version>
+        <flyway.version>8.5.5</flyway.version>
         <hibernate.types.version>2.14.1</hibernate.types.version>
         <jacoco-version>0.8.7</jacoco-version>
         <java.version>17</java.version>
         <maven.checkstyle.plugin>3.1.2</maven.checkstyle.plugin>
         <modelmapper.version>2.4.4</modelmapper.version>
-        <testcontainers.version>1.16.2</testcontainers.version>
-        <spotbugs.maven.plugin>4.3.0</spotbugs.maven.plugin>
+        <testcontainers.version>1.16.3</testcontainers.version>
+        <spotbugs.maven.plugin>4.6.0.0</spotbugs.maven.plugin>
         <!-- Sonar properties -->
         <sonar.projectVersion>2.0.0</sonar.projectVersion>
         <sonar.projectKey>Zorin95670_octo-spy</sonar.projectKey>

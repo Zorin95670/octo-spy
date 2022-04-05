@@ -23,24 +23,12 @@ class UserMapperTest {
 
         Mockito.when(context.getHeaders()).thenReturn(headers);
 
-        GlobalException exception = null;
-        try {
-            new UserMapper().apply(context);
-        } catch (GlobalException e) {
-            exception = e;
-        }
-        assertNotNull(exception);
+        assertNull(new UserMapper().apply(context));
 
         headers.add(Constants.AUTHORIZATION_PROPERTY, null);
         Mockito.when(context.getHeaders()).thenReturn(headers);
 
-        exception = null;
-        try {
-            new UserMapper().apply(context);
-        } catch (GlobalException e) {
-            exception = e;
-        }
-        assertNotNull(exception);
+        assertNull(new UserMapper().apply(context));
     }
 
     @Test

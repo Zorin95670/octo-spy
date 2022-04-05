@@ -26,7 +26,7 @@ public class UserMapper implements Function<ContainerRequestContext, User> {
         final List<String> authorization = headers.get(Constants.AUTHORIZATION_PROPERTY);
 
         if (authorization == null || authorization.isEmpty()) {
-            throw new GlobalException(ErrorType.AUTHORIZATION_ERROR, Constants.AUTHORIZATION_PROPERTY);
+            return null;
         }
         String encodedAuthentication = authorization.get(0);
 

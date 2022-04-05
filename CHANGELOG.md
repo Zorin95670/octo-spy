@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## 2022/05/26: Version 2.1.0
+
+### New features
+
+* Add multiple dashboard management feature
+* Update to java 17
+
+### Bug fixes
+
+* Fix like filter
+
 ## 2022/01/20: Version 2.0.0
 
 ### New features

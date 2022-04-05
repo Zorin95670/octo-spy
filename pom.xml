@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.octo</groupId>
     <artifactId>octo-spy</artifactId>
-    <version>2.0.0</version>
+    <version>2.1.0</version>
     <packaging>jar</packaging>
     <name>octo-spy</name>
     <description>octo-spy</description>
@@ -27,7 +27,7 @@
         <testcontainers.version>1.16.3</testcontainers.version>
         <spotbugs.maven.plugin>4.6.0.0</spotbugs.maven.plugin>
         <!-- Sonar properties -->
-        <sonar.projectVersion>2.0.0</sonar.projectVersion>
+        <sonar.projectVersion>2.1.0</sonar.projectVersion>
         <sonar.projectKey>Zorin95670_octo-spy</sonar.projectKey>
         <sonar.organization>zorin95670</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>

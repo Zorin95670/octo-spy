@@ -1,5 +1,6 @@
 package com.octo.helper;
 
+import com.octo.model.common.Constants;
 import org.mockito.Mockito;
 
 import javax.persistence.EntityManager;
@@ -8,8 +9,10 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.UriInfo;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.Date;
 
@@ -20,6 +23,21 @@ public abstract class MockHelper {
         Mockito.when(mock.getQueryParameters()).thenReturn(new MultivaluedHashMap<>());
         return mock;
     }
+
+    public ContainerRequestContext mockContext() {
+        ContainerRequestContext context = Mockito.mock(ContainerRequestContext.class);
+
+        String encodedUser = Base64.getUrlEncoder().encodeToString("login:password".getBytes());
+
+        MultivaluedHashMap<String, String> headers = new MultivaluedHashMap<>();
+        headers.add(Constants.AUTHORIZATION_PROPERTY,
+                String.format("%s %s", Constants.AUTHENTICATION_BASIC_SCHEME, encodedUser));
+
+        Mockito.when(context.getHeaders()).thenReturn(headers);
+
+        return context;
+    }
+
     public <T> EntityManager mockEntityManager(Class<T> entityClass) {
         return mockEntityManager(entityClass, Mockito.mock(EntityManager.class));
     }

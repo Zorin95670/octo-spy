@@ -45,25 +45,41 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     @Override
     public final void filter(final ContainerRequestContext requestContext) {
         Method method = resourceInfo.getResourceMethod();
+        boolean isPermitAll = method.isAnnotationPresent(PermitAll.class);
 
-        if (method.isAnnotationPresent(PermitAll.class)) {
-            return;
-        }
-
-        if (!method.isAnnotationPresent(RolesAllowed.class)) {
+        if (!isPermitAll && !method.isAnnotationPresent(RolesAllowed.class)) {
             throw new GlobalException(ErrorType.INTERNAL_ERROR, "Missing RolesAllowed annotation.");
         }
 
         User user = new UserMapper().apply(requestContext);
 
-        RolesAllowed annotation = method.getAnnotation(RolesAllowed.class);
-        String[] roles = annotation.value();
+        if (user == null) {
+            if (isPermitAll) {
+                return;
+            }
+            throw new GlobalException(ErrorType.AUTHORIZATION_ERROR, Constants.AUTHORIZATION_PROPERTY);
+        }
+
+        String[] roles = this.getRoles(method.getAnnotation(RolesAllowed.class));
 
         if (Constants.AUTHENTICATION_BASIC_SCHEME.equals(user.getAuthenticationType())) {
             this.validateBasicAuthentication(roles, user);
         } else {
             this.validateTokenAuthentication(roles, user);
         }
+    }
+
+    /**
+     * Get roles.
+     *
+     * @param roles Roles list.
+     * @return Roles.
+     */
+    public String[] getRoles(final RolesAllowed roles) {
+        if (roles == null) {
+            return new String[0];
+        }
+        return roles.value();
     }
 
     /**

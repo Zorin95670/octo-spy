@@ -33,7 +33,7 @@ class DeploymentReportViewServiceTest {
         GlobalException exception = null;
         try {
             service.count(Map.of("", ""), List.of("bad"));
-        }catch (GlobalException e){
+        } catch (GlobalException e) {
             exception = e;
         }
         assertNotNull(exception);
@@ -48,7 +48,7 @@ class DeploymentReportViewServiceTest {
         exception = null;
         try {
             node = service.count(Map.of("", ""), List.of("client"));
-        }catch (GlobalException e){
+        } catch (GlobalException e) {
             exception = e;
         }
         assertNull(exception);

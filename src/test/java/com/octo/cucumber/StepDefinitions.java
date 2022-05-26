@@ -73,7 +73,7 @@ public class StepDefinitions extends DockerConfiguration {
     }
 
     @When("I request {string}")
-    public void request(String endpoint) throws IOException {
+    public void request(String endpoint) {
         this.request(endpoint, "GET");
     }
 
@@ -83,7 +83,7 @@ public class StepDefinitions extends DockerConfiguration {
     }
 
     @When("I request {string} with method {string} with query parameters")
-    public void request(String endpoint, String method, DataTable parameters) throws IOException {
+    public void request(String endpoint, String method, DataTable parameters) {
         String queryParameters = parameters
                 .asMaps()
                 .stream()
@@ -103,17 +103,17 @@ public class StepDefinitions extends DockerConfiguration {
     }
 
     @When("I request {string} with method {string}")
-    public void request(String endpoint, String method) throws IOException {
+    public void request(String endpoint, String method) {
         this.requestFull(endpoint, method, null, null);
     }
 
     @When("I request {string} with method {string} with body")
-    public void requestWithTable(String endpoint, String method, DataTable table) throws IOException {
+    public void requestWithTable(String endpoint, String method, DataTable table) {
         this.requestFull(endpoint, method, createBody(table), MediaType.TEXT_PLAIN);
     }
 
     @When("I request {string} with method {string} with json")
-    public void requestWithJson(String endpoint, String method, DataTable table) throws IOException {
+    public void requestWithJson(String endpoint, String method, DataTable table) {
         List<Map<String, String>> list = table.asMaps();
         ObjectNode json = JsonNodeFactory.instance.objectNode();
         list.forEach((map) -> {
@@ -141,7 +141,7 @@ public class StepDefinitions extends DockerConfiguration {
         this.requestFull(endpoint, method, Entity.json(json.toString()), MediaType.APPLICATION_JSON);
     }
 
-    public void requestFull(String endpoint, String method, Entity<?> body, String contentType) throws IOException {
+    public void requestFull(String endpoint, String method, Entity<?> body, String contentType) {
         String uri = baseURI + replaceWithContext(endpoint);
 
         WebTarget target = this.client.target(uri);
@@ -156,6 +156,11 @@ public class StepDefinitions extends DockerConfiguration {
 
 
         LOGGER.info("{} request to {}", method, uri);
+        if (body == null) {
+            LOGGER.info("With no body");
+        } else {
+            LOGGER.info("With body: {}", body.toString());
+        }
         Response response;
         if (body != null) {
             response = builder.build(method, body).invoke();
@@ -166,8 +171,12 @@ public class StepDefinitions extends DockerConfiguration {
         statusCode = response.getStatus();
         LOGGER.info("Receive {} as status code", statusCode);
         if (statusCode != 204) {
-            json = mapper.readTree(response.readEntity(String.class));
-            LOGGER.info("With body: {}", json);
+            try {
+                json = mapper.readTree(response.readEntity(String.class));
+                LOGGER.info("With body: {}", json);
+            } catch (IOException e) {
+                LOGGER.error("Can't read body", e);
+            }
         }
     }
 
@@ -213,6 +222,11 @@ public class StepDefinitions extends DockerConfiguration {
     @Then("I extract resources from response")
     public void extractResponseResource() {
         this.resources = json.get("content");
+    }
+
+    @Then("I extract first resource from response")
+    public void extractResponseFirstResource() {
+        this.json = json.get("content").get(0);
     }
 
     @Then("I extract object {string} from response")
@@ -326,25 +340,34 @@ public class StepDefinitions extends DockerConfiguration {
 
     @Given("I clean project {string}")
     public void cleanProject(String name) throws URISyntaxException, IOException, InterruptedException {
-        this.clean("projects", name);
+        this.clean("projects", String.format("name=%s", name));
     }
 
     @Given("I clean environment {string}")
     public void cleanEnvironment(String name) throws URISyntaxException, IOException,
             InterruptedException {
-        this.clean("environments", name);
+        this.clean("environments", String.format("name=%s", name));
+    }
+
+    @Given("I clean dashboard {string}")
+    public void cleanDashboard(String name) throws URISyntaxException, IOException,
+            InterruptedException {
+        this.clean("dashboards", String.format("name=%s&visible=true", name));
+        this.clean("dashboards", String.format("name=%s&visible=false", name));
     }
 
     @Given("I clean token {string}")
-    public void cleanToken(String name) throws IOException {
+    public void cleanToken(String name) {
         this.request(String.format("/users/token/%s", name), "DELETE");
     }
 
-    public void clean(String entity, String name) throws URISyntaxException, IOException, InterruptedException {
-        this.request(String.format("/%s?name=%s", entity, name));
+    public void clean(String entity, String query) throws URISyntaxException, IOException, InterruptedException {
+        this.request(String.format("/%s?%s", entity, query));
         if (statusCode == 200 && json.get("totalElements").asInt() > 0) {
             this.extractResponseResource();
-            this.request(String.format("/%s/%s", entity, resources.get(0).get("id").asText()), "DELETE");
+            resources.forEach((resource) -> {
+                this.request(String.format("/%s/%s", entity, resource.get("id").asText()), "DELETE");
+            });
         }
     }
 }

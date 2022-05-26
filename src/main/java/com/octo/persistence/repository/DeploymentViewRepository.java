@@ -27,8 +27,9 @@ public interface DeploymentViewRepository extends CrudRepository<DeploymentView,
 
     /**
      * Get all deployment views.
+     *
      * @param specification Filter options.
-     * @param pageable Page options.
+     * @param pageable      Page options.
      * @return List of deployment views.
      */
     Page<DeploymentView> findAll(Specification<DeploymentView> specification, Pageable pageable);

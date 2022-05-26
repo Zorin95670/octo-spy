@@ -14,7 +14,7 @@ public interface LastDeploymentViewService {
     /**
      * find last deployments.
      *
-     * @param filters Filter options.
+     * @param filters  Filter options.
      * @param pageable Page options.
      * @return deployments.
      */

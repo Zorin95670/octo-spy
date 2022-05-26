@@ -72,7 +72,7 @@ public class DeploymentController {
      *
      * @param uriInfo Request URI information.
      * @param field   Field to count
-     * @param value Default value to count
+     * @param value   Default value to count
      * @return Count's object.
      */
     @GET
@@ -151,7 +151,7 @@ public class DeploymentController {
         DeploymentView deployment = this.deploymentService.save(newDeployment);
         return Response.ok(new BeanMapper<>(DeploymentViewDTO.class)
                         .apply(this.deploymentService.loadView(deployment.getId())))
-                        .status(Status.CREATED).build();
+                .status(Status.CREATED).build();
     }
 
     /**

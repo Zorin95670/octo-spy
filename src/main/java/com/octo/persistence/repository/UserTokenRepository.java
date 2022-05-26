@@ -18,7 +18,7 @@ public interface UserTokenRepository extends CrudRepository<UserToken, Long>, Jp
     /**
      * Find user token by user id.
      *
-     * @param id Id to find.
+     * @param id       Id to find.
      * @param pageable Page options.
      * @return List of user tokens.
      */
@@ -27,7 +27,7 @@ public interface UserTokenRepository extends CrudRepository<UserToken, Long>, Jp
     /**
      * Get user token by user id and token name.
      *
-     * @param id Id to find.
+     * @param id   Id to find.
      * @param name Name to find.
      * @return Optional of token.
      */

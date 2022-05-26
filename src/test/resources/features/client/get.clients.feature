@@ -1,7 +1,6 @@
 Feature: ClientController, testing GET /clients
 
 
-
   Scenario: Get clients should be a success
     When I request "/clients"
     Then I expect "200" as status code

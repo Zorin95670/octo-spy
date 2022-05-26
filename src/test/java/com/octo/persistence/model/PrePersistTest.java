@@ -16,6 +16,7 @@ class PrePersistTest {
         ProjectGroup projectGroup = new ProjectGroup();
         User user = new User();
         UserToken userToken = new UserToken();
+        Dashboard dashboard = new Dashboard();
 
         assertNull(deployment.getInsertDate());
         assertNull(deploymentProgress.getInsertDate());
@@ -24,6 +25,7 @@ class PrePersistTest {
         assertNull(projectGroup.getInsertDate());
         assertNull(user.getInsertDate());
         assertNull(userToken.getInsertDate());
+        assertNull(dashboard.getInsertDate());
 
         deployment.prePersist();
         deploymentProgress.prePersist();
@@ -32,6 +34,7 @@ class PrePersistTest {
         projectGroup.prePersist();
         user.prePersist();
         userToken.prePersist();
+        dashboard.prePersist();
 
         assertNotNull(deployment.getInsertDate());
         assertNotNull(deploymentProgress.getInsertDate());
@@ -40,5 +43,6 @@ class PrePersistTest {
         assertNotNull(projectGroup.getInsertDate());
         assertNotNull(user.getInsertDate());
         assertNotNull(userToken.getInsertDate());
+        assertNotNull(dashboard.getInsertDate());
     }
 }

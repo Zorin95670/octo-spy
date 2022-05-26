@@ -11,8 +11,8 @@ Feature: EnvironmentController, testing DELETE /environments/[id]
     And   I clean environment "test"
 
     When I request "/environments" with method "POST" with json
-      | key      | value | type    |
-      | name     | test  | string  |
+      | key  | value | type   |
+      | name | test  | string |
     Then I expect "201" as status code
     And  I set response field "id" to context "environment_id"
 
@@ -29,8 +29,8 @@ Feature: EnvironmentController, testing DELETE /environments/[id]
     And   I clean environment "test"
 
     When I request "/environments" with method "POST" with json
-      | key      | value | type    |
-      | name     | test  | string  |
+      | key  | value | type   |
+      | name | test  | string |
     Then I expect "201" as status code
     And  I set response field "id" to context "environment_id"
 

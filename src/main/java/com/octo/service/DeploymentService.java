@@ -19,8 +19,8 @@ public interface DeploymentService extends ServiceHelper {
      * Count deployments.
      *
      * @param filters Filter options.
-     * @param field Field to count.
-     * @param value Default value for count.
+     * @param field   Field to count.
+     * @param value   Default value for count.
      * @return Count object.
      */
     JsonNode count(Map<String, String> filters, String field, String value);

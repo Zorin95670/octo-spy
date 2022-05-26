@@ -9,11 +9,13 @@ To make database working:
 - download postgres: 13.3 docker image.
 - Run docker postgres with this command:
 
-docker run -p 5432:5432 --rm -ti --name postgres -e POSTGRES_PASSWORD=password -e POSTGRES_USER=octo -e POSTGRES_DB=octo_db -e POSTGRES_HOST_AUTH_METHOD=trust postgres:13.3
+docker run -p 5432:5432 --rm -ti --name postgres -e POSTGRES_PASSWORD=password -e POSTGRES_USER=octo -e
+POSTGRES_DB=octo_db -e POSTGRES_HOST_AUTH_METHOD=trust postgres:13.3
 
 - Execute this maven command to initialize database
 
-mvn compile && mvn flyway:migrate -Dflyway.url=jdbc:postgresql://localhost:5432/octo_db -Dflyway.user=octo -Dflyway.password=password
+mvn compile && mvn flyway:migrate -Dflyway.url=jdbc:postgresql://localhost:5432/octo_db -Dflyway.user=octo
+-Dflyway.password=password
 
 - Execute this command to add test data
 

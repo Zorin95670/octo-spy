@@ -11,6 +11,7 @@ public class OctoSpyApplication {
 
     /**
      * Methods to start the projects.
+     *
      * @param args Options.
      */
     public static void main(final String[] args) {
@@ -19,6 +20,7 @@ public class OctoSpyApplication {
 
     /**
      * Bean for password encoder.
+     *
      * @return Instance of password encoder.
      */
     @Bean

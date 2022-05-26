@@ -56,7 +56,7 @@ class CountRepositoryTest extends MockHelper {
         Mockito.when(path.in(Mockito.any(Collection.class))).thenReturn(predicate);
 
         TypedQuery<Object[]> query = Mockito.mock(TypedQuery.class);
-        Object[] array = new Object[] { "1", 1 };
+        Object[] array = new Object[]{"1", 1};
         List<Object[]> list = new ArrayList<>();
         list.add(array);
 
@@ -98,8 +98,8 @@ class CountRepositoryTest extends MockHelper {
 
         TypedQuery<Object[]> query = Mockito.mock(TypedQuery.class);
         List<Object[]> list = new ArrayList<>();
-        list.add(new Object[] { "1", 1 });
-        list.add(new Object[] { "2", 2 });
+        list.add(new Object[]{"1", 1});
+        list.add(new Object[]{"2", 2});
 
         Mockito.when(entityManager.createQuery(Mockito.any(CriteriaQuery.class))).thenReturn(query);
         Mockito.when(query.getResultStream()).thenReturn(list.stream());

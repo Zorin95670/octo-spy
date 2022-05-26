@@ -6,6 +6,7 @@ import com.octo.model.error.ErrorType;
 import com.octo.model.error.GlobalException;
 import com.octo.persistence.model.User;
 import com.octo.service.UserService;
+import org.apache.commons.lang3.ArrayUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -28,15 +29,12 @@ class AuthenticationFilterTest {
 
     @Mock
     UserService userService;
-
-    @Mock
-    private ResourceInfo resourceInfo;
-
-    @Mock
-    private ContainerRequestContext context;
-
     @InjectMocks
     AuthenticationFilter filter = new AuthenticationFilter();
+    @Mock
+    private ResourceInfo resourceInfo;
+    @Mock
+    private ContainerRequestContext context;
 
     private void mockUserMapping(String data, String authenticationType) {
         String encodedUser = Base64.getUrlEncoder().encodeToString(data.getBytes());
@@ -66,6 +64,7 @@ class AuthenticationFilterTest {
     void testPermitAll() throws NoSuchMethodException, SecurityException {
         Method method = MockClass.class.getDeclaredMethod("enumOne");
         Mockito.when(resourceInfo.getResourceMethod()).thenReturn(method);
+        Mockito.when(context.getHeaders()).thenReturn(new MultivaluedHashMap<>());
 
         GlobalException exception = null;
         try {
@@ -74,6 +73,17 @@ class AuthenticationFilterTest {
             exception = e;
         }
         assertNull(exception);
+
+        method = MockClass.class.getDeclaredMethod("enumTwo");
+        Mockito.when(resourceInfo.getResourceMethod()).thenReturn(method);
+
+        exception = null;
+        try {
+            filter.filter(context);
+        } catch (GlobalException e) {
+            exception = e;
+        }
+        assertNotNull(exception);
     }
 
     @Test
@@ -177,6 +187,15 @@ class AuthenticationFilterTest {
             exception = e;
         }
         assertNull(exception);
+    }
+
+    @Test
+    void testGetRoles() throws NoSuchMethodException {
+        Method method = MockClass.class.getDeclaredMethod("enumFour");
+        assertTrue(ArrayUtils.isEmpty(filter.getRoles(null)));
+
+        assertArrayEquals(new String[]{UserRoleType.ALL, UserRoleType.TOKEN},
+                filter.getRoles(method.getAnnotation(RolesAllowed.class)));
     }
 
     static class MockClass {

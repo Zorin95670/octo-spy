@@ -39,7 +39,7 @@ public interface EnvironmentRepository extends CrudRepository<Environment, Long>
      * Find environment by name without matching case and when environment is not the specified.
      *
      * @param name Name to find.
-     * @param id Id to exclude.
+     * @param id   Id to exclude.
      * @return Optional of environment.
      */
     Optional<Environment> findByNameIgnoreCaseAndIdIsNot(String name, Long id);
@@ -48,7 +48,7 @@ public interface EnvironmentRepository extends CrudRepository<Environment, Long>
      * Find all environments.
      *
      * @param specification Filter options.
-     * @param pageable Page options.
+     * @param pageable      Page options.
      * @return List of environments.
      */
     Page<Environment> findAll(Specification<Environment> specification, Pageable pageable);
